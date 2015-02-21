@@ -6,6 +6,9 @@
  * Date: 10.02.15
  * Time: 12:58
  */
+
+namespace Leeroy;
+
 class DataFields
 {
 

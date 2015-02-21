@@ -25,6 +25,7 @@ require_once $this->trails_root . '/models/Perm.php';
 require_once $this->trails_root . '/models/Job.php';
 require_once $this->trails_root . '/models/JobBuild.php';
 require_once $this->trails_root . '/models/TimeTrigger.php';
+require_once $this->trails_root . '/models/DataFields.php';
 
 /**
  * @property Leeroy\Tasks task
@@ -68,7 +69,7 @@ class IndexController extends LeeroyStudipController
             if ($jenkins->force_data) { // testen ob zusatzangaben benötigt werden
                 $this->aux_regex = json_decode($jenkins->aux);
                 $this->user_id = $GLOBALS['user']->id;
-                $this->aux_data = DataFields::getDataFields($this->seminar_id);
+                $this->aux_data = Leeroy\DataFields::getDataFields($this->seminar_id);
                 $this->aux_headers = $this->aux_data->getHeaders();
                 $this->aux_user = $this->aux_data->getUserAux($this->user_id);
                 $this->aux = $this->aux_data->isValid($this->user_id, $this->aux_regex);

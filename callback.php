@@ -21,14 +21,12 @@ if (version_compare($GLOBALS['SOFTWARE_VERSION'], "2.4", '<=')) {
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMap.php';
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_StudipDocument.php';
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/CourseMember.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/DataFild.php';
 } else {
     // for version starting from 2.5 use the same stub
     require_once 'compat/2.5/Leeroy_SimpleCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMapCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMap.php';
     require_once 'compat/2.5/Leeroy_StudipDocument.php';
-    require_once 'compat/2.5/DataFields.php';
 }
 
 require_once 'app/models/Jenkins.php';
@@ -39,6 +37,7 @@ require_once 'app/models/TaskFiles.php';
 require_once 'app/models/Perm.php';
 require_once 'app/models/Job.php';
 require_once 'app/models/JobBuild.php';
+require_once 'app/models/DataFields.php';
 
 #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 #echo "post\n";

@@ -29,6 +29,7 @@ require_once $this->trails_root . '/models/Perm.php';
 require_once $this->trails_root . '/models/Job.php';
 require_once $this->trails_root . '/models/JobBuild.php';
 require_once $this->trails_root . '/models/TimeTrigger.php';
+require_once $this->trails_root . '/models/DataFields.php';
 
 class DozentController extends LeeroyStudipController
 {
@@ -98,7 +99,7 @@ class DozentController extends LeeroyStudipController
         Leeroy\Perm::check('config', $this->seminar_id);
 
         $this->jenkins = Leeroy\Jenkins::find($this->seminar_id);
-        $this->headers = DataFields::getDataFields($this->seminar_id)->getHeaders();
+        $this->headers = Leeroy\DataFields::getDataFields($this->seminar_id)->getHeaders();
         $this->regex = json_decode($this->jenkins->aux);
     }
 
@@ -106,7 +107,7 @@ class DozentController extends LeeroyStudipController
     {
         Leeroy\Perm::check('config', $this->seminar_id);
 
-        $headers = DataFields::getDataFields($this->seminar_id)->getHeaders();
+        $headers = Leeroy\DataFields::getDataFields($this->seminar_id)->getHeaders();
         $regex = array();
         foreach ($headers as $id => $name) {
             $regex[$id] = Request::get($id);
@@ -254,7 +255,7 @@ class DozentController extends LeeroyStudipController
 
     function view_dozent_action($handin_id, $edit_field = null)
     {
-
+        $this->handin = new Leeroy\Handin($handin_id);
         $this->task = new Leeroy\Tasks($this->handin->task_id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
@@ -265,8 +266,6 @@ class DozentController extends LeeroyStudipController
         if ($edit_field) {
             $this->edit[$edit_field] = true;
         }
-
-        $this->handin = new Leeroy\Handin($handin_id);
 
     }
 
@@ -501,7 +500,7 @@ class DozentController extends LeeroyStudipController
         $tasks = Leeroy\Tasks::findBySQL("seminar_id = ? AND required = ?", array($this->seminar_id, true));
         usort($tasks, array("Leeroy\Tasks", "cmp"));
 
-        $aux = DataFields::getDataFields($this->seminar_id);
+        $aux = Leeroy\DataFields::getDataFields($this->seminar_id);
 
         $header = array("Nachname", "Vorname");
         $content = array();

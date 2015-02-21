@@ -24,12 +24,8 @@ require_once $this->trails_root . '/models/Perm.php';
 require_once $this->trails_root . '/models/Job.php';
 require_once $this->trails_root . '/models/JobBuild.php';
 require_once $this->trails_root . '/models/TimeTrigger.php';
+require_once $this->trails_root . '/models/DataFields.php';
 
-/**
- * @property Leeroy\Tasks task
- * @property  seminar_id
- * @property string sort
- */
 class FileController extends LeeroyStudipController
 {
     function before_filter(&$action, &$args)
