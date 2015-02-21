@@ -50,7 +50,7 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip
     array('id' => 'upload_button', 'class' => 'disabled')) ?>
 
 <b><?= _('Maximal erlaubte Größe pro Datei') ?>: <?= round($max / 1024 / 1024, 2) ?> MB</b><br>
-
+<? #TODO anzahl von Dateien ?>
 <table class="default zebra">
     <tbody id="files_to_upload">
 

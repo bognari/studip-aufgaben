@@ -7,7 +7,7 @@
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
  *
- * @author      Till Gl?ggler <tgloeggl@uos.de>
+ * @author      Till Glöggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
@@ -120,7 +120,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
 
             if ($act_num > 0) {
                 $navigation->setImage('icons/16/red/assessment.png', array(
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitï¿½ten'), $act_num)
+                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten'), $act_num)
                 ));
             }
         } else {    // for students show the number of new, visible, tasks

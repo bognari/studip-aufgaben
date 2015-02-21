@@ -20,16 +20,16 @@ $content = array(array(
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Punkteübersicht für " . $group_name))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Analyseergebnisse für " . $task->title))) ?>
 
     <br>
-    <label> <?= _("Analyseergebnisse für ") ?>  <?= $task->Title ?> : </label>
+    <label> <?= _("Analyseergebnisse für ") ?>  <?= htmlReady($task->title) ?> : </label>
 
 <? if (!empty($files)) : ?>
     <? foreach ($files as $name => $file) : ?>
         <br>
         <br>
-        <label> <?= _("Datei: ") ?>  <?= $name ?> : </label>
+        <label> <?= _("Datei: ") ?>  <?= htmlReady($name) ?> : </label>
         <table class="default zebra">
             <thead>
             <tr>
@@ -40,11 +40,11 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
             <? foreach ($file as $warning) : ?>
                 <tr>
                     <td>
-                        <?= $warning->primaryLineNumber ?>
+                        <?= htmlReady($warning->primaryLineNumber) ?>
                     </td>
 
                     <td>
-                        <?= $warning->message ?>
+                        <?= htmlReady($warning->message) ?>
                     </td>
                 </tr>
             <? endforeach ?>
@@ -54,10 +54,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <? endforeach ?>
 <? else : ?>
     <? if ($data->analytic == "fail") : ?>
-        <?= MessageBox::error(_('Analyse fehlgeschlagen ')); ?>
+        <?= MessageBox::error(_('Analyse fehlgeschlagen.')); ?>
     <? else : ?>
         <? if (is_null($data->analytic)) : ?>
-            <?= MessageBox::error(_('Keine Analyse ausgeführt')); ?>
+            <?= MessageBox::error(_('Keine Analyse ausgeführt.')); ?>
         <? else : ?>
             <?= MessageBox::info(_('Die Analyse konnte keine Fehler finden :)')); ?>
         <? endif ?>

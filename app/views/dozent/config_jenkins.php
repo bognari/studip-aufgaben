@@ -20,7 +20,7 @@ $i = 0;
 if ($jenkins->use_jenkins && $connected) :
     $infobox_entrys[$i++] = array(
         'icon' => 'icons/16/black/link-extern.png',
-        'text' => sprintf(_('%sJenkins%s'), '<a target="_blank" href="' . $jenkins->getURL() . '">', '</a>')
+        'text' => sprintf('%s' . _('Jenkins') . '%s', '<a target="_blank" href="' . $jenkins->getURL() . '">', '</a>')
     );
 endif;
 

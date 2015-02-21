@@ -52,14 +52,14 @@
                    title="<?= _('Diese Aufgabe anzeigen') ?>">
                     <?= htmlReady($task['title']) ?>
                 </a>
-                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => 'Pflichtaufgabe', 'title' => 'Pflichtaufgabe')) : '' ?>
-                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => 'Materialien', 'title' => 'Materialien')) : '' ?>
-                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => 'externer Link', 'title' => 'externer Link')) : '' ?>
-                <?= $task->hasJobs() ? Assets::img('icons/16/blue/code.png', array('alt' => 'automatische Analysen', 'title' => 'automatische Analysen')) : '' ?>
+                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => _('Pflichtaufgabe'), 'title' => _('Pflichtaufgabe'))) : '' ?>
+                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => _('Materialien'), 'title' => _('Materialien'))) : '' ?>
+                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => _('externer Link'), 'title' => _('externer Link'))) : '' ?>
+                <?= $task->hasJobs() ? Assets::img('icons/16/blue/code.png', array('alt' => _('automatische Analysen'), 'title' => _('automatische Analysen'))) : '' ?>
 
-                <?= $task->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => 'Analyse Ergebnisse', 'title' => 'Analyse Ergebnisse')) : '' ?>
-                <?= $task->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => 'Test Ergebnisse', 'title' => 'Test Ergebnisse')) : '' ?>
-                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => 'Link Ergebnisse', 'title' => 'Link Ergebnisse')) : '' ?>
+                <?= $task->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : '' ?>
+                <?= $task->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : '' ?>
+                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Link Ergebnisse'), 'title' => _('Link Ergebnisse'))) : '' ?>
 
             </td>
             <td>
@@ -69,7 +69,7 @@
                 <?= strftime($timeformat, $task['enddate']) ?>
             </td>
             <td>
-                <?= $task->getStatusText() ?>
+                <?= _($task->getStatusText()) ?>
             </td>
             <td>
                 <a href="<?= $controller->url_for('dozent/edit_task/' . $task['id']) ?>"

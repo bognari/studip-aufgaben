@@ -30,11 +30,6 @@ require_once $this->trails_root . '/models/Job.php';
 require_once $this->trails_root . '/models/JobBuild.php';
 require_once $this->trails_root . '/models/TimeTrigger.php';
 
-/**
- * @property Leeroy\Tasks task
- * @property  seminar_id
- * @property string sort
- */
 class DozentController extends LeeroyStudipController
 {
     function before_filter(&$action, &$args)
@@ -259,17 +254,20 @@ class DozentController extends LeeroyStudipController
 
     function view_dozent_action($handin_id, $edit_field = null)
     {
+
+        $this->task = new Leeroy\Tasks($this->handin->task_id);
+
+        if ($this->task->seminar_id != $this->seminar_id) {
+            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+        }
+
         // if the second parameter is present, the passed field shall be edited
         if ($edit_field) {
             $this->edit[$edit_field] = true;
         }
 
         $this->handin = new Leeroy\Handin($handin_id);
-        $this->task = new Leeroy\Tasks($this->handin->task_id);
 
-        if ($this->task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
-        }
     }
 
     function update_dozent_action($handin_id)
@@ -473,10 +471,10 @@ class DozentController extends LeeroyStudipController
             readfile($zip_file);
             exit;
         } else {
-            print_r($zip_file);
-            die();
+            #print_r($zip_file);
+            #die();
 
-            #throw new Exception("Zip Datei konnte nicht erstellt werden");
+            throw new Exception("Zip Datei konnte nicht erstellt werden");
         }
     }
 

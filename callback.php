@@ -54,20 +54,20 @@ $json = str_replace("\\\"", "\"", $json);
 #echo $json;
 
 
-echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-echo "data\n";
+#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+#echo "data\n";
 
 $data = json_decode($json);
-var_export($data);
+#var_export($data);
 
 #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 #echo "file\n";
 
 if (is_string($data->log)) {
-    echo "\n\nhat log:\n";
+    #echo "\n\nhat log:\n";
     $log = file_get_contents($_FILES[$data->log]["tmp_name"]);
 } else {
-    echo "\n\nhat KEIN log:\n";
+    #echo "\n\nhat KEIN log:\n";
     $log = null;
 }
 
@@ -75,7 +75,7 @@ if (is_string($data->log)) {
 
 if (!\Leeroy\JobBuild::exists($data->token)) {
     throw new AccessDeniedException(sprintf(
-            _("Sie haben keine Berechtigung fï¿½r diese Aktion!"))
+            _("Sie haben keine Berechtigung für diese Aktion!"))
     );
 }
 
@@ -91,41 +91,41 @@ switch ($jobBuild->job->trigger) {
         break;
     default:
         $jobBuild->delete();
-        throw new AccessDeniedException(sprintf(_("Ups!")));
+        throw new AccessDeniedException(sprintf(_("Kein Unterstützter Trigger!")));
 }
 
 if ($jobBuild->job->isSuccessfull($data->buildnumber)) {
     if (in_array("analytics", $data->tasks)) {
         $result = $jobBuild->job->getAnalyticResult($data->buildnumber);
-        echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        echo "analytics\n";
-        print_r($result);
+        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        #echo "analytics\n";
+        #print_r($result);
         $save->analytic = $result;
     }
     if (in_array("test", $data->tasks)) {
         $result = $jobBuild->job->getTestResult($data->buildnumber);
-        echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        echo "test\n";
-        print_r($result);
+        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        #echo "test\n";
+        #print_r($result);
         $save->test = $result;
     }
     if (in_array("extern", $data->tasks)) {
-        echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        echo "content:\n";
+        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        #echo "content:\n";
         $content = file_get_contents($_FILES[$data->extern]["tmp_name"]);
-        print_r($content);
+        #print_r($content);
         $match = array();
         #preg_match_all("/(.*)(http\:\/\/moss\.stanford\.edu\/results\/\d+)/", $input_lines, $output_array);
         $regex = "/http\:\/\/moss\.stanford\.edu\/results\/\d+/";
         $m = preg_match_all($regex, $content, $match);
-        echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        echo "match\n";
-        var_dump($match);
-        echo "\n\n\nm:\n";
-        print_r($m);
+        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        #echo "match\n";
+        #var_dump($match);
+        #echo "\n\n\nm:\n";
+        #print_r($m);
 
-        echo "\n\n\nregex:\n";
-        print_r($regex);
+        #echo "\n\n\nregex:\n";
+        #print_r($regex);
 
         if (!empty($match) && !empty($match[0]) && is_string($match[0][0])) {
 
@@ -136,9 +136,9 @@ if ($jobBuild->job->isSuccessfull($data->buildnumber)) {
     $save->lastJob = null;
     $save->store();
 } else {
-    echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    echo "log\n";
-    print_r($log);
+    #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    #echo "log\n";
+    #print_r($log);
     $save->lastJob = "fail";
     $save->log = $log;
     $save->store();

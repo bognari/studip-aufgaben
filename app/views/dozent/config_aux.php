@@ -21,7 +21,7 @@ $infobox_entrys[] = array();
 $i = 0;
 $infobox_entrys[$i++] = array(
     'icon' => 'icons/16/black/link-extern.png',
-    'text' => sprintf(_('%sPHP Regex Hilfe%s'), '<a target="_blank" href="http://www.phpliveregex.com/">', '</a>')
+    'text' => sprintf('%s' . _('PHP Regex Hilfe') . '%s', '<a target="_blank" href="http://www.phpliveregex.com/">', '</a>')
 );
 
 $infobox_content[] = array(

@@ -23,7 +23,7 @@
         </td>
         <td style="width: 25%">
             <% if (error) { %>
-            <span class="file_error"><?= _('Datei zu groß!') ?></span>
+            <span class="file_error"><?= _('Datei zu gro?!') ?></span>
             <% } else { %>
             <progress value="0" max="100" style="width: 100%"></progress>
             <% } %>

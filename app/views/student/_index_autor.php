@@ -49,6 +49,8 @@
         <th colspan="2" style="text-align: center; width: 80px;">
             <?= _('Feedback') ?>
         </th>
+
+        <th style="min-width: 80px; text-align: center"><?= _('Hinweis') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -71,13 +73,13 @@
                    title="<?= _('Diese Aufgabe anzeigen') ?>">
                     <?= htmlReady($task['title']) ?>
                 </a>
-                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => 'Pflichtaufgabe', 'title' => 'Pflichtaufgabe')) : '' ?>
-                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => 'Materialien', 'title' => 'Materialien')) : '' ?>
-                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => 'externer Link', 'title' => 'externer Link')) : '' ?>
+                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => _('Pflichtaufgabe'), 'title' => _('Pflichtaufgabe'))) : '' ?>
+                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => _('Materialien'), 'title' => _('Materialien'))) : '' ?>
+                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => _('externer Link'), 'title' => _('externer Link'))) : '' ?>
 
-                <?= $handin->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => 'Analyse Ergebnisse', 'title' => 'Analyse Ergebnisse')) : '' ?>
-                <?= $handin->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => 'Test Ergebnisse', 'title' => 'Test Ergebnisse')) : '' ?>
-                <?= $handin->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => 'Link Ergebnisse', 'title' => 'Link Ergebnisse')) : '' ?>
+                <?= $handin->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : '' ?>
+                <?= $handin->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : '' ?>
+                <?= $handin->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Link Ergebnisse'), 'title' => _('Link Ergebnisse'))) : '' ?>
             </td>
             <td>
                 <?= strftime($timeformat, $task['startdate']) ?>
@@ -111,6 +113,12 @@
                 <?= Assets::img('icons/16/black/files.png', array(
                     'title' => _('Hochgeladene Dateien')
                 )) ?>
+            </td>
+            <td style="text-align: center">
+                <?= ($handin && $handin->hint)
+                    ? Assets::img('icons/16/black/file-text.png', array(
+                        'title' => _('Für diese Aufgabe wurden Hinweise für Sie hinterlegt!')
+                    )) : '-' ?>
             </td>
         </tr>
     <? endforeach ?>

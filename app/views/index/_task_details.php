@@ -15,7 +15,7 @@
  * @category    Stud.IP
  */
 ?>
-<h2><?= htmlReady($task['title']) ?>  <?= $task->isRequired() ? _(" - PFLICHTAUFGABE") : '' ?></h2>
+<h2><?= htmlReady($task['title']) ?>  <?= $task->isRequired() ? ' - ' . _('PFLICHTAUFGABE') : '' ?></h2>
 
 <div class="mark">
     <?= formatReady($task['content']) ?><br>

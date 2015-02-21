@@ -9,7 +9,7 @@
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
  *
- * @author      Till Glï¿½ggler <tgloeggl@uos.de>
+ * @author      Till Glöggler <tgloeggl@uos.de>
  * @author      Stephan Mielke
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
@@ -23,7 +23,7 @@ if ($task->hasTaskLink()) {
         'eintrag' => array(
             array(
                 'icon' => 'icons/16/black/link-extern.png',
-                'text' => sprintf(_('%sLink%s'), '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
+                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
             )
         ));
 
@@ -36,7 +36,7 @@ if ($task->hasMaterial()) {
     foreach ($task->files as $file) {
         array_push($entry_material, array(
             'icon' => 'icons/16/black/staple.png',
-            'text' => sprintf(_('%s' . $file->document->name . '%s'), '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
+            'text' => sprintf('%s' . htmlReady($file->document->name) . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
         ));
     }
 
@@ -47,89 +47,88 @@ if ($task->hasMaterial()) {
 
     array_push($content, $content_material);
 }
-if (Leeroy\Perm::has('new_task', $seminar_id)) {
-    /*if ($task->lastJob == "fail") {
-        $content_fail = array(
-            'kategorie' => _('FEHLER'),
-            'eintrag' => array(
-                array(
-                    'icon' => 'icons/16/red/decline.png',
-                    'text' => sprintf(_('Auswertungen sind Fehlgeschlagen')),
-                ))
-        );
+/*if ($task->lastJob == "fail") {
+    $content_fail = array(
+        'kategorie' => _('FEHLER'),
+        'eintrag' => array(
+            array(
+                'icon' => 'icons/16/red/decline.png',
+                'text' => sprintf(_('Auswertungen sind Fehlgeschlagen')),
+            ))
+    );
 
-        array_push($content, $content_fail);
-    }*/
-    if ($task->hasLinkResult() || $task->hasAnalyticResult() || $task->hasTestResult()) {
-        $entry_result = array();
-        if ($task->hasLinkResult()) {
-            array_push($entry_result, array(
-                'icon' => 'icons/16/black/log.png',
-                'text' => sprintf(_('%sAuswertung%s'), '<a target="_blank" href="' . $task->link . '">', '</a>'),
-            ));
-        }
-
-        /*   if ($task->hasAnalyticResult()) {
-               array_push($entry_result, array(
-                   'icon' => 'icons/16/black/stat.png',
-                   'text' => sprintf(_('%sAnalyseergebnisse (%s)%s'), '<a href="' . $controller->url_for('dozent/show_analytics/' . $task->id) . '">', $task->getAnalyticWarnings(), '</a>')
-               ));
-           }
-
-           if ($task->hasTestResult()) {
-               array_push($entry_result, array(
-                   'icon' => 'icons/16/black/unit-test.png',
-                   'text' => sprintf(_('%sTestergebnisse (%s)%s'), '<a href="' . $controller->url_for('dozent/show_test/' . $task->id) . '">', $task->getTestErrors(), '</a>')
-               ));
-           }
-
-           if ($task->hasLog()) {
-               array_push($entry_result, array(
-                   'icon' => 'icons/16/red/decline.png',
-                   'text' => sprintf(_('%sCompilerfehler%s'), '<a href="' . $controller->url_for('dozent/show_log/' . $task->id) . '">', '</a>')
-               ));
-           }*/
-
-        $content_result = array(
-            'kategorie' => _('Ergebnisse'),
-            'eintrag' => $entry_result
-        );
-
-        array_push($content, $content_result);
-    }
-
-    $entry_bewertung = array();
-
-    foreach ($group_names as $group_id => $group_name) {
-        array_push($entry_bewertung, array(
-            'icon' => 'icons/16/black/evaluation.png',
-            'text' => '<a href="' . $controller->url_for("dozent/grading/" . $group_id . "/" . $task->id) . '">' .
-                $group_name . '</a>'
+    array_push($content, $content_fail);
+}*/
+if ($task->hasLinkResult() || $task->hasAnalyticResult() || $task->hasTestResult()) {
+    $entry_result = array();
+    if ($task->hasLinkResult()) {
+        array_push($entry_result, array(
+            'icon' => 'icons/16/black/log.png',
+            'text' => sprintf('%s' . _('Auswertung') . '%s', '<a target="_blank" href="' . $task->link . '">', '</a>'),
         ));
     }
 
-    $content_bewertung = array(
-        'kategorie' => _('Bewertung'),
-        'eintrag' => $entry_bewertung
-    );
-    array_push($content, $content_bewertung);
-
-    $entry_dowload = array();
-
-    foreach ($group_names as $group_id => $group_name) {
-        array_push($entry_dowload, array(
-            'icon' => 'icons/16/black/file-archive.png',
-            'text' => '<a href="' . $controller->url_for("dozent/download/false/" . $group_id . "/" . $task->id) . '">' .
-                $group_name . '</a>'
+    if ($task->hasAnalyticResult()) {
+        array_push($entry_result, array(
+            'icon' => 'icons/16/black/stat.png',
+            'text' => sprintf('%s' . _('Analyseergebnisse') . ' (%s)%s', '<a href="' . $controller->url_for('dozent/show_analytics/' . $task->id) . '">', $task->getAnalyticWarnings(), '</a>')
         ));
     }
 
-    $content_dowload = array(
-        'kategorie' => _('Download'),
-        'eintrag' => $entry_dowload
+    if ($task->hasTestResult()) {
+        array_push($entry_result, array(
+            'icon' => 'icons/16/black/unit-test.png',
+            'text' => sprintf('%s' . _('Testergebnisse') . ' (%s)%s', '<a href="' . $controller->url_for('dozent/show_test/' . $task->id) . '">', $task->getTestErrors(), '</a>')
+        ));
+    }
+
+    if ($task->hasLog()) {
+        array_push($entry_result, array(
+            'icon' => 'icons/16/red/decline.png',
+            'text' => sprintf('%s' . _('Compilerfehler') . '%s', '<a href="' . $controller->url_for('dozent/show_log/' . $task->id) . '">', '</a>')
+        ));
+    }
+
+    $content_result = array(
+        'kategorie' => _('Ergebnisse'),
+        'eintrag' => $entry_result
     );
-    array_push($content, $content_dowload);
+
+    array_push($content, $content_result);
 }
+
+$entry_bewertung = array();
+
+foreach ($group_names as $group_id => $group_name) {
+    array_push($entry_bewertung, array(
+        'icon' => 'icons/16/black/evaluation.png',
+        'text' => '<a href="' . $controller->url_for("dozent/grading/" . $group_id . "/" . $task->id) . '">' .
+            htmlReady($group_name) . '</a>'
+    ));
+}
+
+$content_bewertung = array(
+    'kategorie' => _('Bewertung'),
+    'eintrag' => $entry_bewertung
+);
+array_push($content, $content_bewertung);
+
+$entry_dowload = array();
+
+foreach ($group_names as $group_id => $group_name) {
+    array_push($entry_dowload, array(
+        'icon' => 'icons/16/black/file-archive.png',
+        'text' => '<a href="' . $controller->url_for("dozent/download/false/" . $group_id . "/" . $task->id) . '">' .
+            htmlReady($group_name) . '</a>'
+    ));
+}
+
+$content_dowload = array(
+    'kategorie' => _('Download'),
+    'eintrag' => $entry_dowload
+);
+array_push($content, $content_dowload);
+
 
 if (empty($content)) {
     $content = array(array(
@@ -149,8 +148,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <div class="buttons">
     <div class="button-group">
         <?= Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for('dozent/edit_task/' . $task['id'])) ?>
-        <?= Studip\LinkButton::createDelete(_('Lï¿½schen'), 'javascript:STUDIP.Leeroy.createQuestion("' .
-            _('Sind Sie sicher, dass Sie die komplette Aufgabe lï¿½schen mï¿½chten?') . '",
+        <?= Studip\LinkButton::createDelete(_('Löschen'), 'javascript:STUDIP.Leeroy.createQuestion("' .
+            _('Sind Sie sicher, dass Sie die komplette Aufgabe l?schen m?chten?') . '",
             "' . $controller->url_for('dozent/delete_task/' . $task['id']) . '");') ?>
     </div>
 </div>

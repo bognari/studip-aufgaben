@@ -97,8 +97,7 @@ class FileController extends LeeroyStudipController
             throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe'));
         }
 
-        if (!Request::isPost()
-            || !$GLOBALS['perm']->have_studip_perm("autor", $this->seminar_id)
+        if (!Request::isPost() || !$GLOBALS['perm']->have_studip_perm("autor", $this->seminar_id)
         ) {
             throw new AccessDeniedException("Kein Zugriff");
         }
@@ -220,8 +219,6 @@ class FileController extends LeeroyStudipController
                 );
             }
         }
-
         $this->render_json($output);
     }
-
 }

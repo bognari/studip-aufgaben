@@ -9,7 +9,7 @@
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
  *
- * @author      Till Glï¿½ggler <tgloeggl@uos.de>
+ * @author      Till Glöggler <tgloeggl@uos.de>
  * @author      Stephan Mielke
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
@@ -23,7 +23,7 @@ $i = 0;
 if ($jenkins->use_jenkins && $connected) :
     $infobox_entrys[$i++] = array(
         'icon' => 'icons/16/black/link-extern.png',
-        'text' => sprintf(_('%sJenkins%s'), '<a target="_blank" href="' . $jenkins->getURL() . '">', '</a>')
+        'text' => sprintf('%s' . _('Jenkins') . '%s', '<a target="_blank" href="' . $jenkins->getURL() . '">', '</a>')
     );
 endif;
 
@@ -60,7 +60,6 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
     <div class="task">
 
-        <!--<div id="accordion">-->
         <h3><span class="label"><?= _('Allgemeine Einstellungen') ?></span></h3>
 
         <div>
@@ -98,7 +97,6 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <br>
 
         <h3><span class="label"><?= _('Abgabezeitraum') ?></span></h3>
-        <!--<div class="visibility">-->
         <div>
             <?= _('Sichtbar und bearbeitbar ab') ?>:<br>
             <input type="datetime" name="startdate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
@@ -139,7 +137,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                             '<p>' +
                             '<input type="hidden" name="<?= _("job_id")?>' + count + '" value="new">' +
                             '<span class="label"><?= _('Job Name:') ?></span>' +
-                            '<input type="text" name="<?= _("job_name")?>' + count + '" required placeholder="Name des Jobs im Jenkins" size="80"><br>' +
+                            '<input type="text" name="<?= _("job_name")?>' + count + '" required placeholder=" <?= _('Name des Jobs im Jenkins') ?>" size="80"><br>' +
                             '<span class="label"><?= _('Beschreibung:') ?></span>' +
                             '<textarea name="<?= _("job_description")?>' + count + '"></textarea><br><br>' +
                             '<span class="label"><?= _('Konfigurations Datei:') ?><input type="file" name="<?= _("job_config")?>' + count + '"></span>' +
@@ -204,7 +202,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                                 <input type="hidden" name="<?= _("job_id") . $i ?>" value="<?= htmlReady($job->id) ?>">
                                 <span class="label"><?= _('Job Name:') ?></span>
                                 <input type="text" name="<?= _("job_name") . $i ?>" value="<?= htmlReady($job->name) ?>"
-                                       required placeholder="Name des Jobs im Jenkins" size="80"><br>
+                                       required placeholder="<= _('Name des Jobs im Jenkins') ?>" size="80"><br>
                                 <span class="label"><?= _('Beschreibung:') ?></span>
                                 <textarea
                                     name="<?= _("job_description") . $i ?>"><?= htmlReady($job->description) ?></textarea><br><br>
@@ -213,7 +211,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                                 <br>
                                 <span class="label"><?= _('Benutze Konfigurations Datei:') ?>
                                     <? if (!is_null($job->file->name)) : ?>
-                                        <?= _($job->file->name) ?>
+                                        <?= htmlReady($job->file->name) ?>
                                     <? endif ?>
                                     <input type="checkbox" name="<?= _("job_use_config_file") . $i ?>"
                                            value="1" <?= is_null($job->file->name) ? '' : 'checked="checked"' ?>> </span>
@@ -239,11 +237,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                     endforeach ?>
                 </div>
                 <a href="#" id="add_job"
-                   title="add job"><?= Assets::img('icons/16/black/add.png', array('title' => _('hinzufï¿½gen'))) ?></a>
+                   title="add job"><?= Assets::img('icons/16/black/add.png', array('title' => _('hinzufügen'))) ?></a>
             </div>
 
         <? endif ?>
-        <!--</div>-->
     </div>
 
     <br style="clear: both">

@@ -39,13 +39,13 @@
             <tr>
                 <td>
                     <a href="<?= $controller->url_for("dozent/view_dozent/" . $handin->id) ?>">
-                        <?= get_fullname($user->user_id) ?>
+                        <?= htmlReady(get_fullname($user->user_id)) ?>
                     </a>
                 </td>
 
                 <td style="text-align: center">
                     <a href="<?= $controller->url_for("dozent/grading/" . $group_id . "/" . $task->id) ?>">
-                        <?= (!$handin || $handin->points === null) ? '-' : $handin->points ?>
+                        <?= (!$handin || $handin->points === null) ? '-' : htmlReady($handin->points) ?>
                     </a>
                 </td>
 

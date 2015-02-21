@@ -23,7 +23,7 @@ if ($task->hasTaskLink()) {
         'eintrag' => array(
             array(
                 'icon' => 'icons/16/black/link-extern.png',
-                'text' => sprintf(_('%sLink%s'), '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
+                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
             )
         ));
 
@@ -36,7 +36,7 @@ if ($task->hasMaterial()) {
     foreach ($task->files as $file) {
         array_push($entry_material, array(
             'icon' => 'icons/16/black/staple.png',
-            'text' => sprintf(_('%s' . $file->document->name . '%s'), '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
+            'text' => sprintf('%s' . $file->document->name . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
         ));
     }
 
@@ -54,35 +54,35 @@ if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResu
     if ($handin->hasPoints()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/doctoral_cap.png',
-            'text' => sprintf(_('Erreichte Punkte: %s'), $handin->points),
+            'text' => sprintf(_('Erreichte Punkte:') . ' %s', $handin->points),
         ));
     }
 
     if ($handin->hasLinkResult()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/log.png',
-            'text' => sprintf(_('%sAuswertung%s'), '<a target="_blank" href="' . $handin->link . '">', '</a>'),
+            'text' => sprintf('%s' . _('Auswertung') . '%s', '<a target="_blank" href="' . $handin->link . '">', '</a>'),
         ));
     }
 
     if ($handin->hasAnalyticResult()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/stat.png',
-            'text' => sprintf(_('%sAnalyseergebnisse (%s)%s'), '<a href="' . $controller->url_for('index/show_analytics/' . $handin->id) . '">', $handin->getAnalyticWarnings(), '</a>')
+            'text' => sprintf('%s' . _('Analyseergebnisse') . ' (%s)%s', '<a href="' . $controller->url_for('index/show_analytics/' . $handin->id) . '">', $handin->getAnalyticWarnings(), '</a>')
         ));
     }
 
     if ($handin->hasTestResult()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/unit-test.png',
-            'text' => sprintf(_('%sTestergebnisse (%s)%s'), '<a href="' . $controller->url_for('index/show_test/' . $handin->id) . '">', $handin->getTestErrors(), '</a>')
+            'text' => sprintf('%s' . _('Testergebnisse') . ' (%s)%s', '<a href="' . $controller->url_for('index/show_test/' . $handin->id) . '">', $handin->getTestErrors(), '</a>')
         ));
     }
 
     if ($handin->hasLog()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/red/decline.png',
-            'text' => sprintf(_('%sCompilerfehler%s'), '<a href="' . $controller->url_for('index/show_log/' . $handin->id) . '">', '</a>')
+            'text' => sprintf('%s' . _('Compilerfehler') . '%s', '<a href="' . $controller->url_for('index/show_log/' . $handin->id) . '">', '</a>')
         ));
     }
 
@@ -111,7 +111,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <? if ($handin['hint']) : ?>
     <br>
     <div class="mark">
-        <b><?= _('Hinweis DozentIn') ?>:</b><br>
+        <b><?= _('Hinweis des DozentIn') ?>:</b><br>
         <br>
         <?= formatReady($handin->hint) ?>
     </div>

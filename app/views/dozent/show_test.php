@@ -22,10 +22,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Punkteübersicht für " . $group_name))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Testergebnisse für " . $task->title))) ?>
 
     <br>
-    <label> <?= _("Analyseergebnisse für ") ?>  <?= $task->Title ?> : </label>
+    <label> <?= _("Testergebnisse für ") ?>  <?= htmlReady($task->title) ?> : </label>
 
 <? if (!empty($suites)) : ?>
     <? foreach ($suites as $suite) : ?>
@@ -41,14 +41,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
             <? foreach ($suite->cases as $case) : ?>
                 <tr>
                     <td>
-                        <?= $case->name ?>
+                        <?= htmlReady($case->name) ?>
                     </td>
 
                     <td>
-                        <?= $case->status ?>
+                        <?= htmlReady($case->status) ?>
                     </td>
                     <td>
-                        <?= $case->errorDetails ?>
+                        <?= htmlReady($case->errorDetails) ?>
                     </td>
                 </tr>
             <? endforeach ?>
@@ -58,7 +58,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <? endforeach ?>
 <? else : ?>
     <? if ($data->test == "fail") : ?>
-        <?= MessageBox::error(_('Testausführung fehlgeschlagen')); ?>
+        <?= MessageBox::error(_('Testausführung fehlgeschlagen.')); ?>
     <? endif ?>
     <? if (is_null($data->test)) : ?>
         <?= MessageBox::error(_('Keine Test ausgeführt.')); ?>

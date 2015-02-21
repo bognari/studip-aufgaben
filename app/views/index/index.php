@@ -144,14 +144,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
 <? if (is_null($jenkins)) : ?>
     <? if (Leeroy\Perm::has('config', $seminar_id)) : ?>
-        <?= MessageBox::info(sprintf(_('Sie haben noch keine Konfiguration für das Backend angelegt! %sKonfiguration anlegen.%s'),
+        <?= MessageBox::info(sprintf(_('Sie haben noch keine Konfiguration f?r das Backend angelegt! %sKonfiguration anlegen.%s'),
             '<a href="' . $controller->url_for('dozent/config_jenkins') . '">', '</a>')); ?>
     <? else : ?>
         <?= MessageBox::info(_('Die Konfiguration ist noch nicht abgeschlossen!')) ?>
     <? endif ?>
     <br><br><br><br><br><br><br>
 <? elseif (is_bool($aux) && !$aux) : ?>
-    <?= MessageBox::error(_('Bitte füllen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
+    <?= MessageBox::error(_('Bitte f?llen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
 
     <table class="default zebra">
         <thead>
