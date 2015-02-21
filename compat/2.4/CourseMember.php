@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CourseMember.class.php
  * model class for table seminar_user
@@ -12,7 +13,7 @@
  * @copyright   2012 Stud.IP Core-Group
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
- * 
+ *
  * @property string seminar_id database column
  * @property string user_id database column
  * @property string status database column
@@ -53,12 +54,12 @@ class CourseMember extends Leeroy_SimpleORMap
     {
         $this->db_table = 'seminar_user';
         $this->belongs_to = array(
-                'user' => array(
-                        'class_name' => 'User',
-                        'foreign_key' => 'user_id'),
-                'course' => array(
-                        'class_name' => 'Course',
-                        'foreign_key' => 'seminar_id')
+            'user' => array(
+                'class_name' => 'User',
+                'foreign_key' => 'user_id'),
+            'course' => array(
+                'class_name' => 'Course',
+                'foreign_key' => 'seminar_id')
         );
         $user_getter = function ($record, $field) {
             return $record->getRelationValue('user', $field);
@@ -71,7 +72,7 @@ class CourseMember extends Leeroy_SimpleORMap
         $this->additional_fields['title_rear'] = array('get' => $user_getter);
         $course_getter = function ($record, $field) {
             if (strpos($field, 'course_') !== false) {
-                $field = substr($field,7);
+                $field = substr($field, 7);
             }
             return $record->getRelationValue('course', $field);
         };

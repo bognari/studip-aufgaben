@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+studip_plugin.iml
+.idea
+update.xml
+compat/2.4
+compat/2.3

@@ -18,32 +18,32 @@ $breadcrumb = array();
 
 foreach ($path as $step) :
     if (is_array($step)) :
-        $breadcrumb[] = '<a href="'. $controller->url_for($step[0]) .'">'
-                      . htmlReady($step[1]) . '</a>';
+        $breadcrumb[] = '<a href="' . $controller->url_for($step[0]) . '">'
+            . htmlReady($step[1]) . '</a>';
     else :
         switch ($step) :
             case 'overview':
-                $breadcrumb[] = '<a href="'. $controller->url_for('index/index') .'">'
-                              . _('Übersicht') . '</a>';
-            break;
+                $breadcrumb[] = '<a href="' . $controller->url_for('index/index') . '">'
+                    . _('Übersicht') . '</a>';
+                break;
 
             case 'new_task':
                 $breadcrumb[] = _('Neue Aufgabe anlegen');
-            break;
+                break;
 
             case 'edit_task':
                 $breadcrumb[] = _('Aufgabe bearbeiten');
-            break;
+                break;
 
             case 'view_dozent':
                 $breadcrumb[] = $step;
-            break;
+                break;
 
             default:
                 $breadcrumb[] = htmlReady($step);
-            break;
-       endswitch;
-   endif;
+                break;
+        endswitch;
+    endif;
 endforeach; ?>
 
 <span><?= _('Sie befinden sich hier:') ?></span>

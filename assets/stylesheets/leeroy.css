@@ -1,0 +1,97 @@
+#Leeroy span.label {
+  font-weight: bold;
+  display: block;
+}
+
+#Leeroy .visibility {
+  font-weight: bold;
+}
+
+#Leeroy .visibility div:nth-child(1) {
+  float: left;
+}
+
+#Leeroy .visibility div:nth-child(2) {
+  float: left;
+  margin-left: 20px;
+}
+
+#Leeroy .task {
+  margin-bottom: 1em;
+}
+
+#Leeroy .task textarea {
+  width: 99%;
+  height: 5em;
+}
+
+#Leeroy .task input[name=title] {
+  width: 99%;
+}
+
+#Leeroy label {
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+  margin-top: 5px;
+}
+
+#Leeroy label input {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
+}
+
+#Leeroy .buttons {
+  text-align: center;
+}
+
+#Leeroy table tr.running {
+  background-color: #CCCCFF;
+}
+
+#Leeroy #files_to_upload {
+  min-width: 500px;
+  width: auto;
+}
+
+#Leeroy #files_to_upload tr td:nth-child(1) {
+  width: 100px;
+}
+
+#Leeroy #files_to_upload tr td:nth-child(1) img {
+  max-width: 90px;
+  max-height: 60px;
+}
+
+#Leeroy #files_to_upload tr td:nth-child(2) {
+  padding: 3px 10px;
+}
+
+#Leeroy #files_to_upload tr td:nth-child(3) {
+  padding: 3px 10px;
+  width: 100px;
+}
+
+#Leeroy #files_to_upload span.file_error {
+  display: block;
+  background-color: #FFCCCC;
+  padding: 2px;
+}
+
+#Leeroy span.empty_text {
+  color: grey;
+  font-style: italic;
+}
+
+#Leeroy div.mark {
+  background-color: #DEE2E8;
+  padding: 5px;
+}
+
+#Leeroy

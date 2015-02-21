@@ -1,5 +1,12 @@
-pluginclassname=AufgabenPlugin
-pluginname=AufgabenPlugin
-origin=elan-ev
-version=1.1.1
+pluginname=Leeroy
+pluginclassname=Leeroy
+origin=TU BS IPS
+version=0.11
+updateURL=http://plugin.bognari.me/update.xml
 studipMinVersion=2.3.x
+category=Aufgaben
+displayname=Leeroy
+complexity=2
+descriptionshort=Demonstration eines Plugins
+descriptionlong=Dieser Text kann ruhig etwas länger sein
+keywords=leeroy,jenkins,aufgaben,abgaben
