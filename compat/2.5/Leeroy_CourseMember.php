@@ -24,10 +24,10 @@ class Leeroy_CourseMember extends CourseMember
         foreach ($participants as $user) {
             $gruppen = $user->getGroups();
 
-            if ($user->status == 'autor' && !empty($gruppen)) {
+            if ($user->status === 'autor' && count($gruppen) > 0) {
 
                 foreach ($gruppen as $gruppen_id => $gruppen_name) {
-                    if (is_null($group[$gruppen_id])) {
+                    if ($group[$gruppen_id] === null) {
                         $group[$gruppen_id] = array();
                     }
 
@@ -39,12 +39,12 @@ class Leeroy_CourseMember extends CourseMember
             }
         }
 
-        return array("names" => $group_names, "members" => $group);
+        return array('names' => $group_names, 'members' => $group);
     }
 
     public static function cmp($a, $b)
     {
-        if (get_nachname($a->user_id) == get_nachname($b->user_id)) {
+        if (get_nachname($a->user_id) === get_nachname($b->user_id)) {
             return get_vorname($a->user_id) < get_vorname($b->user_id) ? -1 : 1;
         }
 

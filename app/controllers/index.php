@@ -84,13 +84,13 @@ class IndexController extends LeeroyStudipController
                 foreach ($this->tasks as $task) {
                     $reorder[$task->getStatus()][] = $task;
                 }
-                if (!empty($reorder['running'])) {
+                if (count($reorder['running']) > 0) {
                     $reorder['running'] = array_reverse($reorder['running']);
 
                     $new_order = array();
 
                     foreach (words('future running past') as $status) {
-                        if (!empty($reorder[$status])) {
+                        if (count($reorder[$status]) > 0) {
                             $new_order = array_merge($new_order, $reorder[$status]);
                         }
                     }
@@ -115,7 +115,7 @@ class IndexController extends LeeroyStudipController
 
         if ($wait !== false && is_object($handin->getFileAnswer())) {
             $jobbuild = Leeroy\JobBuild::findBySQL('handin_file_id = ?', array($handin->getFileAnswer()->id));
-            if (is_null($handin->analytic) && is_null($handin->lastJob) && !empty($jobbuild)) {
+            if ($handin->analytic === null && $handin->lastJob === null && count($jobbuild) > 0) {
                 $this->redirect('index/analytics_reload/' . $handin_id);
             }
         }

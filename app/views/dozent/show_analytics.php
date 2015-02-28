@@ -23,13 +23,13 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Analyseergebnisse für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _('Analyseergebnisse für') ?>  <?= htmlReady($task->title) ?> : </label>
+    <h1> <?= _('Analyseergebnisse für') ?>  <?= htmlReady($task->title) ?> : </h1>
 
-<? if (!empty($files)) : ?>
+<? if (count($files) > 0) : ?>
     <? foreach ($files as $name => $file) : ?>
         <br>
         <br>
-        <label> <?= _('Datei') . ':' ?>  <?= htmlReady($name) ?> : </label>
+        <h2> <?= _('Datei') . ':' ?>  <?= htmlReady($name) ?> : </h2>
         <table class="default zebra">
             <thead>
             <tr>
@@ -52,14 +52,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
             </tbody>
         </table>
     <? endforeach ?>
+<? elseif ($data->analytic === 'fail') : ?>
+    <?= MessageBox::error(_('Analyse fehlgeschlagen.')); ?>
+<? elseif ($data->analytic === null) : ?>
+    <?= MessageBox::error(_('Keine Analyse ausgeführt.')); ?>
 <? else : ?>
-    <? if ($data->analytic === 'fail') : ?>
-        <?= MessageBox::error(_('Analyse fehlgeschlagen.')); ?>
-    <? else : ?>
-        <? if (is_null($data->analytic)) : ?>
-            <?= MessageBox::error(_('Keine Analyse ausgeführt.')); ?>
-        <? else : ?>
-            <?= MessageBox::info(_('Die Analyse konnte keine Fehler finden :)')); ?>
-        <? endif ?>
-    <? endif ?>
+    <?= MessageBox::info(_('Die Analyse konnte keine Fehler finden :)')); ?>
 <? endif ?>

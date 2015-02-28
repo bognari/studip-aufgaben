@@ -63,19 +63,19 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <h3><span class="label"><?= _('Allgemeine Einstellungen') ?></span></h3>
 
         <div>
-            <span class="label"><?= _('Titel') ?></span>
-            <input type="text" name="title" placeholder="Name der Aufgabe" required
+            <label for="title"><span class="label"><?= _('Titel') ?></span></label>
+            <input type="text" name="title" id="title" placeholder="Name der Aufgabe" required
                    value="<?= htmlReady($task['title']) ?>" size="80"><br>
-            <span class="label"><?= _('Externer Link') ?></span>
-            <input type="text" name="task_link" placeholder="Link zu weiteren Angaben zur Aufgabe"
+            <label for="task_link"><span class="label"><?= _('Externer Link') ?></span></label>
+            <input type="text" name="task_link" id="task_link" placeholder="Link zu weiteren Angaben zur Aufgabe"
                    value="<?= htmlReady($task['task_link']) ?>" size="80"><br>
             <label>
                 <span class="label"><?= _('Pflichtaufgabe: ') ?> <input type="checkbox" name="required"
                                                                         value="1" <?= $task['required'] ? 'checked="checked"' : '' ?>></span>
             </label>
             <br>
-            <span class="label"><?= _('Beschreibung') ?></span>
-            <textarea name="content"><?= htmlReady($task['content']) ?></textarea>
+            <label for="content"><span class="label"><?= _('Beschreibung') ?></span></label>
+            <textarea name="content" id="content"><?= htmlReady($task['content']) ?></textarea>
         </div>
         <br>
 
@@ -98,14 +98,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
         <h3><span class="label"><?= _('Abgabezeitraum') ?></span></h3>
         <div>
-            <?= _('Sichtbar und bearbeitbar ab') ?>:<br>
-            <input type="datetime" name="startdate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
-                   value="<?= $task['startdate'] != '' ? strftime('%d.%m.%Y %R', $task['startdate']) : '' ?>">
+            <label for="startdate"><?= _('Sichtbar und bearbeitbar ab') ?>:</label><br>
+            <input type="datetime" name="startdate" id="startdate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
+                   value="<?= $task['startdate'] !== '' ? strftime('%d.%m.%Y %R', $task['startdate']) : '' ?>">
         </div>
         <div>
-            <?= _('Bearbeitbar bis') ?>:<br>
-            <input type="datetime" name="enddate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
-                   value="<?= $task['enddate'] != '' ? strftime('%d.%m.%Y %R', $task['enddate']) : '' ?>">
+            <label for="enddate"><?= _('Bearbeitbar bis') ?>:</label><br>
+            <input type="datetime" name="enddate" id="enddate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
+                   value="<?= $task['enddate'] !== '' ? strftime('%d.%m.%Y %R', $task['enddate']) : '' ?>">
         </div>
         <!--</div>-->
         <br>
@@ -136,22 +136,22 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                             $('<div id="' + count + '" class="ui-widget ui-widget-content">' +
                             '<p>' +
                             '<input type="hidden" name="<?= 'job_id'?>' + count + '" value="new">' +
-                            '<span class="label"><?= _('Job Name:') ?></span>' +
-                            '<input type="text" name="<?= 'job_name'?>' + count + '" required placeholder=" <?= _('Name des Jobs im Jenkins') ?>" size="80"><br>' +
-                            '<span class="label"><?= _('Beschreibung:') ?></span>' +
-                            '<textarea name="<?= 'job_description'?>' + count + '"></textarea><br><br>' +
-                            '<span class="label"><?= _('Konfigurations Datei:') ?><input type="file" name="<?= 'job_config'?>' + count + '"></span>' +
+                            '<label for="<?= 'job_name'?>' + count + '"><span class="label"><?= _('Job Name:') ?></span></label>' +
+                            '<input type="text" name="<?= 'job_name'?>' + count + '" id="<?= 'job_name'?>' + count + '" required placeholder=" <?= _('Name des Jobs im Jenkins') ?>" size="80"><br>' +
+                            '<label for="<?= 'job_description'?>' + count + '"><span class="label"><?= _('Beschreibung:') ?></span></label>' +
+                            '<textarea name="<?= 'job_description'?>' + count + '" id="<?= 'job_description'?>' + count + '"></textarea><br><br>' +
+                            '<label for="<?= 'job_config'?>' + count + '"><span class="label"><?= _('Konfigurations Datei:') ?></span></label><input type="file" name="<?= 'job_config'?>' + count + '" id="<?= 'job_config'?>' + count + '">' +
                             '<br>' +
-                            '<span class="label"><?= _('Benutze Konfigurations Datei:') ?>' +
-                            '<input type="checkbox" name="<?= 'job_use_config_file'?>' + count + '" checked="checked"> </span>' +
+                            '<label for="<?= 'job_use_config_file'?>' + count + '"><span class="label"><?= _('Benutze Konfigurations Datei:') ?>' +
+                            '<input type="checkbox" name="<?= 'job_use_config_file'?>' + count + '" checked="checked" id="<?= 'job_use_config_file'?>' + count + '"> </span></label>' +
                             '<br>' +
-                            '<span class="label"><?= _('Trigger:') # laden der speicherung?>' +
-                            '<select name="<?= 'job_trigger'?>' + count + '" ?>" size="3">' +
+                            '<label for="<?= 'job_trigger'?>' + count + '"><span class="label"><?= _('Trigger:') # laden der speicherung?>' +
+                            '<select name="<?= 'job_trigger'?>' + count + '" size="1" id="<?= 'job_trigger'?>' + count + '">' +
                             '<option>upload</option>' +
                             '<option>end</option>' +
                             '<option>end_all</option>' +
                             '</select>' +
-                            '</span>' +
+                            '</span></label>' +
                             '<a href="#" class="remove" id="remove_job" title="remove job"><?= Assets::img('icons/16/black/remove.png', array('title' => _('entfernen'))) ?></a>' +
                             '</p>' +
                             '</div>').fadeIn("slow").appendTo('#extend_job');
@@ -200,24 +200,35 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                         <div id="<?= _($i) ?>" class="ui-widget ui-widget-content" style="display: block;">
                             <p>
                                 <input type="hidden" name="'job_id' . $i ?>" value="<?= htmlReady($job->id) ?>">
-                                <span class="label"><?= _('Job Name:') ?></span>
-                                <input type="text" name="<?= 'job_name' . $i ?>" value="<?= htmlReady($job->name) ?>"
+                                <label for="<?= 'job_name' . $i ?>"><span
+                                        class="label"><?= _('Job Name:') ?></span></label>
+                                <input type="text" name="<?= 'job_name' . $i ?>" id="<?= 'job_name' . $i ?>"
+                                       value="<?= htmlReady($job->name) ?>"
                                        required placeholder="<= _('Name des Jobs im Jenkins') ?>" size="80"><br>
-                                <span class="label"><?= _('Beschreibung:') ?></span>
+                                <label for="<?= 'job_description' . $i ?>"><span
+                                        class="label"><?= _('Beschreibung:') ?></span></label>
                                 <textarea
-                                    name="<?= 'job_description' . $i ?>"><?= htmlReady($job->description) ?></textarea><br><br>
-                                <span class="label"><?= _('Konfigurations Datei:') ?><input type="file"
-                                                                                            name="<?= 'job_config' . $i ?>"></span>
+                                    name="<?= 'job_description' . $i ?>"
+                                    id="<?= 'job_description' . $i ?>"><?= htmlReady($job->description) ?></textarea><br><br>
+                                <label for="<?= 'job_config' . $i ?>"><span
+                                        class="label"><?= _('Konfigurations Datei:') ?></span></label><input type="file"
+                                                                                                             name="<?= 'job_config' . $i ?>"
+                                                                                                             id="<?= 'job_config' . $i ?>">
                                 <br>
-                                <span class="label"><?= _('Benutze Konfigurations Datei:') ?>
-                                    <? if (!is_null($job->file->name)) : ?>
+                                <label for="<?= 'job_use_config_file' . $i ?>"><span
+                                        class="label"><?= _('Benutze Konfigurations Datei:') ?>
+                                        <? if ($job->file->name !== null) : ?>
                                         <?= htmlReady($job->file->name) ?>
                                     <? endif ?>
-                                    <input type="checkbox" name="<?= 'job_use_config_file' . $i ?>"
-                                           value="1" <?= is_null($job->file->name) ? '' : 'checked="checked"' ?>> </span>
+                                        <input type="checkbox" name="<?= 'job_use_config_file' . $i ?>"
+                                               id="<?= 'job_use_config_file' . $i ?>"
+                                               value="1" <?= $job->file->name === null ? '' : 'checked="checked"' ?>> </span>
+                                </label>
                                 <br>
-                                <span class="label"><?= _('Trigger:') # laden der speicherung         ?>
-                                    <select name="<?= 'job_trigger' . $i ?>" ?>" size="3">
+                                <label for="<?= 'job_trigger' . $i ?>"><span
+                                        class="label"><?= _('Trigger:') # laden der speicherung          ?>
+                                        <select name="<?= 'job_trigger' . $i ?>" id="<?= 'job_trigger' . $i ?>"
+                                                size="1">
                                         <option <?= $job->trigger === 'upload' ? htmlReady('selected="selected"') : '' ?>>
                                             upload
                                         </option>
@@ -228,7 +239,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                                             end_all
                                         </option>
                                     </select>
-                                </span>
+                                </span></label>
                                 <a href="#" class="remove" id="remove_job"
                                    title="remove job"><?= Assets::img('icons/16/black/remove.png', array('title' => _('entfernen'))) ?></a>
                             </p>

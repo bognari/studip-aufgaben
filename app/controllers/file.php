@@ -110,7 +110,7 @@ class FileController extends LeeroyStudipController
                 continue;
             }
 
-            if (!is_null($file)) {
+            if ($file !== null) {
 
                 if ($type === 'answer' && $handin->getFileAnswer()->handin->id === $handin_id) { # nur eine abgabe ist erlaubt
                     throw new AccessDeniedException(_('Nur eine Abgabe ist erlaubt'));
@@ -195,7 +195,7 @@ class FileController extends LeeroyStudipController
                 continue;
             }
 
-            if (!is_null($file)) {
+            if ($file !== null) {
                 $data = array(
                     'task_id' => $task->id,
                     'dokument_id' => $file->getId()

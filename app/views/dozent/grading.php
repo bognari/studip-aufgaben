@@ -24,8 +24,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Punkteübersicht für ' . $group_name))) ?>
 
 <br>
-<label> <?= _('Punkteübersicht für ') ?> <?= htmlReady($group_name) ?> <?= _('mit') ?> <?= htmlReady($task->title) ?>
-    : </label>
+<h2> <?= _('Punkteübersicht für ') ?> <?= htmlReady($group_name) ?> <?= _('mit') ?> <?= htmlReady($task->title) ?>
+    : </h2>
 <form action="<?= $controller->url_for('dozent/grading_save/' . $task->id . '/' . $group_id) ?>" method="post">
     <table class="default zebra">
         <thead>
@@ -44,7 +44,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
                 <td style="text-align: left">
                     <input name="<?= $handin->id ?>" type="text" title="<?= _('Punkte') ?>"
-                           value="<?= is_null($handin->points) ? '' : htmlReady($handin->points) ?>">
+                           value="<?= $handin->points === null ? '' : htmlReady($handin->points) ?>">
                 </td>
             </tr>
         <? endforeach ?>

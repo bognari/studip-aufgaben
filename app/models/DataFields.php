@@ -34,7 +34,7 @@ class DataFields
         $new_entries = array();
         if (isset($this->rule)) {
             foreach ($entries as $key => $val) {
-                if ($this->rule['attributes'][$key] == 1) {
+                if ($this->rule['attributes'][$key] === '1') {
                     $new_entries[$key] = $val;
                 }
             }
@@ -94,17 +94,13 @@ class DataFields
 
             foreach ($semFields as $key => $name) {
                 if ($key === 'vadozent') {
-                    if (!isset($vadozent)) {
                         $teachers->execute(array($this->seminar_id));
                         $vadozent = $teachers->fetchColumn();
                         $teachers->closeCursor();
-                    }
 
                     $data[$row['user_id']]['entry'][$key] = $vadozent;
-                } else if ($key === 'vasemester') {
-                    if (!isset($vasemester)) {
+                } elseif ($key === 'vasemester') {
                         $vasemester = get_semester($this->seminar_id);
-                    }
                     $data[$row['user_id']]['entry'][$key] = $vasemester;
                 } else {
                     $data[$row['user_id']]['entry'][$key] = $row[$key];
@@ -117,7 +113,7 @@ class DataFields
 
         $new_header = array();
         foreach ($order as $key => $dontcare) {
-            if (isset($header[$key])) {
+            if (array_key_exists($key, $header)) {
                 $new_header[$key] = $header[$key];
             }
         }

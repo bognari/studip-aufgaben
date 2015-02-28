@@ -34,40 +34,43 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 #var_dump($regex);
 ?>
 
-<? if (empty($headers)) : ?>
-    <?= MessageBox::info(_('Es sind keine Zusatzdaten für diese Veranstaltung vorhanden.')); ?>
-<? endif ?>
+
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Zusatzdaten'))) ?>
 
 <h2><?= _('Zusatzdaten bearbeiten') ?></h2>
 
-<form action="<?= $controller->url_for('dozent/config_aux_save/' . $seminar_id) ?>" method="post">
-    <div class="task">
+<? if (count($headers) === 0) : ?>
+    <?= MessageBox::info(_('Es sind keine Zusatzdaten für diese Veranstaltung vorhanden.')); ?>
+<? else : ?>
 
-        <? #print_r($regex); die(); ?>
+    <form action="<?= $controller->url_for('dozent/config_aux_save/' . $seminar_id) ?>" method="post">
+        <div class="task">
 
-        <? foreach ($headers as $id => $name) : ?>
-            <span class="label"><?= _($name . ':') ?></span>
-            <input type="text" name="<?= _($id) ?>" required
-                   value="<?= strlen($regex->$id) < 1 ? htmlReady('(.*)') : htmlReady($regex->$id) ?>" size="40"><br>
+            <? foreach ($headers as $id => $name) : ?>
+                <label for="<?= $id ?>"><span class="label"><?= $name . ':' ?></span></label>
+                <input type="text" name="<?= $id ?>" id="<?= $id ?>" required
+                       value="<?= $regex->$id === '' ? htmlReady('(.*)') : htmlReady($regex->$id) ?>" size="40">
+                <br>
+            <? endforeach ?>
+
             <br>
-        <? endforeach ?>
 
-        <br>
+            <label>
+                <input type="checkbox" name="force_data"
+                       value="1" <?= $jenkins->force_data ? 'checked="checked"' : '' ?>>
+                <?= _('Erzwinge Zusatzangaben') ?>
+            </label>
 
-        <label>
-            <input type="checkbox" name="force_data" value="1" <?= $jenkins->force_data ? 'checked="checked"' : '' ?>>
-            <?= _('Erzwinge Zusatzangaben') ?>
-        </label>
-
-        <br style="clear: both">
-    </div>
-
-    <div class="buttons">
-        <div class="button-group">
-            <?= Studip\Button::createAccept(_('Speichern')) ?>
-            <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('dozent/config_aux/' . $seminar_id)) ?>
+            <br style="clear: both">
         </div>
-    </div>
-</form>
+
+        <div class="buttons">
+            <div class="button-group">
+                <?= Studip\Button::createAccept(_('Speichern')) ?>
+                <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('dozent/config_aux/' . $seminar_id)) ?>
+            </div>
+        </div>
+    </form>
+
+<? endif ?>

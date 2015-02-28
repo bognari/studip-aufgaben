@@ -25,7 +25,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Compilerfehler für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _('Compilerfehler für') ?>  <?= htmlReady($task->title) ?> : </label>
+    <h1> <?= _('Compilerfehler für') ?>  <?= htmlReady($task->title) ?> : </h1>
 
 <? if (is_string($data->log)) : ?>
     <div style="font-family:monospace">

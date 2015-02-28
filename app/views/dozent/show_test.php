@@ -25,7 +25,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Testergebnisse für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _('Testergebnisse für') ?>  <?= htmlReady($task->title) ?> : </label>
+    <h1> <?= _('Testergebnisse für') ?>  <?= htmlReady($task->title) ?> : </h1>
 
 <? if (count($suites) > 0) : ?>
     <? foreach ($suites as $suite) : ?>
@@ -60,7 +60,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <? if ($data->test === 'fail') : ?>
         <?= MessageBox::error(_('Testausführung fehlgeschlagen.')); ?>
     <? endif ?>
-    <? if (is_null($data->test)) : ?>
+    <? if ($data->test === null) : ?>
         <?= MessageBox::error(_('Keine Test ausgeführt.')); ?>
     <? endif ?>
 <? endif ?>

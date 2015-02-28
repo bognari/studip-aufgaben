@@ -30,7 +30,7 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
         );
     endif;
 
-    if (!is_null($jenkins) && Leeroy\Perm::has('new_task', $seminar_id)) :
+    if ($jenkins !== null && Leeroy\Perm::has('new_task', $seminar_id)) :
         $infobox_entrys[$i++] = array(
             'icon' => 'icons/16/black/info.png',
             'text' => sprintf(_('%sNeue Aufgabe anlegen%s'), '<a href="' . $controller->url_for('dozent/new_task') . '">', '</a>')
@@ -78,7 +78,7 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
 
 
 else :
-    if (!is_null($jenkins)) :
+    if ($jenkins !== null) :
         $infobox_content[] = array(
             'kategorie' => _('Informationen'),
             'eintrag' => array(
@@ -88,7 +88,7 @@ else :
                 )
             )
         );
-    else:
+    else :
         $infobox_content[] = array(
             'kategorie' => _('Warnung'),
             'eintrag' => array(
@@ -140,16 +140,16 @@ array_push($infobox_content, array(
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_content);
 ?>
 
-<? if (is_null($jenkins)) : ?>
+<? if ($jenkins === null) : ?>
     <? if (Leeroy\Perm::has('config', $seminar_id)) : ?>
-        <?= MessageBox::info(sprintf(_('Sie haben noch keine Konfiguration f?r das Backend angelegt! %sKonfiguration anlegen.%s'),
-            '<a href="' . $controller->url_for('dozent/config_jenkins') . '">', '</a>')); ?>
+        <?= MessageBox::info(sprintf(_('Sie haben noch keine Konfiguration für das Backend angelegt!') . ' %s' . _('Konfiguration anlegen.') . '%s', '<a href="' . $controller->url_for('dozent/config_jenkins') . '">', '</a>')); ?>
     <? else : ?>
         <?= MessageBox::info(_('Die Konfiguration ist noch nicht abgeschlossen!')) ?>
     <? endif ?>
     <br><br><br><br><br><br><br>
 <? elseif (is_bool($aux) && !$aux) : ?>
     <?= MessageBox::error(_('Bitte füllen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
+    <? #TODO Link ?>
 
     <table class="default zebra">
         <thead>
@@ -187,7 +187,9 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <tbody>
         </tbody>
     </table>
-
+<? elseif (!Leeroy\Perm::has('new_task', $seminar_id) && count(GetGroupsByCourseAndUser($GLOBALS['user']->id, $seminar_id)) === 0) : ?>
+    <?= MessageBox::error(_('Sie sind keiner Übungsgruppe zugeordnet, Bitte treten Sie zuerst einer Gruppe bei.')); ?>
+    <? #TODO Link ?>
 <? else : ?>
     <? if (count($tasks) === 0) : ?>
         <? if (Leeroy\Perm::has('new_task', $seminar_id)) : ?>

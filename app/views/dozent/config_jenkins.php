@@ -54,14 +54,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         </label>
         <br>
 
-        <span class="label"><?= _('Jenkins URL (ohne http[s]://)') ?></span>
-        <input type="text" name="url" value="<?= htmlReady($jenkins->jenkins_url) ?>" size="40"><br>
+        <label for="url"><span class="label"><?= _('Jenkins URL (ohne http[s]://)') ?></span></label>
+        <input type="text" name="url" id="url" value="<?= htmlReady($jenkins->jenkins_url) ?>" size="40"><br>
         <br>
-        <span class="label"><?= _('Jenkins Benutzer') ?></span>
-        <input type="text" name="user" value="<?= htmlReady($jenkins->jenkins_user) ?>" size="40"><br>
+        <label for="user"><span class="label"><?= _('Jenkins Benutzer') ?></span></label>
+        <input type="text" name="user" id="user" value="<?= htmlReady($jenkins->jenkins_user) ?>" size="40"><br>
         <br>
-        <span class="label"><?= _('Jenkins Token') ?></span>
-        <input type="text" name="token" size="40"><br>
+        <label for="token"><span class="label"><?= _('Jenkins Token') ?></span></label>
+        <input type="text" name="token" id="token" size="40"><br>
         <br>
 
         <label>

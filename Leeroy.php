@@ -111,7 +111,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
             $act_num = 0;
             foreach ($tasks as $task) {
                 $tu = Leeroy\Handin::findBySQL('task_id = ? AND mkdate >= ?', array($task->id, $last_visit));
-                if (!empty($tu)) {
+                if (count($tu) > 0) {
                     $act_num += count($tu);
                 }
             }
@@ -126,7 +126,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
                 AND startdate <= UNIX_TIMESTAMP()',
                 array($course_id, $last_visit));
 
-            if (sizeof($tasks) > 0) {
+            if (count($tasks) > 0) {
                 $navigation->setImage('icons/16/red/assessment.png', array(
                     'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es') . ' %s ' . _('neue Aufgaben.'), count($tasks))
                 ));

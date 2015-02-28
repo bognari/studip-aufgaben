@@ -41,7 +41,7 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]['file_sizes'][$GLOBALS['perm']->get_studip
        class="button <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? ' disabled' : '' ?>"
        style="overflow: hidden; position: relative;">
         <?= _('Datei(en) hinzufügen') ?>
-        <input id="fileupload" type="file" <?= is_null($max_file) ? 'multiple' : '' ?> name="file"
+        <input id="fileupload" type="file" <?= $max_file === null ? 'multiple' : '' ?> name="file"
                data-url="<?= $controller->url_for($url . '_add/' . $id . '/' . $type) ?>"
                data-sequential-uploads="true"
                style="opacity: 0; position: absolute; left: -2px; top: -2px; height: 105%; cursor: pointer;" <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? 'disabled' : '' ?>>

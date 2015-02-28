@@ -60,7 +60,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
         $groups = \Leeroy_CourseMember::getGroupsForCourse($seminar_id);
 
 
-        if ($group_id !== false && is_null($groups['names'][$group_id])) {
+        if ($group_id !== false && $groups['names'][$group_id] === null) {
             throw new \AccessDeniedException(_('Gruppe nicht gefunden!'));
         }
 
@@ -71,7 +71,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
 
         #print_r($groups);
 
-        if (is_null($task_id)) {
+        if ($task_id === null) {
             $tasks = Tasks::findBySQL('seminar_id = ?', array($seminar_id));
         } else {
             $tasks = Tasks::findBySQL('seminar_id = ? AND id = ?', array($seminar_id, $task_id));

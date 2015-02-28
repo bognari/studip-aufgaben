@@ -57,7 +57,7 @@
     <? foreach ($tasks as $task) : ?>
         <? $handin = $task->handins->findOneBy('user_id', $GLOBALS['user']->id) ?>
         <?
-        if ($handin->task_id != $task->id) {
+        if ($handin->task_id !== $task->id) {
             $data = array(
                 'task_id' => $task->id,
                 'user_id' => $GLOBALS['user']->id,
@@ -98,7 +98,7 @@
                 )) ?>
             </td>
             <td style="width: 40px">
-                <?= $handin ? sizeof($handin->files->findBy('type', 'answer')) : 0 ?>
+                <?= $handin ? count($handin->files->findBy('type', 'answer')) : 0 ?>
                 <?= Assets::img('icons/16/black/files.png', array(
                     'title' => _('Hochgeladene Dateien')
                 )) ?>
@@ -110,7 +110,7 @@
                 )) ?>
             </td>
             <td style="width: 40px">
-                <?= $handin ? sizeof($handin->files->findBy('type', 'feedback')) : 0 ?>
+                <?= $handin ? count($handin->files->findBy('type', 'feedback')) : 0 ?>
                 <?= Assets::img('icons/16/black/files.png', array(
                     'title' => _('Hochgeladene Dateien')
                 )) ?>

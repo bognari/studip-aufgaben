@@ -16,7 +16,7 @@
  */
 ?>
 <? foreach ($group as $group_id => $group_users) : ?>
-    <label> <?= $group_names[$group_id] ?>: </label>
+    <h2><?= $group_names[$group_id] ?>:</h2>
     <table class="default zebra">
         <thead>
         <tr>

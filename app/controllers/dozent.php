@@ -171,7 +171,7 @@ class DozentController extends LeeroyStudipController
 
         $config_files = array();
         foreach ($task->jobs as $job) {
-            if (!is_null($job->dokument_id)) {
+            if ($job->dokument_id !== null) {
                 $config_files[$job->id] = $job->dokument_id;
             }
             $job->delete();
@@ -195,10 +195,10 @@ class DozentController extends LeeroyStudipController
                     'task_id' => $task->id
                 );
 
-                if (!is_null($use_file)) {
-                    if (!is_null($file)) {
+                if ($use_file !== null) {
+                    if ($file !== null) {
                         $job_data['dokument_id'] = $file;
-                    } elseif ($id !== 'new' && !is_null($config_files[$id])) {
+                    } elseif ($id !== 'new' && $config_files[$id] !== null) {
                         $job_data['dokument_id'] = $config_files[$id];
                         unset($config_files[$id]);
                     }
@@ -220,7 +220,7 @@ class DozentController extends LeeroyStudipController
         }
 
         foreach ($config_files as $file) {
-            if (!is_null($file)) {
+            if ($file !== null) {
                 $document = new Leeroy_StudipDocument($file);
                 delete_document($document->getId());
                 $document->delete();
@@ -321,7 +321,7 @@ class DozentController extends LeeroyStudipController
                 }
 
                 foreach ($gruppen as $gruppen_id => $gruppen_name) {
-                    if (is_null($this->group[$gruppen_id])) {
+                    if ($this->group[$gruppen_id] === null) {
                         $this->group[$gruppen_id] = array();
                     }
 
@@ -344,7 +344,7 @@ class DozentController extends LeeroyStudipController
 
         $this->group_name = GetStatusgruppeName($group_id);
 
-        if (is_null($this->group_name)) {
+        if ($this->group_name === null) {
             throw new AccessDeniedException(_('Die Gruppe wurde nicht gefunden!'));
         }
 
@@ -370,16 +370,12 @@ class DozentController extends LeeroyStudipController
         $this->task = new Leeroy\Tasks($task_id);
 
         if ($this->task->seminar_id !== $this->seminar_id) {
-            #print_r($this->task);
-            #echo "<br><br><br>";
-            #print_r($this->seminar_id);
-            #die();
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $this->group_name = GetStatusgruppeName($group_id);
 
-        if (is_null($this->group_name)) {
+        if ($this->group_name === null) {
             throw new AccessDeniedException(_('Die Gruppe wurde nicht gefunden!'));
         }
 
@@ -446,10 +442,7 @@ class DozentController extends LeeroyStudipController
             readfile($zip_file);
             exit;
         } else {
-            print_r($zip_file);
-            die();
-
-            throw new Exception('Zip Datei konnte nicht erstellt werden');
+            throw new ErrorException(_('Zip Datei konnte nicht erstellt werden'));
         }
     }
 

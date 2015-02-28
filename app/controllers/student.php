@@ -74,7 +74,7 @@ class StudentController extends LeeroyStudipController
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 

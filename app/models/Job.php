@@ -69,7 +69,6 @@ class Job extends \Leeroy_SimpleORMap
          * --form file0=@/Users/stephan/test/user.zip
          * --form file1=@/Users/stephan/test/config.zip
          * --form json='{"parameter": [{"name":"user.zip", "file":"file0"},{"name":"config.zip", "file":"file1"}]}'
-
          */
 
         #$path_user = get_upload_file_path($handin_file->document->id);
