@@ -37,31 +37,28 @@ class Jenkins extends \Leeroy_SimpleORMap
     public function getAPI()
     {
         if ($this->use_ssl) {
-            return "https://" . $this->jenkins_user . ":" . $this->jenkins_token . "@" . $this->jenkins_url;
+            return 'https://' . $this->jenkins_user . ':' . $this->jenkins_token . '@' . $this->jenkins_url;
         }
-        return "http://" . $this->jenkins_user . ":" . $this->jenkins_token . "@" . $this->jenkins_url;
+        return 'http://' . $this->jenkins_user . ':' . $this->jenkins_token . '@' . $this->jenkins_url;
     }
 
     public function getURL()
     {
         if ($this->use_ssl) {
-            return "https://" . $this->jenkins_url;
+            return 'https://' . $this->jenkins_url;
         }
-        return "http://" . $this->jenkins_url;
+        return 'http://' . $this->jenkins_url;
     }
 
     public function isConnected()
     {
-        if ($this->use_jenkins != "1") {
+        if ($this->use_jenkins !== '1') {
             return true;
         }
 
         @file_get_contents($this->getAPI());
 
-        if (strpos($http_response_header[0], "200 OK") !== false) {
-            return true;
-        }
-        return false;
+        return strpos($http_response_header[0], '200 OK') !== false;
     }
 
 

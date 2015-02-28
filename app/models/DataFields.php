@@ -24,7 +24,7 @@ class DataFields
 
     private function __construct($seminar_id)
     {
-        $this->rule = AuxLockRules::getLockRuleBySemId($seminar_id);
+        $this->rule = \AuxLockRules::getLockRuleBySemId($seminar_id);
         $this->seminar_id = $seminar_id;
         $this->data = $this->get_aux_data();
     }
@@ -45,8 +45,8 @@ class DataFields
 
     private function get_aux_data()
     {
-        $entries[0] = $this->filterDatafields(DataFieldStructure::getDataFieldStructures('usersemdata'));
-        $entries[1] = $this->filterDatafields(DataFieldStructure::getDataFieldStructures('user'));
+        $entries[0] = $this->filterDatafields(\DataFieldStructure::getDataFieldStructures('usersemdata'));
+        $entries[1] = $this->filterDatafields(\DataFieldStructure::getDataFieldStructures('user'));
 
         $entry_data = array();
         for ($i = 0; $i <= 1; $i++) {
@@ -56,7 +56,7 @@ class DataFields
             }
         }
 
-        $semFields = $this->filterDataFields(AuxLockRules::getSemFields());
+        $semFields = $this->filterDataFields(\AuxLockRules::getSemFields());
         foreach ($semFields as $id => $name) {
             $header[$id] = $name;
             $entry_data[$id] = '';
@@ -69,22 +69,22 @@ class DataFields
                  LEFT JOIN auth_user_md5 USING (user_id)
                  LEFT JOIN user_info USING (user_id)
                  WHERE seminar_user.status = 'dozent' AND seminar_user.Seminar_id = ?";
-        $teachers = DBManager::get()->prepare($query);
+        $teachers = \DBManager::get()->prepare($query);
 
         $query = "SELECT *, seminare.VeranstaltungsNummer AS vanr, seminare.Name AS vatitle
               FROM seminar_user
               LEFT JOIN auth_user_md5 USING (user_id)
               LEFT JOIN seminare USING (Seminar_id)
               WHERE Seminar_id = ? AND seminar_user.status IN ('autor', 'user')";
-        $statement = DBManager::get()->prepare($query);
+        $statement = \DBManager::get()->prepare($query);
         $statement->execute(array($this->seminar_id));
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $data[$row['user_id']]['entry'] = $entry_data;
             $data[$row['user_id']]['fullname'] = $row['Vorname'] . ' ' . $row['Nachname'];
             $data[$row['user_id']]['username'] = $row['username'];
 
-            $entries[0] = $this->filterDatafields(DataFieldEntry::getDataFieldEntries(array($row['user_id'], $this->seminar_id), 'usersemdata'));
-            $entries[1] = $this->filterDatafields(DataFieldEntry::getDataFieldEntries($row['user_id'], 'user'));
+            $entries[0] = $this->filterDatafields(\DataFieldEntry::getDataFieldEntries(array($row['user_id'], $this->seminar_id), 'usersemdata'));
+            $entries[1] = $this->filterDatafields(\DataFieldEntry::getDataFieldEntries($row['user_id'], 'user'));
 
             for ($i = 0; $i <= 1; $i++) {
                 foreach ($entries[$i] as $id => $entry) {
@@ -93,7 +93,7 @@ class DataFields
             }
 
             foreach ($semFields as $key => $name) {
-                if ($key == 'vadozent') {
+                if ($key === 'vadozent') {
                     if (!isset($vadozent)) {
                         $teachers->execute(array($this->seminar_id));
                         $vadozent = $teachers->fetchColumn();
@@ -101,7 +101,7 @@ class DataFields
                     }
 
                     $data[$row['user_id']]['entry'][$key] = $vadozent;
-                } else if ($key == 'vasemester') {
+                } else if ($key === 'vasemester') {
                     if (!isset($vasemester)) {
                         $vasemester = get_semester($this->seminar_id);
                     }
@@ -127,19 +127,19 @@ class DataFields
 
     public function getHeaders()
     {
-        return $this->data["header"];
+        return $this->data['header'];
     }
 
     public function getUserAux($user_id)
     {
-        return $this->data["aux"][$user_id]["entry"];
+        return $this->data['aux'][$user_id]['entry'];
     }
 
     public function isValid($user_id, $regex)
     {
         $ret = true;
 
-        foreach ($this->data["aux"][$user_id]["entry"] as $field => $value) {
+        foreach ($this->data['aux'][$user_id]['entry'] as $field => $value) {
             $ret = $ret && @preg_match('/^' . $regex->$field . '$/', $value);
         }
 

@@ -37,9 +37,9 @@ class TimeTrigger extends \Leeroy_SimpleORMap
 
     public static function execute($callback_url)
     {
-        $token = md5(uniqid("padme", true));
+        $token = md5(uniqid('padme', true));
 
-        $query = "UPDATE leeroy_job_timetrigger AS tt SET tt.worker = ? WHERE tt.time < ? AND tt.worker IS NULL";
+        $query = 'UPDATE leeroy_job_timetrigger AS tt SET tt.worker = ? WHERE tt.time < ? AND tt.worker IS NULL';
         $statement = \DBManager::get()->prepare($query);
         $statement->execute(array($token, time()));
 
@@ -52,7 +52,7 @@ class TimeTrigger extends \Leeroy_SimpleORMap
         foreach ($tts as $tt) {
             #echo "<br>run!!!!<br>";
             switch ($tt->job->trigger) {
-                case "end" : {
+                case 'end' : {
                     foreach ($tt->job->task->handins as $handin) {
                         $handin_file = $handin->getFileAnswer();
                         if (is_object($handin_file)) {
@@ -61,8 +61,8 @@ class TimeTrigger extends \Leeroy_SimpleORMap
                     }
                     break;
                 }
-                case "end_all" : {
-                    $zip_file = HandinFiles::collecting($tt->job->task->seminar_id, "", false, $tt->job->task->id);
+                case 'end_all' : {
+                    $zip_file = HandinFiles::collecting($tt->job->task->seminar_id, '', false, $tt->job->task->id);
                     $tt->job->execute($zip_file, $callback_url);
                     unset($zip_file);
                     break;

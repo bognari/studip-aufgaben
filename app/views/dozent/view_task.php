@@ -23,7 +23,7 @@ if ($task->hasTaskLink()) {
         'eintrag' => array(
             array(
                 'icon' => 'icons/16/black/link-extern.png',
-                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
+                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>')
             )
         ));
 
@@ -36,7 +36,7 @@ if ($task->hasMaterial()) {
     foreach ($task->files as $file) {
         array_push($entry_material, array(
             'icon' => 'icons/16/black/staple.png',
-            'text' => sprintf('%s' . htmlReady($file->document->name) . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
+            'text' => sprintf('%s' . htmlReady($file->document->name) . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>')
         ));
     }
 
@@ -59,12 +59,12 @@ if ($task->hasMaterial()) {
 
     array_push($content, $content_fail);
 }*/
-if ($task->hasLinkResult() || $task->hasAnalyticResult() || $task->hasTestResult()) {
+if ($task->hasLinkResult() || $task->hasAnalyticResult() || $task->hasTestResult() || $task->hasLog()) {
     $entry_result = array();
     if ($task->hasLinkResult()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/log.png',
-            'text' => sprintf('%s' . _('Auswertung') . '%s', '<a target="_blank" href="' . $task->link . '">', '</a>'),
+            'text' => sprintf('%s' . _('Auswertung') . '%s', '<a target="_blank" href="' . $task->link . '">', '</a>')
         ));
     }
 
@@ -102,7 +102,7 @@ $entry_bewertung = array();
 foreach ($group_names as $group_id => $group_name) {
     array_push($entry_bewertung, array(
         'icon' => 'icons/16/black/evaluation.png',
-        'text' => '<a href="' . $controller->url_for("dozent/grading/" . $group_id . "/" . $task->id) . '">' .
+        'text' => '<a href="' . $controller->url_for('dozent/grading/' . $group_id . '/' . $task->id) . '">' .
             htmlReady($group_name) . '</a>'
     ));
 }
@@ -118,7 +118,7 @@ $entry_dowload = array();
 foreach ($group_names as $group_id => $group_name) {
     array_push($entry_dowload, array(
         'icon' => 'icons/16/black/file-archive.png',
-        'text' => '<a href="' . $controller->url_for("dozent/download/false/" . $group_id . "/" . $task->id) . '">' .
+        'text' => '<a href="' . $controller->url_for('dozent/download/aul/' . $group_id . '/' . $task->id) . '">' .
             htmlReady($group_name) . '</a>'
     ));
 }
@@ -130,7 +130,7 @@ $content_dowload = array(
 array_push($content, $content_dowload);
 
 
-if (empty($content)) {
+if (count($content) === 0) {
     $content = array(array(
         'kategorie' => _('Aktionen'),
         'eintrag' => array()));

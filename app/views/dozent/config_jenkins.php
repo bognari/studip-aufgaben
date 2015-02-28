@@ -41,7 +41,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <? endif ?>
 <? endif ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Jenkins"))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Jenkins'))) ?>
 
 <h2><?= _('Jenkins bearbeiten') ?></h2>
 

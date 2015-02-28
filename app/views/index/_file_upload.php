@@ -17,10 +17,12 @@
 ?>
 <!-- multi file upload -->
 <?
-$art = $GLOBALS['SessSemName']["art_num"];
-if (!$GLOBALS['UPLOAD_TYPES'][$art]) $art = 'default';
+$art = $GLOBALS['SessSemName']['art_num'];
+if (!$GLOBALS['UPLOAD_TYPES'][$art]) {
+    $art = 'default';
+}
 
-$max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip_perm($GLOBALS['SessSemName'][1])]
+$max = $GLOBALS['UPLOAD_TYPES'][$art]['file_sizes'][$GLOBALS['perm']->get_studip_perm($GLOBALS['SessSemName'][1])]
 ?>
 
 <script>
@@ -36,17 +38,17 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip
 
 <div style="position: relative; display: inline-block;">
     <a id="add_button"
-       class="button <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? ' disabled' : "" ?>"
+       class="button <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? ' disabled' : '' ?>"
        style="overflow: hidden; position: relative;">
         <?= _('Datei(en) hinzufügen') ?>
         <input id="fileupload" type="file" <?= is_null($max_file) ? 'multiple' : '' ?> name="file"
-               data-url="<?= $controller->url_for($url . "_add/" . $id . '/' . $type) ?>"
+               data-url="<?= $controller->url_for($url . '_add/' . $id . '/' . $type) ?>"
                data-sequential-uploads="true"
-               style="opacity: 0; position: absolute; left: -2px; top: -2px; height: 105%; cursor: pointer;" <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? 'disabled' : "" ?>>
+               style="opacity: 0; position: absolute; left: -2px; top: -2px; height: 105%; cursor: pointer;" <?= (is_numeric($max_file) && ($max_file - count($files)) <= 0) ? 'disabled' : '' ?>>
     </a>
 </div>
 
-<?= Studip\LinkButton::create(_('Datei(en) hochladen'), "javascript:STUDIP.Leeroy.upload()",
+<?= Studip\LinkButton::create(_('Datei(en) hochladen'), 'javascript:STUDIP.Leeroy.upload()',
     array('id' => 'upload_button', 'class' => 'disabled')) ?>
 
 <b><?= _('Maximal erlaubte Größe pro Datei') ?>: <?= round($max / 1024 / 1024, 2) ?> MB</b><br>

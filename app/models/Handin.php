@@ -29,7 +29,7 @@ class Handin extends \Leeroy_SimpleORMap
         $this->has_many['files'] = array(
             'class_name' => 'Leeroy\HandinFiles',
             'assoc_foreign_key' => 'handin_id',
-            'foreign_key' => 'id',
+            'foreign_key' => 'id'
         );
 
 
@@ -59,23 +59,23 @@ class Handin extends \Leeroy_SimpleORMap
 
     public function getFileAnswer()
     {
-        $file_answer = $this->files->findOneBy("type", "answer");
+        $file_answer = $this->files->findOneBy('type', 'answer');
         return $file_answer;
     }
 
     public function hasLinkResult()
     {
-        return is_string($this->link) && $this->link != "fail";
+        return is_string($this->link) && $this->link !== 'fail';
     }
 
     public function hasAnalyticResult()
     {
-        return is_string($this->analytic) && $this->analytic != "fail";
+        return is_string($this->analytic) && $this->analytic !== 'fail';
     }
 
     public function hasTestResult()
     {
-        return is_string($this->test) && $this->test != "fail";
+        return is_string($this->test) && $this->test !== 'fail';
     }
 
     public function hasLog()
@@ -108,5 +108,39 @@ class Handin extends \Leeroy_SimpleORMap
         }
 
         return 0;
+    }
+
+    public function getAnalyticResult()
+    {
+        $files = array();
+
+        if ($this->hasAnalyticResult()) {
+            $data = json_decode($this->analytic);
+            foreach ($data->warnings as $warning) {
+                if ($files[$warning->fileName] === null) {
+                    $files[$warning->fileName] = array();
+                }
+                array_push($files[$warning->fileName], $warning);
+            }
+
+            foreach ($files as &$file) {
+                usort($file, array('Leeroy\Job', 'analyticCmp'));
+            }
+
+            ksort($files);
+        }
+
+        return $files;
+    }
+
+    public function getTestResult()
+    {
+        if ($this->hasTestResult()) {
+            $data = json_decode($this->test);
+
+            return $data->suites;
+        }
+
+        return array();
     }
 }

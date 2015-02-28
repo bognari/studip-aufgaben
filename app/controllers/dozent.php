@@ -60,7 +60,7 @@ class DozentController extends LeeroyStudipController
         Leeroy\Perm::check('config', $this->seminar_id);
 
         $this->jenkins = Leeroy\Jenkins::find($this->seminar_id);
-        if ($this->jenkins != null) {
+        if ($this->jenkins !== null) {
             $this->connected = $this->jenkins->isConnected();
         }
     }
@@ -74,12 +74,12 @@ class DozentController extends LeeroyStudipController
             'jenkins_url' => Request::get('url'),
             'jenkins_user' => Request::get('user'),
             'use_ssl' => Request::int('use_ssl'),
-            'use_jenkins' => Request::int('use_jenkins'),
+            'use_jenkins' => Request::int('use_jenkins')
         );
 
         $token = Request::get('token');
 
-        if (strlen($token) > 0) { // setzte das token nur wen eins angegeben wurde
+        if ($token !== '') { // setzte das token nur wen eins angegeben wurde
             $data['jenkins_token'] = $token;
         }
 
@@ -115,8 +115,9 @@ class DozentController extends LeeroyStudipController
         $data = array(
             'seminar_id' => $this->seminar_id,
             'force_data' => Request::get('force_data'),
-            'aux' => json_encode($regex),
+            'aux' => json_encode($regex)
         );
+
         if (Jenkins::exists($this->seminar_id)) {
             $this->jenkins = new Jenkins($this->seminar_id);
             $this->jenkins->setData($data);
@@ -135,7 +136,7 @@ class DozentController extends LeeroyStudipController
             'title' => 'neue Aufgabe',
             'is_active' => false,
             'chdate' => time(),
-            'mkdate' => time(),
+            'mkdate' => time()
         );
 
         $task = Leeroy\Tasks::create($data);
@@ -146,7 +147,7 @@ class DozentController extends LeeroyStudipController
     {
         $task = new Leeroy\Tasks($task_id);
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -162,7 +163,7 @@ class DozentController extends LeeroyStudipController
             'send_mail' => Request::int('send_mail'),
             'task_link' => Request::get('task_link'),
             'required' => Request::int('required'),
-            'is_active' => Request::int('is_active'),
+            'is_active' => Request::int('is_active')
         );
 
         $task->setData($data);
@@ -177,9 +178,9 @@ class DozentController extends LeeroyStudipController
         }
 
         $j = 1;
-        $files = $this->save_files("Job");
+        $files = $this->save_files('Job');
 
-        foreach (explode(" ", Request::get('max_jobs')) as $i) {
+        foreach (explode(' ', Request::get('max_jobs')) as $i) {
             if (is_numeric($i)) {
                 $id = Request::get('job_id' . $i);
                 $trigger = Request::get('job_trigger' . $i);
@@ -197,7 +198,7 @@ class DozentController extends LeeroyStudipController
                 if (!is_null($use_file)) {
                     if (!is_null($file)) {
                         $job_data['dokument_id'] = $file;
-                    } elseif ($id != "new" && !is_null($config_files[$id])) {
+                    } elseif ($id !== 'new' && !is_null($config_files[$id])) {
                         $job_data['dokument_id'] = $config_files[$id];
                         unset($config_files[$id]);
                     }
@@ -205,7 +206,7 @@ class DozentController extends LeeroyStudipController
 
                 $job = Job::create($job_data);
 
-                if ($trigger == "end" || $trigger == "end_all") {
+                if ($trigger === 'end' || $trigger === 'end_all') {
                     $trigger_data = array(
                         'job_id' => $job->id,
                         'time' => $task->enddate
@@ -233,7 +234,7 @@ class DozentController extends LeeroyStudipController
     {
         $task = new Leeroy\Tasks($id);
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -245,7 +246,7 @@ class DozentController extends LeeroyStudipController
     {
         $this->task = new Leeroy\Tasks($id);
 
-        if ($this->task->seminar_id != $this->seminar_id) {
+        if ($this->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -258,7 +259,7 @@ class DozentController extends LeeroyStudipController
         $this->handin = new Leeroy\Handin($handin_id);
         $this->task = new Leeroy\Tasks($this->handin->task_id);
 
-        if ($this->task->seminar_id != $this->seminar_id) {
+        if ($this->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -274,7 +275,7 @@ class DozentController extends LeeroyStudipController
         $handin = new Leeroy\Handin($handin_id);
         $task = new Leeroy\Tasks($handin->task_id);
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -295,7 +296,7 @@ class DozentController extends LeeroyStudipController
     {
         $this->task = new Leeroy\Tasks($id);
 
-        if ($this->task->seminar_id != $this->seminar_id) {
+        if ($this->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -307,7 +308,7 @@ class DozentController extends LeeroyStudipController
         foreach ($this->participants as $user) {
             $gruppen = $user->getGroups();
 
-            if ($user->status == 'autor' && !empty($gruppen)) {
+            if ($user->status === 'autor' && count($gruppen) > 0) {
 
                 $handins = $this->task->handins->findOneBy('user_id', $user->user_id);
                 if (!$handins) {  // create missing entries on the fly
@@ -328,7 +329,6 @@ class DozentController extends LeeroyStudipController
 
                     array_push($this->group[$gruppen_id], $user);
                 }
-
             }
         }
     }
@@ -338,7 +338,7 @@ class DozentController extends LeeroyStudipController
         $this->group_id = $group_id;
 
         $this->task = new Leeroy\Tasks($task_id);
-        if ($this->task->seminar_id != $this->seminar_id) {
+        if ($this->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -347,9 +347,6 @@ class DozentController extends LeeroyStudipController
         if (is_null($this->group_name)) {
             throw new AccessDeniedException(_('Die Gruppe wurde nicht gefunden!'));
         }
-
-        #var_dump($this->group_name);
-
 
         $this->handins = array();
 
@@ -361,8 +358,8 @@ class DozentController extends LeeroyStudipController
 
         }
 
-        if (!empty($this->handins)) {
-            usort($this->handins, array("Leeroy\Handin", "cmp"));
+        if (count($this->handins) > 0) {
+            usort($this->handins, array('Leeroy\Handin', 'cmp'));
         }
 
         #var_dump($this->handings);
@@ -371,7 +368,12 @@ class DozentController extends LeeroyStudipController
     function grading_save_action($task_id, $group_id)
     {
         $this->task = new Leeroy\Tasks($task_id);
-        if ($this->task->seminar_id != $this->seminar_id) {
+
+        if ($this->task->seminar_id !== $this->seminar_id) {
+            #print_r($this->task);
+            #echo "<br><br><br>";
+            #print_r($this->seminar_id);
+            #die();
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -383,61 +385,35 @@ class DozentController extends LeeroyStudipController
 
         foreach ($_POST as $id => $value) {
             $handin = new Leeroy\Handin($id);
-            if (is_numeric($value) && $handin->task->seminar_id == $this->seminar_id) {
+            if (($handin->task->seminar_id === $this->seminar_id) && is_numeric($value)) {
                 $handin->points = $value;
                 $handin->store();
             }
         }
 
-        $this->redirect('dozent/grading/' . $group_id . "/" . $task_id);
+        $this->redirect('dozent/grading/' . $group_id . '/' . $task_id);
     }
 
     function show_analytics_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-
-        $files = array();
-
-        if ($task->hasAnalyticResult()) {
-            $data = json_decode($task->analytic);
-
-            foreach ($data->warnings as $warning) {
-                if (is_null($files[$warning->fileName])) {
-                    $files[$warning->fileName] = array();
-                }
-                array_push($files[$warning->fileName], $warning);
-            }
-
-            foreach ($files as &$file) {
-                usort($file, array("IndexController", "analyticCmp"));
-            }
-
-            ksort($files);
-        }
-
-        $this->files = $files;
+        $this->files = $task->getAnalyticResult();
         $this->task = $task;
         $this->data = $task;
-
-
     }
 
     function show_test_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        if ($task->hasAnalyticResult()) {
-            $data = json_decode($task->test);
-        }
-
-        $this->suites = $data->suites;
+        $this->suites = $task->getTestResult();
         $this->task = $task;
         $this->data = $task;
 
@@ -447,7 +423,7 @@ class DozentController extends LeeroyStudipController
     function show_log_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
@@ -457,32 +433,32 @@ class DozentController extends LeeroyStudipController
         $this->task = $task;
     }
 
-    function download_action($flag = "gt", $group_id = null, $task_id = null)
+    function download_action($flag = 'gtaul', $group_id = false, $task_id = null)
     {
         $zip_file = HandinFiles::collecting($this->seminar_id, $flag, $group_id, $task_id);
 
-        if (file_exists($zip_file)) {
-            header("Content-Type: application/zip");
-            header("Content-Disposition: attachment; filename=abgaben.zip");
-            header("Content-Length: " . filesize($zip_file));
+        if (file_exists($zip_file) === true) {
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename=abgaben.zip');
+            header('Content-Length: ' . filesize($zip_file));
             ob_clean();
             flush();
             readfile($zip_file);
             exit;
         } else {
-            #print_r($zip_file);
-            #die();
+            print_r($zip_file);
+            die();
 
-            throw new Exception("Zip Datei konnte nicht erstellt werden");
+            throw new Exception('Zip Datei konnte nicht erstellt werden');
         }
     }
 
-    function csv_action($delimer = null)
+    function csv_action($delimer = 'en')
     {
-        if (is_string($delimer) && $delimer == "de") {
-            $delimer = ";";
+        if ($delimer === 'de') {
+            $delimer = ';';
         } else {
-            $delimer = ",";
+            $delimer = ',';
         }
 
         $participants = Leeroy_CourseMember::findByCourse($this->seminar_id);
@@ -490,19 +466,19 @@ class DozentController extends LeeroyStudipController
         $users = array();
 
         foreach ($participants as $participant) {
-            if ($participant->status == 'autor') {
+            if ($participant->status === 'autor') {
                 array_push($users, $participant);
             }
         }
 
-        usort($users, array("Leeroy_CourseMember", "cmp"));
+        usort($users, array('Leeroy_CourseMember', 'cmp'));
 
-        $tasks = Leeroy\Tasks::findBySQL("seminar_id = ? AND required = ?", array($this->seminar_id, true));
-        usort($tasks, array("Leeroy\Tasks", "cmp"));
+        $tasks = Leeroy\Tasks::findBySQL('seminar_id = ? AND required = ?', array($this->seminar_id, true));
+        usort($tasks, array('Leeroy\Tasks', 'cmp'));
 
         $aux = Leeroy\DataFields::getDataFields($this->seminar_id);
 
-        $header = array("Nachname", "Vorname");
+        $header = array('Nachname', 'Vorname');
         $content = array();
 
         foreach ($aux->getHeaders() as $name) {
@@ -513,7 +489,7 @@ class DozentController extends LeeroyStudipController
             array_push($header, $task->title);
         }
 
-        array_push($header, "Punkte");
+        array_push($header, 'Punkte');
         array_push($content, $header);
 
         foreach ($users as $user) {
@@ -552,7 +528,7 @@ class DozentController extends LeeroyStudipController
         $csv_file = tempnam(sys_get_temp_dir(), 'leeroy');
 
         if (!file_exists($csv_file)) {
-            throw new Exception("Konnte Tempfile nicht erstellen");
+            throw new Exception('Konnte Tempfile nicht erstellen');
         }
 
         $fp = fopen($csv_file, 'w');
@@ -565,7 +541,7 @@ class DozentController extends LeeroyStudipController
 
         header('Content-type: text/csv');
         header('Content-disposition: attachment;filename=auswertung.csv');
-        header("Content-Length: " . filesize($csv_file));
+        header('Content-Length: ' . filesize($csv_file));
         ob_clean();
         flush();
         readfile($csv_file);

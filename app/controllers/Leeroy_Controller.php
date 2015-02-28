@@ -130,11 +130,11 @@ class LeeroyStudipController extends StudipController
 
             if ($file['size']) {
 
-                if ($type == "answer") { # user uploads dürfen nur zip datein sein
-                    $fh = @fopen($file['tmp_name'], "r");
+                if ($type === 'answer') { # user uploads dürfen nur zip datein sein
+                    $fh = @fopen($file['tmp_name'], 'r');
 
                     if (!$fh) {
-                        throw AccessDeniedException("Datei kann nicht gelesen werden");
+                        throw AccessDeniedException(_('Datei kann nicht gelesen werden'));
                     }
 
                     $blob = fgets($fh, 5);
@@ -142,7 +142,7 @@ class LeeroyStudipController extends StudipController
                     fclose($fh);
 
                     if (!(strpos($blob, 'PK') !== false)) {
-                        throw AccessDeniedException("Nur ZIP Datein sind gestattet");
+                        throw AccessDeniedException(_('Nur ZIP Datein sind gestattet'));
                     }
                 }
 
@@ -151,7 +151,7 @@ class LeeroyStudipController extends StudipController
                 $document['dokument_id'] = $document_id;
                 $document['name'] = $document['filename'] = studip_utf8decode($file['name']);
                 $document['user_id'] = $GLOBALS['user']->id;
-                $document['author_name'] = "Leeroy " . $type;
+                $document['author_name'] = 'Leeroy ' . $type;
                 //$document['seminar_id'] = $document_id;
                 $document['seminar_id'] = $GLOBALS['user']->id; // use the user_id here, prevents showing
                 // the file under "all files" while preserving downloadibility

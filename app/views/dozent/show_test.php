@@ -22,12 +22,12 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Testergebnisse für " . $task->title))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Testergebnisse für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _("Testergebnisse für ") ?>  <?= htmlReady($task->title) ?> : </label>
+    <label> <?= _('Testergebnisse für') ?>  <?= htmlReady($task->title) ?> : </label>
 
-<? if (!empty($suites)) : ?>
+<? if (count($suites) > 0) : ?>
     <? foreach ($suites as $suite) : ?>
         <br>
         <table class="default zebra">
@@ -57,7 +57,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
         </table>
     <? endforeach ?>
 <? else : ?>
-    <? if ($data->test == "fail") : ?>
+    <? if ($data->test === 'fail') : ?>
         <?= MessageBox::error(_('Testausführung fehlgeschlagen.')); ?>
     <? endif ?>
     <? if (is_null($data->test)) : ?>

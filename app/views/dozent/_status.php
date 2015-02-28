@@ -38,13 +38,13 @@
             ?>
             <tr>
                 <td>
-                    <a href="<?= $controller->url_for("dozent/view_dozent/" . $handin->id) ?>">
+                    <a href="<?= $controller->url_for('dozent/view_dozent/' . $handin->id) ?>">
                         <?= htmlReady(get_fullname($user->user_id)) ?>
                     </a>
                 </td>
 
                 <td style="text-align: center">
-                    <a href="<?= $controller->url_for("dozent/grading/" . $group_id . "/" . $task->id) ?>">
+                    <a href="<?= $controller->url_for('dozent/grading/' . $group_id . '/' . $task->id) ?>">
                         <?= (!$handin || $handin->points === null) ? '-' : htmlReady($handin->points) ?>
                     </a>
                 </td>
@@ -56,7 +56,7 @@
                     )) ?>
                 </td>
                 <td>
-                    <?= $handin ? sizeof($handin->files->findBy('type', 'answer')) : 0 ?>
+                    <?= $handin ? count($handin->files->findBy('type', 'answer')) : 0 ?>
                     <?= Assets::img('icons/16/black/files.png', array(
                         'title' => _('Hochgeladene Dateien')
                     )) ?>
@@ -73,7 +73,7 @@
                         )) ?>
                     </td>
                     <td>
-                        <?= $handin ? sizeof($handin->files->findBy('type', 'feedback')) : 0 ?>
+                        <?= $handin ? count($handin->files->findBy('type', 'feedback')) : 0 ?>
                         <?= Assets::img('icons/16/black/files.png', array(
                             'title' => _('Hochgeladene Dateien')
                         )) ?>
@@ -86,7 +86,7 @@
                         )) : '-' ?>
                 </td>
                 <td style="text-align: center">
-                    <a href="<?= $controller->url_for("dozent/view_dozent/" . $handin->id) ?>">
+                    <a href="<?= $controller->url_for('dozent/view_dozent/' . $handin->id) ?>">
                         <?= Assets::img('icons/16/black/edit.png', array('title' => _('Diese Aufgabe für diesen Nutzer bearbeiten'))) ?>
                     </a>
                 </td>

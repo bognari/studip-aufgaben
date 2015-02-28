@@ -35,7 +35,7 @@
     </tr>
     </thead>
     <tbody <?= $edit ? 'id="uploaded_files"' : '' ?>>
-    <? if (!empty($files)) foreach ($files as $file) : ?>
+    <? if (count($files) > 0) foreach ($files as $file) : ?>
         <tr data-fileid="<?= $file->getId() ?>">
             <td>
                 <a href="<?= GetDownloadLink($file->document->getId(), $file->document->name) ?>" target="_blank">
@@ -47,7 +47,7 @@
 
             <? if ($edit) : ?>
                 <td>
-                    <? if ($GLOBALS['user']->id == $file->document->user_id || (Leeroy\Perm::has("new Task", $GLOBALS['user']) != false)) : ?>
+                    <? if ($GLOBALS['user']->id === $file->document->user_id || (Leeroy\Perm::has('new Task', $GLOBALS['user']) !== false)) : ?>
                         <a href="javascript:STUDIP.Leeroy.removeFile('<?= $seminar_id ?>', '<?= $file->getId() ?>')">
                             <?= Assets::img('icons/16/blue/trash.png') ?>
                         </a>

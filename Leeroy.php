@@ -13,7 +13,7 @@
  */
 
 // load legacy code for older Stud.IP-Versions
-if (version_compare($GLOBALS['SOFTWARE_VERSION'], "2.4", '<=')) {
+if (version_compare($GLOBALS['SOFTWARE_VERSION'], '2.4', '<=')) {
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/StudipArrayObject.php';
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleCollection.php';
     require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMapCollection.php';
@@ -65,7 +65,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
 
         $GLOBALS['Leeroy_path'] = $this->getPluginURL();
 
-        if (Navigation::hasItem("/course") && version_compare($GLOBALS['SOFTWARE_VERSION'], "2.3", '>=')) {
+        if (Navigation::hasItem('/course') && version_compare($GLOBALS['SOFTWARE_VERSION'], '2.3', '>=')) {
             $navigation = $this->getTabNavigation(Request::get('cid', $GLOBALS['SessSemName'][1]));
             Navigation::insertItem('/course/leeroy', $navigation['leeroy'], 'members');
         }
@@ -112,13 +112,13 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
             foreach ($tasks as $task) {
                 $tu = Leeroy\Handin::findBySQL('task_id = ? AND mkdate >= ?', array($task->id, $last_visit));
                 if (!empty($tu)) {
-                    $act_num += sizeof($tu);
+                    $act_num += count($tu);
                 }
             }
 
             if ($act_num > 0) {
                 $navigation->setImage('icons/16/red/assessment.png', array(
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten'), $act_num)
+                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es') . ' %s ' . _('neue Aktivitäten'), $act_num)
                 ));
             }
         } else {    // for students show the number of new, visible, tasks
@@ -128,7 +128,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
 
             if (sizeof($tasks) > 0) {
                 $navigation->setImage('icons/16/red/assessment.png', array(
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aufgaben.'), sizeof($tasks))
+                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es') . ' %s ' . _('neue Aufgaben.'), count($tasks))
                 ));
             }
         }
@@ -151,7 +151,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
         return array();
     }
 
-    const DEFAULT_CONTROLLER = "index";
+    const DEFAULT_CONTROLLER = 'index';
 
     /**
      * route the request to the controllers
@@ -160,7 +160,7 @@ class Leeroy extends StudIPPlugin implements StandardPlugin
      */
     function perform($unconsumed_path)
     {
-        $trails_root = $this->getPluginPath() . "/app";
+        $trails_root = $this->getPluginPath() . '/app';
         $dispatcher = new Trails_Dispatcher($trails_root,
                                             rtrim(PluginEngine::getURL($this, null, ''), '/'),
                                             self::DEFAULT_CONTROLLER);

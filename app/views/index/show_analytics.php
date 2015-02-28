@@ -20,16 +20,16 @@ $content = array(array(
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Analyseergebnisse für " . $task->title))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Analyseergebnisse für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _("Analyseergebnisse für ") ?>  <?= htmlReady($task->title) ?> : </label>
+    <label> <?= _('Analyseergebnisse für') ?>  <?= htmlReady($task->title) ?> : </label>
 
-<? if (!empty($files)) : ?>
+<? if (count($files) > 0) : ?>
     <? foreach ($files as $name => $file) : ?>
         <br>
         <br>
-        <label> <?= _("Datei: ") ?>  <?= htmlReady($name) ?> : </label>
+        <label> <?= _('Datei') . ':' ?>  <?= htmlReady($name) ?> : </label>
         <table class="default zebra">
             <thead>
             <tr>
@@ -53,7 +53,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
         </table>
     <? endforeach ?>
 <? else : ?>
-    <? if ($data->analytic == "fail") : ?>
+    <? if ($data->analytic === 'fail') : ?>
         <?= MessageBox::error(_('Analyse fehlgeschlagen.')); ?>
     <? else : ?>
         <? if (is_null($data->analytic)) : ?>

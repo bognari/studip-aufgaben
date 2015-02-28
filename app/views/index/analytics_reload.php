@@ -21,10 +21,10 @@ $content = array(array(
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Analyse für " . $handin->task->title))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Analyse für ' . $handin->task->title))) ?>
 
 
-<?= MessageBox::info(sprintf(_('Die Analyse wird durchgef?hrt, bitte haben Sie etwas geduld. %sJetzt neu laden %s oder %s10%s Sekunden warten'),
+<?= MessageBox::info(sprintf(_('Die Analyse wird durchgeführt, bitte haben Sie etwas geduld. %sJetzt neu laden %s oder %s10%s Sekunden warten'),
     '<a href="' . $controller->url_for('index/show_analytics_handin/' . $handin_id . '/true') . '">', '</a>', '<span id="spnSeconds">', '</span>')); ?>
 
 <script>

@@ -49,7 +49,7 @@ class StudentController extends LeeroyStudipController
 
         $this->task = new Leeroy\Tasks($id);
 
-        if ($this->task->startdate > time() || $this->task->seminar_id != $this->seminar_id) {
+        if ($this->task->startdate > time() || $this->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 

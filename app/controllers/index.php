@@ -80,7 +80,7 @@ class IndexController extends LeeroyStudipController
                 ORDER BY {$this->sort} {$this->order}, startdate DESC", array($this->seminar_id));
 
             // reorder all running tasks if necessary - the task with the shortest time frame shall be first
-            if (!empty($this->tasks) && $this->sort == 'enddate') {
+            if ($this->sort === 'enddate' && count($this->tasks) > 0) {
                 foreach ($this->tasks as $task) {
                     $reorder[$task->getStatus()][] = $task;
                 }
@@ -105,53 +105,34 @@ class IndexController extends LeeroyStudipController
     function show_analytics_action($handin_id, $wait = false)
     {
         $handin = new Leeroy\Handin($handin_id);
-        if ($handin->task->seminar_id != $this->seminar_id) {
+        if ($handin->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        if (!(Leeroy\Perm::has('new_task', $this->seminar_id) || $handin->user_id == $GLOBALS['user']->id)) {
+        if (!($handin->user_id === $GLOBALS['user']->id || Leeroy\Perm::has('new_task', $this->seminar_id))) {
             throw new AccessDeniedException(_('Kein Zugriff!'));
         }
 
-        $files = array();
-
-        if ($wait != false && is_object($handin->getFileAnswer())) {
-            $jobbuild = Leeroy\JobBuild::findBySQL("handin_file_id = ?", array($handin->getFileAnswer()->id));
+        if ($wait !== false && is_object($handin->getFileAnswer())) {
+            $jobbuild = Leeroy\JobBuild::findBySQL('handin_file_id = ?', array($handin->getFileAnswer()->id));
             if (is_null($handin->analytic) && is_null($handin->lastJob) && !empty($jobbuild)) {
                 $this->redirect('index/analytics_reload/' . $handin_id);
             }
         }
 
-        if ($handin->hasAnalyticResult()) {
-            $data = json_decode($handin->analytic);
-
-            foreach ($data->warnings as $warning) {
-                if (is_null($files[$warning->fileName])) {
-                    $files[$warning->fileName] = array();
-                }
-                array_push($files[$warning->fileName], $warning);
-            }
-
-            foreach ($files as &$file) {
-                usort($file, array("IndexController", "analyticCmp"));
-            }
-
-            ksort($files);
-        }
-
         $this->data = $handin;
-        $this->files = $files;
+        $this->files = $handin->getAnalyticResult();
         $this->task = $handin->task;
     }
 
     function show_test_action($handin_id, $wait = false)
     {
         $handin = new Leeroy\Handin($handin_id);
-        if ($handin->task->seminar_id != $this->seminar_id) {
+        if ($handin->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        if (!(Leeroy\Perm::has('new_task', $this->seminar_id) || $handin->user_id == $GLOBALS['user']->id)) {
+        if (!($handin->user_id === $GLOBALS['user']->id || Leeroy\Perm::has('new_task', $this->seminar_id))) {
             throw new AccessDeniedException(_('Kein Zugriff!'));
         }
 
@@ -162,18 +143,9 @@ class IndexController extends LeeroyStudipController
             }
         }*/
 
-        if ($handin->hasAnalyticResult()) {
-            $data = json_decode($handin->test);
-        }
-
         $this->data = $handin;
-        $this->suites = $data->suites;
+        $this->suites = $handin->getTestResult();
         $this->task = $handin->task;
-    }
-
-    public static function analyticCmp($a, $b)
-    {
-        return ($a->primaryLineNumber < $b->primaryLineNumber) ? -1 : 1;
     }
 
     function analytics_reload_action($handin_id)
@@ -184,11 +156,11 @@ class IndexController extends LeeroyStudipController
     function show_log_action($handin_id)
     {
         $handin = new Leeroy\Handin($handin_id);
-        if ($handin->task->seminar_id != $this->seminar_id) {
+        if ($handin->task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        if (!(Leeroy\Perm::has('new_task', $this->seminar_id) || $handin->user_id == $GLOBALS['user']->id)) {
+        if (!($handin->user_id === $GLOBALS['user']->id || Leeroy\Perm::has('new_task', $this->seminar_id))) {
             throw new AccessDeniedException(_('Kein Zugriff!'));
         }
 

@@ -103,22 +103,22 @@ class Tasks extends \Leeroy_SimpleORMap
 
     public function hasTaskLink()
     {
-        return strlen($this->task_link) > 0;
+        return $this->task_link !== '';
     }
 
     public function hasLinkResult()
     {
-        return is_string($this->link) && $this->link != "fail";
+        return is_string($this->link) && $this->link !== 'fail';
     }
 
     public function hasAnalyticResult()
     {
-        return is_string($this->analytic) && $this->analytic != "fail";
+        return is_string($this->analytic) && $this->analytic !== 'fail';
     }
 
     public function hasTestResult()
     {
-        return is_string($this->test) && $this->test != "fail";
+        return is_string($this->test) && $this->test !== 'fail';
     }
 
     public function hasMaterial()
@@ -133,13 +133,13 @@ class Tasks extends \Leeroy_SimpleORMap
 
     public function isRequired()
     {
-        return $this->required == 1;
+        return $this->required === '1';
     }
 
     public function hashUploadTrigger()
     {
         foreach ($this->jobs as $job) {
-            if ($job->trigger == "upload") {
+            if ($job->trigger === 'upload') {
                 return true;
             }
         }
@@ -176,5 +176,39 @@ class Tasks extends \Leeroy_SimpleORMap
     public static function cmp($a, $b)
     {
         return $a->enddate < $b->enddate ? -1 : 1;
+    }
+
+    public function getAnalyticResult()
+    {
+        $data = json_decode($this->analytic);
+        $files = array();
+
+        if ($this->hasAnalyticResult()) {
+            foreach ($data->warnings as $warning) {
+                if ($files[$warning->fileName] === null) {
+                    $files[$warning->fileName] = array();
+                }
+                array_push($files[$warning->fileName], $warning);
+            }
+
+            foreach ($files as &$file) {
+                usort($file, array('Leeroy\Job', 'analyticCmp'));
+            }
+
+            ksort($files);
+        }
+
+        return $files;
+    }
+
+    public function getTestResult()
+    {
+        if ($this->hasTestResult()) {
+            $data = json_decode($this->test);
+
+            return $data->suites;
+        }
+
+        return array();
     }
 }

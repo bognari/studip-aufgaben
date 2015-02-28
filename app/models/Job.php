@@ -45,27 +45,24 @@ class Job extends \Leeroy_SimpleORMap
 
     public function isValid()
     {
-        if ($this->task->jenkins->use_jenkins != "1") {
+        if ($this->task->jenkins->use_jenkins !== true) {
             return true;
         }
 
-        $url = $this->task->jenkins->getApi() . "/job/" . $this->name . '/api/json';
+        $url = $this->task->jenkins->getApi() . '/job/' . $this->name . '/api/json';
 
         @file_get_contents($url);
 
-        if ($http_response_header[0] == "HTTP/1.1 200 OK") {
-            return true;
-        }
-        return false;
+        return strpos($http_response_header[0], '200 OK') !== false;
     }
 
     public function execute($path_user, $callback_url, $handin_file_id = null)
     {
         if (!$this->isValid()) {
-            throw new \Exception("Keine Verbindung zum Jenkins oder Job falsch konfiguriert");
+            throw new \BadMethodCallException(_('Keine Verbindung zum Jenkins oder Job falsch konfiguriert'));
         }
 
-        $callback_url = str_replace(" ", "%20", $callback_url);
+        $callback_url = str_replace(' ', '%20', $callback_url);
 
         /**
          * curl -vX POST http://localhost:8080/job/test42/build
@@ -80,26 +77,26 @@ class Job extends \Leeroy_SimpleORMap
         $path_config = get_upload_file_path($this->file->id);
 
         $jobBuildData = array(
-            "token" => md5(uniqid("jakob", true)),
-            "job_id" => $this->id,
-            "handin_file_id" => $handin_file_id
+            'token' => md5(uniqid('aylüh', true)),
+            'job_id' => $this->id,
+            'handin_file_id' => $handin_file_id
         );
 
         $jobBuild = JobBuild::create($jobBuildData);
 
         $data = array(
-            'file0' => "@" . realpath($path_user),
-            'file1' => "@" . realpath($path_config),
+            'file0' => '@' . realpath($path_user),
+            'file1' => '@' . realpath($path_config),
             'json' => json_encode(array('parameter' => array(
-                array("name" => "user.zip", "file" => 'file0'),
-                array("name" => "config.zip", "file" => 'file1'),
-                array("name" => "id", "value" => $this->id),
-                array("name" => "token", "value" => $jobBuild->token),
-                array("name" => "url", "value" => $callback_url . "/callback.php")
+                array('name' => 'user.zip', 'file' => 'file0'),
+                array('name' => 'config.zip', 'file' => 'file1'),
+                array('name' => 'id', 'value' => $this->id),
+                array('name' => 'token', 'value' => $jobBuild->token),
+                array('name' => 'url', 'value' => $callback_url . '/callback.php')
             )))
         );
 
-        $url = $this->task->jenkins->getApi() . "/job/" . $this->name . "/build";
+        $url = $this->task->jenkins->getApi() . '/job/' . $this->name . '/build';
 
         $ch = curl_init($url);
 
@@ -109,7 +106,7 @@ class Job extends \Leeroy_SimpleORMap
 
         $server_output = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new RuntimeException(sprintf('Error trying to launch job "%s"'), $this->name);
+            throw new RuntimeException(sprintf(_('Error trying to launch job') . ' "%s"'), $this->name);
         }
 
         #print_r($server_output);
@@ -119,34 +116,61 @@ class Job extends \Leeroy_SimpleORMap
     {
         # http://build.bognari.me/job/java_upload/9/analysisResult/api/json?pretty=true&depth=1
 
-        $c = @file_get_contents($this->task->jenkins->getApi() . "/job/" . $this->name . "/" . $buildnumber . "/analysisResult/api/json?pretty=true&depth=1");
+        $c = @file_get_contents($this->task->jenkins->getApi() . '/job/' . $this->name . '/' . $buildnumber . '/analysisResult/api/json?pretty=true&depth=1');
 
-        if (is_string($c)) {
-            $c = preg_replace('/\\"fileName\":\"\/(.*)\/' . $this->name . '\//U ', '"fileName":"', $c);
+        if (is_string($c)) {#preg_match("/\\" : \\".*java_cs.*\//U", $input_line, $output_array);
+            #/var/lib/jenkins/workspace/java_cs@2/src/Kampf1.java
+            $c = preg_replace('/\"[^\"]*' . $this->name . '[^\"]*\//U', '"', $c);
+
+            $json = json_decode($c);
+
+            $data = array(
+                'numberOfWarnings' => $json->numberOfWarnings,
+                'warnings' => $json->warnings
+            );
+
+            $c = json_encode($data);
         }
+
         return $c;
     }
 
     public function getTestResult($buildnumber)
     {
         # http://build.bognari.me/job/java_upload/9/testReport/api/json?pretty=true&depth=1
-        return @file_get_contents($this->task->jenkins->getApi() . "/job/" . $this->name . "/" . $buildnumber . "/testReport/api/json?pretty=true&depth=1");
+
+        $c = @file_get_contents($this->task->jenkins->getApi() . '/job/' . $this->name . '/' . $buildnumber . '/testReport/api/json?pretty=true&depth=1');
+
+        if (is_string($c)) {
+            $c = preg_replace('/\"[^\"]*' . $this->name . '[^\"]*\//U', '"', $c);
+
+            $json = json_decode($c);
+
+            $data = array(
+                'failCount' => $json->failCount,
+                'suites' => $json->suites
+            );
+
+            $c = json_encode($data);
+        }
+        return $c;
     }
 
     public function isSuccessfull($buildnumber)
     {
-        $c = @file_get_contents($this->task->jenkins->getApi() . "/job/" . $this->name . "/" . $buildnumber . "/api/json?depth=1");
+        $c = @file_get_contents($this->task->jenkins->getApi() . '/job/' . $this->name . '/' . $buildnumber . '/api/json?depth=1');
 
-        if (is_null($c)) {
+        if ($c === null) {
             return false;
         }
 
         $data = json_decode($c);
 
-        if ($data->result == "FAILURE") {
-            return false;
-        }
+        return $data->result !== 'FAILURE';
+    }
 
-        return true;
+    public static function analyticCmp($a, $b)
+    {
+        return ($a->primaryLineNumber < $b->primaryLineNumber) ? -1 : 1;
     }
 }

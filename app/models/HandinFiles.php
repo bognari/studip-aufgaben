@@ -43,7 +43,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
-    public static function collecting($seminar_id, $flag = "", $group_id = false, $task_id = null)
+    public static function collecting($seminar_id, $flag = 'atl', $group_id = false, $task_id = null)
     {
 
         $tempfile = tempnam(sys_get_temp_dir(), 'leeroy');
@@ -54,17 +54,17 @@ class HandinFiles extends \Leeroy_SimpleORMap
         @mkdir($tempfile);
 
         if (!is_dir($tempfile)) {
-            throw new \Exception("Konnte Tempordner nicht erstellen");
+            throw new \ErrorException(_('Konnte Tempordner nicht erstellen'));
         }
 
         $groups = \Leeroy_CourseMember::getGroupsForCourse($seminar_id);
 
 
-        if ($group_id != false && is_null($groups['names'][$group_id])) {
+        if ($group_id !== false && is_null($groups['names'][$group_id])) {
             throw new \AccessDeniedException(_('Gruppe nicht gefunden!'));
         }
 
-        if ($group_id != false) {
+        if ($group_id !== false) {
             $groups['names'] = array($group_id => $groups['names'][$group_id]);
             $groups['members'] = array($group_id => $groups['members'][$group_id]);
         }
@@ -72,66 +72,100 @@ class HandinFiles extends \Leeroy_SimpleORMap
         #print_r($groups);
 
         if (is_null($task_id)) {
-            $tasks = Tasks::findBySQL("seminar_id = ?", array($seminar_id));
+            $tasks = Tasks::findBySQL('seminar_id = ?', array($seminar_id));
         } else {
-            $tasks = Tasks::findBySQL("seminar_id = ? AND id = ?", array($seminar_id, $task_id));
+            $tasks = Tasks::findBySQL('seminar_id = ? AND id = ?', array($seminar_id, $task_id));
         }
 
-        if (empty($tasks)) {
+        if (count($tasks) === 0) {
             throw new \AccessDeniedException(_('Aufgabe nicht gefunden!'));
         }
 
         # gruppen ordner erstellen
-        foreach ($groups["names"] as $group_id => $group_name) {
-            if (strpos($flag, "g") === false) {
+        foreach ($groups['names'] as $group_id => $group_name) {
+            if (strpos($flag, 'g') === false) {
                 $group_dir = $tempfile;
             } else {
-                $group_dir = $tempfile . "/" . $group_name;
+                $group_dir = $tempfile . '/' . $group_name;
                 @mkdir($group_dir);
             }
 
             # benutzer durch gehen
             #print_r($groups["members"][$group_id]);
 
-            foreach ($groups["members"][$group_id] as $user) {
+            foreach ($groups['members'][$group_id] as $user) {
 
                 # aufgaben durch gehen
                 foreach ($tasks as $task) {
-                    if (strpos($flag, "t") === false) {
+                    if (strpos($flag, 't') === false) {
                         $task_dir = $group_dir;
                     } else {
-                        $task_dir = $group_dir . "/" . $task->title;
+                        $task_dir = $group_dir . '/' . $task->title;
                         @mkdir($task_dir);
                     }
 
-                    $handin = $task->handins->findOneBy("user_id", $user->user_id);
+                    $handin = $task->handins->findOneBy('user_id', $user->user_id);
 
                     if (is_object($handin) && is_object($handin->getFileAnswer())) {
-                        $path = $task_dir . "/" . preg_replace('/[^A-Za-z0-9_\-]/', '_', get_fullname($user->user_id));
+                        $path = $task_dir . '/' . preg_replace('/[^A-Za-z0-9_\-]/', '_', get_fullname($user->user_id));
                         @mkdir($path);
 
                         $file = $handin->getFileAnswer()->document->id;
                         $zip_file = get_upload_file_path($file);
 
+                        $path_src = $path;
+
+                        if (strpos($flag, 'a') !== false || strpos($flag, 'u') !== false || strpos($flag, 'l') !== false) {
+                            $path_src .= '/data';
+                            @mkdir($path_src);
+                        }
+
                         $zip = new \ZipArchive;
                         if ($zip->open($zip_file) === TRUE) {
-                            $zip->extractTo($path . "/");
+
+                            $zip->extractTo($path_src . '/');
                             $zip->close();
                             #echo 'ok';
                         } else {
                             #echo 'failed';
                         }
 
-                        if ($handin->hasAnalyticResult()) {
-                            file_put_contents($path . "/analytic.txt", $handin->analytic);
+                        if (strpos($flag, 'a') !== false && $handin->hasAnalyticResult()) {
+
+                            $content = '';
+
+                            foreach ($handin->getAnalyticResult() as $name => $file) {
+                                $content .= sprintf('%s', $name);
+                                $content .= "\n";
+
+                                foreach ($file as $warning) {
+                                    $content .= sprintf('%4s | %s', $warning->primaryLineNumber, $warning->message);
+                                    $content .= "\n";
+                                }
+                                $content .= "\n\n\n";
+                            }
+
+                            file_put_contents($path . '/analytic.txt', $content);
                         }
 
-                        if ($handin->hasTestResult()) {
-                            file_put_contents($path . "/test.txt", $handin->test);
+                        if (strpos($flag, 'u') !== false && $handin->hasTestResult()) {
+
+                            $content = '';
+
+                            foreach ($handin->getTestResult() as $suide) {
+
+                                foreach ($suide->cases as $case) {
+                                    $content .= sprintf('%25s |  %10s | %s', $case->name, $case->status, $case->errorDetails);
+                                    $content .= "\n";
+                                }
+                                $content .= "\n\n\n";
+                            }
+
+                            file_put_contents($path . '/test.txt', $content);
                         }
 
-                        if ($handin->hasLog()) {
-                            file_put_contents($path . "/log.txt", $handin->log);
+                        if (strpos($flag, 'l') !== false && $handin->hasLog()) {
+                            file_put_contents($path . '/log.txt', $handin->log);
                         }
                     }
                 }
@@ -139,18 +173,18 @@ class HandinFiles extends \Leeroy_SimpleORMap
         }
 
 
-        $file_name = $tempfile . "/abgaben.zip";
-
-        if (HandinFiles::zipFile($tempfile, $file_name, $flag = '') === false) {
+        $file_name = $tempfile . '/abgaben.zip';
+        $bla = HandinFiles::zipFile($tempfile, $file_name);
+        if (HandinFiles::zipFile($tempfile, $file_name) === false) {
             #print_r($file_name);
             #die();
-            throw new \Exception("Zip Datei konnte nicht erstellt werden");
+            throw new \ErrorException(_('Zip Datei konnte nicht erstellt werden'));
         }
 
         return $file_name;
     }
 
-    function zipFile($source, $destination, $flag = '')
+    function zipFile($source, $destination)
     {
         if (!extension_loaded('zip') || !file_exists($source)) {
             return false;
@@ -162,30 +196,24 @@ class HandinFiles extends \Leeroy_SimpleORMap
         }
 
         $source = str_replace('\\', '/', realpath($source));
-        if ($flag) {
-            $flag = basename($source) . '/';
-        }
 
-        if (is_dir($source) === true) {
-            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source), \RecursiveIteratorIterator::SELF_FIRST);
+        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source), \RecursiveIteratorIterator::SELF_FIRST);
 
-            foreach ($files as $file) {
+        $zip->addEmptyDir('.');
 
-                $file = str_replace('\\', '/', realpath($file));
+        foreach ($files as $file) {
 
-                if (strpos($flag . $file, $source) !== false) { // this will add only the folder we want to add in zip
+            $file = str_replace('\\', '/', realpath($file));
 
-                    if (is_dir($file) === true) {
-                        $zip->addEmptyDir(str_replace($source . '/', '', $flag . $file . '/'));
-
-                    } else if (is_file($file) === true) {
-                        $zip->addFromString(str_replace($source . '/', '', $flag . $file), file_get_contents($file));
-                    }
+            if ($file !== $destination && strpos($file, $source) !== false) { // this will add only the folder we want to add in zip
+                if (is_dir($file) === true) {
+                    $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+                } elseif (is_file($file) === true) {
+                    $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
                 }
             }
-        } else if (is_file($source) === true) {
-            $zip->addFromString($flag . basename($source), file_get_contents($source));
         }
+
 
         return $zip->close();
     }

@@ -50,18 +50,18 @@ class Perm
         }
 
         // check the status and the passed permission
-        if (($status == 'dozent' || $status == 'tutor') && in_array($perm,
-                words('new_task')
+        if (($status === 'dozent' || $status === 'tutor') && in_array($perm,
+                words('new_task'), true
             ) !== false
         ) {
             return true;
-        } else if (($status == 'dozent' || $status == 'tutor') && in_array($perm,
-                words('config')
+        } elseif (($status === 'dozent' || $status === 'tutor') && in_array($perm,
+                words('config'), true
             ) !== false
         ) {
             return true;
-        } else if (($status == 'autor' || $status == 'user') && in_array($perm,
-                words('')) !== false
+        } elseif (($status === 'autor' || $status === 'user') && in_array($perm,
+                words(''), true) !== false
         ) {
             return true;
         }
@@ -78,17 +78,13 @@ class Perm
      *
      * @param string $perm for the list of possible perms and their function see @ForumPerm::hasPerm()
      * @param string $seminar_id the seminar to check for
-     * @param string $topic_id if passed, this topic_id is checked if it belongs to the passed seminar
      *
      * @throws AccessDeniedException
      */
     static function check($perm, $seminar_id)
     {
         if (!self::has($perm, $seminar_id)) {
-            throw new AccessDeniedException(sprintf(
-                    _("Sie haben keine Berechtigung für diese Aktion! Benötigte Berechtigung: %s"),
-                    $perm)
-            );
+            throw new AccessDeniedException(sprintf(_('Sie haben keine Berechtigung für diese Aktion! Benötigte Berechtigung') . ': %s'), $perm);
         }
     }
 }

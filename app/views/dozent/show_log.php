@@ -22,14 +22,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Compilerfehler für " . $task->title))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Compilerfehler für ' . $task->title))) ?>
 
     <br>
-    <label> <?= _("Compilerfehler für ") ?>  <?= htmlReady($task->title) ?> : </label>
+    <label> <?= _('Compilerfehler für') ?>  <?= htmlReady($task->title) ?> : </label>
 
 <? if (is_string($data->log)) : ?>
     <div style="font-family:monospace">
-        <?= nl2br(str_replace(" ", "&nbsp;", str_replace("\t", "      ", htmlentities($data->log)))) ?>
+        <?= nl2br(str_replace(' ', '&nbsp;', str_replace('\t', '      ', htmlentities($data->log)))) ?>
     </div>
 <? else : ?>
     <?= MessageBox::info(_('Keine Compilerfehler gefunden.')); ?>

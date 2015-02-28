@@ -54,7 +54,7 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
         $entry_dowload = array(
             array(
                 'icon' => 'icons/16/black/file-archive.png',
-                'text' => '<a href="' . $controller->url_for("dozent/download") . '">' . _("Alle Gruppen") . '</a>'
+                'text' => '<a href="' . $controller->url_for('dozent/download') . '">' . _('Alle Gruppen') . '</a>'
             ));
 
         $groups = Leeroy_CourseMember::getGroupsForCourse($seminar_id);
@@ -63,7 +63,7 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
         foreach ($group_names as $group_id => $group_name) {
             array_push($entry_dowload, array(
                 'icon' => 'icons/16/black/file-archive.png',
-                'text' => '<a href="' . $controller->url_for("dozent/download/t/" . $group_id) . '">' .
+                'text' => '<a href="' . $controller->url_for('dozent/download/taul/' . $group_id) . '">' .
                     $group_name . '</a>'
             ));
         }
@@ -131,7 +131,7 @@ array_push($infobox_content, array(
         array(
             'icon' => 'icons/16/black/log.png',
             'text' => 'Externe Analyse vorhanden'
-        ),
+        )
     )
 ));
 
@@ -139,8 +139,6 @@ array_push($infobox_content, array(
 
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_content);
 ?>
-
-
 
 <? if (is_null($jenkins)) : ?>
     <? if (Leeroy\Perm::has('config', $seminar_id)) : ?>
@@ -151,7 +149,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <? endif ?>
     <br><br><br><br><br><br><br>
 <? elseif (is_bool($aux) && !$aux) : ?>
-    <?= MessageBox::error(_('Bitte f?llen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
+    <?= MessageBox::error(_('Bitte füllen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
 
     <table class="default zebra">
         <thead>
@@ -182,7 +180,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                 </td>
 
                 <td>
-                    <?= preg_match('/^' . $aux_regex->$field . '$/', $value) ? _("akzeptiert") : _("NICHT akzeptiert") ?>
+                    <?= preg_match('/^' . $aux_regex->$field . '$/', $value) ? _('akzeptiert') : _('NICHT akzeptiert') ?>
                 </td>
             </tr>
         <? endforeach ?>
@@ -191,9 +189,9 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     </table>
 
 <? else : ?>
-    <? if (empty($tasks)) : ?>
+    <? if (count($tasks) === 0) : ?>
         <? if (Leeroy\Perm::has('new_task', $seminar_id)) : ?>
-            <?= MessageBox::info(sprintf(_('Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s'),
+            <?= MessageBox::info(sprintf(_('Sie haben noch keine Aufgaben angelegt') . '%s' . _('Neue Aufgabe anlegen.') . '%s',
                 '<a href="' . $controller->url_for('dozent/new_task') . '">', '</a>')); ?>
         <? else : ?>
             <?= MessageBox::info(_('Es sind noch keine Aufgaben sichtbar/vorhanden')) ?>
@@ -201,7 +199,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <br><br><br><br><br><br><br>
     <? else : ?>
         <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview'))) ?>
-        <h2>Aufgaben</h2>
+        <h2><?= _('Aufgaben') ?></h2>
         <? if (Leeroy\Perm::has('new_task', $seminar_id)) : ?>
             <?= $this->render_partial('dozent/_index_dozent'); ?>
             <?= Studip\LinkButton::create(_('Neue Aufgabe anlegen'), $controller->url_for('dozent/new_task')) ?>
@@ -210,4 +208,3 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <? endif; ?>
     <? endif ?>
 <? endif ?>
-

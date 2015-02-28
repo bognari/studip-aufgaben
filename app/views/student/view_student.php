@@ -23,7 +23,7 @@ if ($task->hasTaskLink()) {
         'eintrag' => array(
             array(
                 'icon' => 'icons/16/black/link-extern.png',
-                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>'),
+                'text' => sprintf('%s' . _('Link') . '%s', '<a target="_blank" href="' . $task->task_link . '">', '</a>')
             )
         ));
 
@@ -36,7 +36,7 @@ if ($task->hasMaterial()) {
     foreach ($task->files as $file) {
         array_push($entry_material, array(
             'icon' => 'icons/16/black/staple.png',
-            'text' => sprintf('%s' . $file->document->name . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>'),
+            'text' => sprintf('%s' . $file->document->name . '%s', '<a target="_blank" href="' . GetDownloadLink($file->document->getId(), $file->document->name) . '">', '</a>')
         ));
     }
 
@@ -49,12 +49,12 @@ if ($task->hasMaterial()) {
 }
 
 # TODO andere links setzen !
-if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResult() || $handin->hasTestResult()) {
+if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResult() || $handin->hasTestResult() || $handin->hasLog()) {
     $entry_result = array();
     if ($handin->hasPoints()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/doctoral_cap.png',
-            'text' => sprintf(_('Erreichte Punkte:') . ' %s', $handin->points),
+            'text' => sprintf(_('Erreichte Punkte:') . ' %s', $handin->points)
         ));
     }
 
@@ -95,7 +95,7 @@ if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResu
 }
 
 
-if (empty($content)) {
+if (count($content) === 0) {
     $content = array(array(
         'kategorie' => _('Aktionen'),
         'eintrag' => array()));
@@ -163,7 +163,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
     <br>
     <? $files = $handin->files->findBy('type', 'feedback') ?>
-    <? if (sizeof($files)) : ?>
+    <? if (count($files)) : ?>
         <?= $this->render_partial('index/_file_list', compact('files')) ?>
     <? endif ?>
 </div>

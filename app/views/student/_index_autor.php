@@ -18,26 +18,26 @@
 <table class="default zebra tablesorter" id="leeroy_tasks">
     <thead>
     <tr class="sortable">
-        <th <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?> style="width: auto">
-            <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'title' ? 'class="sort' . $order . '"' : '' ?> style="width: auto">
+            <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Aufgabe') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'startdate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
-            <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'startdate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
+            <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Start') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
-            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
+            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Ende') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 80px;">
-            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 80px;">
+            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Status') ?>
             </a>
         </th>
@@ -59,10 +59,10 @@
         <?
         if ($handin->task_id != $task->id) {
             $data = array(
-                "task_id" => $task->id,
-                "user_id" => $GLOBALS['user']->id,
-                "chdate" => time(),
-                "mkdate" => time(),
+                'task_id' => $task->id,
+                'user_id' => $GLOBALS['user']->id,
+                'chdate' => time(),
+                'mkdate' => time()
             );
             $handin = Leeroy\Handin::create($data);
         }
@@ -76,6 +76,7 @@
                 <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => _('Pflichtaufgabe'), 'title' => _('Pflichtaufgabe'))) : '' ?>
                 <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => _('Materialien'), 'title' => _('Materialien'))) : '' ?>
                 <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => _('externer Link'), 'title' => _('externer Link'))) : '' ?>
+                <?= $task->hasJobs() ? Assets::img('icons/16/blue/code.png', array('alt' => _('automatische Analysen'), 'title' => _('automatische Analysen'))) : '' ?>
 
                 <?= $handin->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : '' ?>
                 <?= $handin->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : '' ?>

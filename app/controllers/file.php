@@ -51,9 +51,9 @@ class FileController extends LeeroyStudipController
         }
 
         // only delete file, if it belongs to the current user
-        if ($file->document->user_id == $GLOBALS['user']->id) {
+        if ($file->document->user_id === $GLOBALS['user']->id) {
 
-            if ($file->type == "answer") {
+            if ($file->type === 'answer') {
                 $file->handin->analytic = null;
                 $file->handin->test = null;
                 $file->handin->link = null;
@@ -68,7 +68,7 @@ class FileController extends LeeroyStudipController
             throw new AccessDeniedException(_('Diese Datei gehört nicht Ihnen!'));
         }
 
-        $this->render_nothing(array("status" => "success"));
+        $this->render_nothing(array('status' => 'success'));
     }
 
     function handin_file_add_action($handin_id)
@@ -80,22 +80,22 @@ class FileController extends LeeroyStudipController
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         // user adds file(s) to its solution of the task
-        if ($handin->user_id == $GLOBALS['user']->id && $GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)) {
+        if ($handin->user_id === $GLOBALS['user']->id && $GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)) {
             $type = 'answer';
-        } else if ($GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {    // dozent adds feedback for the user
+        } elseif ($GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {    // dozent adds feedback for the user
             $type = 'feedback';
         } else { // not author/tutor nor dozent, so access is denied
             throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe'));
         }
 
-        if (!Request::isPost() || !$GLOBALS['perm']->have_studip_perm("autor", $this->seminar_id)
+        if (!Request::isPost() || !$GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)
         ) {
-            throw new AccessDeniedException("Kein Zugriff");
+            throw new AccessDeniedException('Kein Zugriff');
         }
 
         $files = $this->save_files($type);
@@ -112,10 +112,8 @@ class FileController extends LeeroyStudipController
 
             if (!is_null($file)) {
 
-                if ($type == "answer") { # nur eine abgabe ist erlaubt
-                    if ($handin->getFileAnswer()->handin->id == $handin_id) {
-                        throw new AccessDeniedException(_('Nur eine Abgabe ist erlaubt'));
-                    }
+                if ($type === 'answer' && $handin->getFileAnswer()->handin->id === $handin_id) { # nur eine abgabe ist erlaubt
+                    throw new AccessDeniedException(_('Nur eine Abgabe ist erlaubt'));
                 }
 
                 $data = array(
@@ -126,7 +124,7 @@ class FileController extends LeeroyStudipController
 
                 $handin_file = Leeroy\HandinFiles::create($data);
 
-                if ($handin_file->type == "answer") {
+                if ($handin_file->type === 'answer') {
 
                     $handin->analytic = null;
                     $handin->test = null;
@@ -136,7 +134,7 @@ class FileController extends LeeroyStudipController
                     $handin->store();
 
                     foreach ($task->jobs as $job) { # trigger
-                        if ($job->trigger == "upload") {
+                        if ($job->trigger === 'upload') {
                             $job->execute(get_upload_file_path($file->getId()), $this->getPluginURL(), $handin_file->id);
                         }
                     }
@@ -161,7 +159,7 @@ class FileController extends LeeroyStudipController
         Leeroy\Perm::check('new_task', $this->seminar_id);
 
         $file = new Leeroy\TaskFiles($file_id);
-        if ($file->task->seminar_id == $this->seminar_id) {
+        if ($file->task->seminar_id === $this->seminar_id) {
             $file = new Leeroy\TaskFiles($file_id);
             $document = new Leeroy_StudipDocument($file_id);
 
@@ -172,7 +170,7 @@ class FileController extends LeeroyStudipController
             throw new AccessDeniedException(_('Die Datei wurde nicht gefunden!'));
         }
 
-        $this->render_json(array("status" => "success"));
+        $this->render_json(array('status' => 'success'));
     }
 
     function task_file_add_action($task_id)
@@ -181,11 +179,11 @@ class FileController extends LeeroyStudipController
 
         $task = new Leeroy\Tasks($task_id);
 
-        if ($task->seminar_id != $this->seminar_id) {
+        if ($task->seminar_id !== $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        $files = $this->save_files("Material");
+        $files = $this->save_files('Material');
 
         $output = array();
 

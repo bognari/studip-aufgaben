@@ -18,26 +18,26 @@
 <table class="default zebra tablesorter">
     <thead>
     <tr class="sortable">
-        <th style="width: 60%" <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?>>
-            <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th style="width: 60%" <?= $sort === 'title' ? 'class="sort' . $order . '"' : '' ?>>
+            <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Aufgabe') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'startdate' ? 'class="sort' . $order . '"' : '' ?>>
-            <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'startdate' ? 'class="sort' . $order . '"' : '' ?>>
+            <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Start') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
-            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
+            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Ende') ?>
             </a>
         </th>
 
-        <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
-            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
+            <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Status') ?>
             </a>
         </th>

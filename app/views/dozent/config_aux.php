@@ -38,7 +38,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <?= MessageBox::info(_('Es sind keine Zusatzdaten für diese Veranstaltung vorhanden.')); ?>
 <? endif ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', "Zusatzdaten"))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Zusatzdaten'))) ?>
 
 <h2><?= _('Zusatzdaten bearbeiten') ?></h2>
 
@@ -50,7 +50,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <? foreach ($headers as $id => $name) : ?>
             <span class="label"><?= _($name . ':') ?></span>
             <input type="text" name="<?= _($id) ?>" required
-                   value="<?= strlen($regex->$id) < 1 ? htmlReady("(.*)") : htmlReady($regex->$id) ?>" size="40"><br>
+                   value="<?= strlen($regex->$id) < 1 ? htmlReady('(.*)') : htmlReady($regex->$id) ?>" size="40"><br>
             <br>
         <? endforeach ?>
 
