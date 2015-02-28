@@ -33,7 +33,7 @@ require_once $this->trails_root . '/models/DataFields.php';
 
 class DozentController extends LeeroyStudipController
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
@@ -47,7 +47,7 @@ class DozentController extends LeeroyStudipController
         Leeroy\Perm::check('new_task', $this->seminar_id);
     }
 
-    function new_task_action()
+    public function new_task_action()
     {
         $this->jenkins = Leeroy\Jenkins::find($this->seminar_id);
         $this->connected = $this->jenkins->isConnected();
@@ -55,7 +55,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/add_task');
     }
 
-    function config_jenkins_action()
+    public function config_jenkins_action()
     {
         Leeroy\Perm::check('config', $this->seminar_id);
 
@@ -65,7 +65,7 @@ class DozentController extends LeeroyStudipController
         }
     }
 
-    function config_jenkins_save_action()
+    public function config_jenkins_save_action()
     {
         Leeroy\Perm::check('config', $this->seminar_id);
 
@@ -94,7 +94,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/config_jenkins');
     }
 
-    function config_aux_action()
+    public function config_aux_action()
     {
         Leeroy\Perm::check('config', $this->seminar_id);
 
@@ -103,7 +103,7 @@ class DozentController extends LeeroyStudipController
         $this->regex = json_decode($this->jenkins->aux);
     }
 
-    function config_aux_save_action()
+    public function config_aux_save_action()
     {
         Leeroy\Perm::check('config', $this->seminar_id);
 
@@ -129,7 +129,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/config_aux');
     }
 
-    function add_task_action()
+    public function add_task_action()
     {
         $data = array(
             'seminar_id' => $this->seminar_id,
@@ -143,7 +143,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/edit_task/' . $task->id);
     }
 
-    function update_task_action($task_id)
+    public function update_task_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
 
@@ -177,7 +177,6 @@ class DozentController extends LeeroyStudipController
             $job->delete();
         }
 
-        $j = 1;
         $files = $this->save_files('Job');
 
         foreach (explode(' ', Request::get('max_jobs')) as $i) {
@@ -186,7 +185,7 @@ class DozentController extends LeeroyStudipController
                 $trigger = Request::get('job_trigger' . $i);
                 $use_file = Request::get('job_use_config_file' . $i);
 
-                $file = $files[$j]->dokument_id;
+                $file = $files[$i + 1]->dokument_id;
 
                 $job_data = array(
                     'name' => Request::get('job_name' . $i),
@@ -195,16 +194,19 @@ class DozentController extends LeeroyStudipController
                     'task_id' => $task->id
                 );
 
-                if ($use_file !== null) {
+                if ($use_file === '1') {
                     if ($file !== null) {
                         $job_data['dokument_id'] = $file;
-                    } elseif ($id !== 'new' && $config_files[$id] !== null) {
+                    } elseif ($id !== 'new' && array_key_exists($id, $config_files)) {
                         $job_data['dokument_id'] = $config_files[$id];
                         unset($config_files[$id]);
                     }
                 }
 
+                var_export($job_data);
+
                 $job = Job::create($job_data);
+
 
                 if ($trigger === 'end' || $trigger === 'end_all') {
                     $trigger_data = array(
@@ -214,8 +216,6 @@ class DozentController extends LeeroyStudipController
 
                     $trigger = TimeTrigger::create($trigger_data);
                 }
-
-                $j++;
             }
         }
 
@@ -230,7 +230,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/edit_task/' . $task->id);
     }
 
-    function delete_task_action($id)
+    public function delete_task_action($id)
     {
         $task = new Leeroy\Tasks($id);
 
@@ -242,7 +242,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('index/index');
     }
 
-    function edit_task_action($id)
+    public function edit_task_action($id)
     {
         $this->task = new Leeroy\Tasks($id);
 
@@ -254,7 +254,7 @@ class DozentController extends LeeroyStudipController
         $this->connected = $this->jenkins->isConnected();
     }
 
-    function view_dozent_action($handin_id, $edit_field = null)
+    public function view_dozent_action($handin_id, $edit_field = null)
     {
         $this->handin = new Leeroy\Handin($handin_id);
         $this->task = new Leeroy\Tasks($this->handin->task_id);
@@ -270,7 +270,7 @@ class DozentController extends LeeroyStudipController
 
     }
 
-    function update_dozent_action($handin_id)
+    public function update_dozent_action($handin_id)
     {
         $handin = new Leeroy\Handin($handin_id);
         $task = new Leeroy\Tasks($handin->task_id);
@@ -292,7 +292,7 @@ class DozentController extends LeeroyStudipController
     }
 
 
-    function view_task_action($id)
+    public function view_task_action($id)
     {
         $this->task = new Leeroy\Tasks($id);
 
@@ -333,7 +333,7 @@ class DozentController extends LeeroyStudipController
         }
     }
 
-    function grading_action($group_id, $task_id)
+    public function grading_action($group_id, $task_id)
     {
         $this->group_id = $group_id;
 
@@ -365,7 +365,7 @@ class DozentController extends LeeroyStudipController
         #var_dump($this->handings);
     }
 
-    function grading_save_action($task_id, $group_id)
+    public function grading_save_action($task_id, $group_id)
     {
         $this->task = new Leeroy\Tasks($task_id);
 
@@ -390,7 +390,7 @@ class DozentController extends LeeroyStudipController
         $this->redirect('dozent/grading/' . $group_id . '/' . $task_id);
     }
 
-    function show_analytics_action($task_id)
+    public function show_analytics_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
         if ($task->seminar_id !== $this->seminar_id) {
@@ -402,7 +402,7 @@ class DozentController extends LeeroyStudipController
         $this->data = $task;
     }
 
-    function show_test_action($task_id)
+    public function show_test_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
         if ($task->seminar_id !== $this->seminar_id) {
@@ -416,7 +416,7 @@ class DozentController extends LeeroyStudipController
 
     }
 
-    function show_log_action($task_id)
+    public function show_log_action($task_id)
     {
         $task = new Leeroy\Tasks($task_id);
         if ($task->seminar_id !== $this->seminar_id) {
@@ -429,7 +429,7 @@ class DozentController extends LeeroyStudipController
         $this->task = $task;
     }
 
-    function download_action($flag = 'gtaul', $group_id = false, $task_id = null)
+    public function download_action($flag = 'gtaul', $group_id = false, $task_id = null)
     {
         $zip_file = HandinFiles::collecting($this->seminar_id, $flag, $group_id, $task_id);
 
@@ -446,12 +446,12 @@ class DozentController extends LeeroyStudipController
         }
     }
 
-    function csv_action($delimer = 'en')
+    public function csv_action($type = 'en')
     {
-        if ($delimer === 'de') {
+        $delimer = ',';
+
+        if ($type === 'de') {
             $delimer = ';';
-        } else {
-            $delimer = ',';
         }
 
         $participants = Leeroy_CourseMember::findByCourse($this->seminar_id);
@@ -498,10 +498,10 @@ class DozentController extends LeeroyStudipController
             foreach ($tasks as $task) {
                 $handin = $task->handins->findOneBy('user_id', $user->user_id);
 
+                $punkte = 0;
+
                 if (is_object($handin)) {
                     $punkte = $handin->points;
-                } else {
-                    $punkte = 0;
                 }
 
                 if (!is_numeric($punkte)) {
@@ -521,7 +521,7 @@ class DozentController extends LeeroyStudipController
         $csv_file = tempnam(sys_get_temp_dir(), 'leeroy');
 
         if (!file_exists($csv_file)) {
-            throw new Exception('Konnte Tempfile nicht erstellen');
+            throw new \ErrorException('Konnte Tempfile nicht erstellen');
         }
 
         $fp = fopen($csv_file, 'w');

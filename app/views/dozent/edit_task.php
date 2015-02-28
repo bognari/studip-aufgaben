@@ -199,7 +199,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
                     foreach ($task->jobs as $job) : ?>
                         <div id="<?= _($i) ?>" class="ui-widget ui-widget-content" style="display: block;">
                             <p>
-                                <input type="hidden" name="'job_id' . $i ?>" value="<?= htmlReady($job->id) ?>">
+                                <input type="hidden" name="<?= 'job_id' . $i ?>" value="<?= htmlReady($job->id) ?>">
                                 <label for="<?= 'job_name' . $i ?>"><span
                                         class="label"><?= _('Job Name:') ?></span></label>
                                 <input type="text" name="<?= 'job_name' . $i ?>" id="<?= 'job_name' . $i ?>"

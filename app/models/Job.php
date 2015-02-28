@@ -58,8 +58,16 @@ class Job extends \Leeroy_SimpleORMap
 
     public function execute($path_user, $callback_url, $handin_file_id = null)
     {
+        if (!$this->task->jenkins->use_jenkins === '1') {
+            throw new \BadMethodCallException(_('Jenkins Deaktiviert'));
+        }
+
+        if (!$this->task->jenkins->isConnected()) {
+            throw new \BadMethodCallException(_('Keine Verbindung zum Jenkins'));
+        }
+
         if (!$this->isValid()) {
-            throw new \BadMethodCallException(_('Keine Verbindung zum Jenkins oder Job falsch konfiguriert'));
+            throw new \BadMethodCallException(_('Job falsch konfiguriert'));
         }
 
         $callback_url = str_replace(' ', '%20', $callback_url);
@@ -73,7 +81,7 @@ class Job extends \Leeroy_SimpleORMap
 
         #$path_user = get_upload_file_path($handin_file->document->id);
 
-        $path_config = get_upload_file_path($this->file->id);
+
 
         $jobBuildData = array(
             'token' => md5(uniqid('aylüh', true)),
@@ -85,7 +93,6 @@ class Job extends \Leeroy_SimpleORMap
 
         $data = array(
             'file0' => '@' . realpath($path_user),
-            'file1' => '@' . realpath($path_config),
             'json' => json_encode(array('parameter' => array(
                 array('name' => 'user.zip', 'file' => 'file0'),
                 array('name' => 'config.zip', 'file' => 'file1'),
@@ -94,6 +101,11 @@ class Job extends \Leeroy_SimpleORMap
                 array('name' => 'url', 'value' => $callback_url . '/callback.php')
             )))
         );
+
+        if ($this->file->id !== null) {
+            $path_config = get_upload_file_path($this->file->id);
+            $data['file1'] = '@' . realpath($path_config);
+        }
 
         $url = $this->task->jenkins->getApi() . '/job/' . $this->name . '/build';
 
@@ -105,7 +117,13 @@ class Job extends \Leeroy_SimpleORMap
 
         $server_output = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new RuntimeException(sprintf(_('Error trying to launch job') . ' "%s"'), $this->name);
+            var_export($data);
+
+            print_r($server_output);
+            echo 'cURL-Fehler: ' . curl_error($ch);
+            die();
+
+            throw new \RuntimeException(sprintf(_('Error trying to launch job') . ' "%s"', $this->name));
         }
 
         #print_r($server_output);
