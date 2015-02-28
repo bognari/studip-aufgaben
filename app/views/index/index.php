@@ -187,7 +187,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <tbody>
         </tbody>
     </table>
-<? elseif (!Leeroy\Perm::has('new_task', $seminar_id) && count(GetGroupsByCourseAndUser($GLOBALS['user']->id, $seminar_id)) === 0) : ?>
+<? elseif (!Leeroy\Perm::has('new_task', $seminar_id) && count(GetGroupsByCourseAndUser($seminar_id, $GLOBALS['user']->id)) === 0) : ?>
     <?= MessageBox::error(_('Sie sind keiner Übungsgruppe zugeordnet, Bitte treten Sie zuerst einer Gruppe bei.')); ?>
     <? #TODO Link ?>
 <? else : ?>
