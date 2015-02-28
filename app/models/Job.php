@@ -45,7 +45,7 @@ class Job extends \Leeroy_SimpleORMap
 
     public function isValid()
     {
-        if ($this->task->jenkins->use_jenkins !== true) {
+        if ($this->task->jenkins->use_jenkins !== '1') {
             return true;
         }
 
