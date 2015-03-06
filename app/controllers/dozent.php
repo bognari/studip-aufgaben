@@ -136,7 +136,9 @@ class DozentController extends LeeroyStudipController
             'title' => 'neue Aufgabe',
             'is_active' => false,
             'chdate' => time(),
-            'mkdate' => time()
+            'mkdate' => time(),
+            'startdate' => time(),
+            'enddate' => time()
         );
 
         $task = Leeroy\Tasks::create($data);
@@ -179,7 +181,9 @@ class DozentController extends LeeroyStudipController
 
         $files = $this->save_files('Job');
 
-        foreach (explode(' ', Request::get('max_jobs')) as $i) {
+        $max_jobs = preg_replace("/\s+/", " ", Request::get('max_jobs'));
+
+        foreach (explode(' ', $max_jobs) as $i) {
             if (is_numeric($i)) {
                 $id = Request::get('job_id' . $i);
                 $trigger = Request::get('job_trigger' . $i);
@@ -194,16 +198,50 @@ class DozentController extends LeeroyStudipController
                     'task_id' => $task->id
                 );
 
-                if ($use_file === '1') {
+                #var_export(Request::get('job_id3'));
+
+                #echo "\n\n";
+
+                #var_export(explode(' ', $max_jobs));
+
+                #echo "\n\n";
+
+                #var_export($_POST);
+
+                #die();
+
+#                var_export($files);
+#                echo "\n\n";
+
+#                var_export($file);
+#                echo "\n\n";
+
+#                var_export($job_data);
+#                echo "\n\n";
+#                var_export($id);
+#                echo "\n\n";
+#                var_export($file);
+#                echo "\n\n";
+#                var_export($use_file);
+#                die();
+
+                if ($use_file === 'on' || $use_file === '1') { # wtf ?!
+#                    print_r("<br><br>use_file<br> ");
+#                    die();
                     if ($file !== null) {
                         $job_data['dokument_id'] = $file;
-                    } elseif ($id !== 'new' && array_key_exists($id, $config_files)) {
+
+                        #                       var_export($job_data);
+                        #                       echo "\n\n";
+                        #                       var_export($id);
+                        #                       echo "\n\n";
+                        #                       var_export($file);
+                        #                       die();
+                    } elseif (array_key_exists($id, $config_files)) {
                         $job_data['dokument_id'] = $config_files[$id];
                         unset($config_files[$id]);
                     }
                 }
-
-                var_export($job_data);
 
                 $job = Job::create($job_data);
 
@@ -310,9 +348,9 @@ class DozentController extends LeeroyStudipController
 
             if ($user->status === 'autor' && count($gruppen) > 0) {
 
-                $handins = $this->task->handins->findOneBy('user_id', $user->user_id);
-                if (!$handins) {  // create missing entries on the fly
-                    $handins = Leeroy\Handin::create(array(
+                $handin = $this->task->handins->findOneBy('user_id', $user->user_id);
+                if ($handin === null || $handin->task_id !== $this->task->id) {  // create missing entries on the fly
+                    $handin = Leeroy\Handin::create(array(
                         'user_id' => $user->user_id,
                         'chdate' => 1,
                         'mkdate' => 1,

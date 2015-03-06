@@ -57,14 +57,14 @@
     <? foreach ($tasks as $task) : ?>
         <? $handin = $task->handins->findOneBy('user_id', $GLOBALS['user']->id) ?>
         <?
-        if ($handin->task_id !== $task->id) {
-            $data = array(
-                'task_id' => $task->id,
+
+        if ($handin === null || $handin->task_id !== $task->getId()) {  // create missing entries on the fly
+            $handin = Leeroy\Handin::create(array(
                 'user_id' => $GLOBALS['user']->id,
-                'chdate' => time(),
-                'mkdate' => time()
-            );
-            $handin = Leeroy\Handin::create($data);
+                'chdate' => 1,
+                'mkdate' => 1,
+                'task_id' => $this->task->getId()
+            ));
         }
         ?>
         <tr class="<?= $task->getStatus() ?>">

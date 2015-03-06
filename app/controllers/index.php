@@ -34,7 +34,7 @@ require_once $this->trails_root . '/models/DataFields.php';
  */
 class IndexController extends LeeroyStudipController
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
@@ -46,7 +46,7 @@ class IndexController extends LeeroyStudipController
         Navigation::activateItem('course/leeroy');
     }
 
-    function index_action()
+    public function index_action()
     {
         if (!Request::option('sort_by')
             || in_array(Request::option('sort_by'), words('title startdate enddate')) === false
@@ -102,7 +102,7 @@ class IndexController extends LeeroyStudipController
         $this->jenkins = Leeroy\Jenkins::find($this->seminar_id);
     }
 
-    function show_analytics_action($handin_id, $wait = false)
+    public function show_analytics_action($handin_id, $wait = false)
     {
         $handin = new Leeroy\Handin($handin_id);
         if ($handin->task->seminar_id !== $this->seminar_id) {
@@ -125,7 +125,7 @@ class IndexController extends LeeroyStudipController
         $this->task = $handin->task;
     }
 
-    function show_test_action($handin_id, $wait = false)
+    public function show_test_action($handin_id, $wait = false)
     {
         $handin = new Leeroy\Handin($handin_id);
         if ($handin->task->seminar_id !== $this->seminar_id) {
@@ -148,12 +148,12 @@ class IndexController extends LeeroyStudipController
         $this->task = $handin->task;
     }
 
-    function analytics_reload_action($handin_id)
+    public function analytics_reload_action($handin_id)
     {
         $this->handin_id = $handin_id;
     }
 
-    function show_log_action($handin_id)
+    public function show_log_action($handin_id)
     {
         $handin = new Leeroy\Handin($handin_id);
         if ($handin->task->seminar_id !== $this->seminar_id) {

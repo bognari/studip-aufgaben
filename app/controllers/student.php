@@ -28,7 +28,7 @@ require_once $this->trails_root . '/models/DataFields.php';
 
 class StudentController extends LeeroyStudipController
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
@@ -40,7 +40,7 @@ class StudentController extends LeeroyStudipController
         Navigation::activateItem('course/leeroy');
     }
 
-    function view_student_action($id, $edit_field = null)
+    public function view_student_action($id, $edit_field = null)
     {
         // if the second parameter is present, the passed field shall be edited
         if ($edit_field) {
@@ -49,24 +49,24 @@ class StudentController extends LeeroyStudipController
 
         $this->task = new Leeroy\Tasks($id);
 
-        if ($this->task->startdate > time() || $this->task->seminar_id !== $this->seminar_id) {
+        if ($this->task->seminar_id !== $this->seminar_id || $this->task->startdate > time()) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $this->handin = $this->task->handins->findOneBy('user_id', $GLOBALS['user']->id);
 
-        if (!$this->handin) {
-            $data = array(
-                'task_id' => $id,
-                'user_id' => $GLOBALS['user']->id
-            );
 
-            $this->handin = Leeroy\Handin::create($data);
+        if ($this->handin === null || $this->handin->task_id !== $this->task->getId()) {  // create missing entries on the fly
+            $this->handin = Leeroy\Handin::create(array(
+                'user_id' => $GLOBALS['user']->id,
+                'chdate' => 1,
+                'mkdate' => 1,
+                'task_id' => $this->task->getId()
+            ));
         }
-
     }
 
-    function update_student_action($task_id, $handin_id)
+    public function update_student_action($task_id, $handin_id)
     {
         $task = new Leeroy\Tasks($task_id);
 

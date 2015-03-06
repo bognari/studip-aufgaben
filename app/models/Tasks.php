@@ -62,13 +62,13 @@ class Tasks extends \Leeroy_SimpleORMap
     public function getStatus()
     {
         if (!$this->is_active) {
-            return 'inactiv';
+            return 'inactive';
         }
         if ($this->startdate <= time() && $this->enddate >= time()) {
             return 'running';
-        } else if ($this->enddate < time()) {
+        } elseif ($this->enddate < time()) {
             return 'past';
-        } else if ($this->startdate > time()) {
+        } elseif ($this->startdate > time()) {
             return 'future';
         }
 
@@ -83,7 +83,7 @@ class Tasks extends \Leeroy_SimpleORMap
     public function getStatusText()
     {
         switch ($this->getStatus()) {
-            case 'inactiv':
+            case 'inactive':
                 return _('deaktiviert');
                 break;
 
@@ -99,11 +99,13 @@ class Tasks extends \Leeroy_SimpleORMap
                 return _('läuft noch nicht');
                 break;
         }
+
+        return _('unbekannt');
     }
 
     public function hasTaskLink()
     {
-        return $this->task_link !== '';
+        return $this->task_link !== '' && $this->task_link !== null;
     }
 
     public function hasLinkResult()

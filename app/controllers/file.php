@@ -28,7 +28,7 @@ require_once $this->trails_root . '/models/DataFields.php';
 
 class FileController extends LeeroyStudipController
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
@@ -40,7 +40,7 @@ class FileController extends LeeroyStudipController
         Navigation::activateItem('course/leeroy');
     }
 
-    function handin_file_remove_action($file_id)
+    public function handin_file_remove_action($file_id)
     {
         $file = new Leeroy\HandinFiles($file_id);
 
@@ -71,7 +71,7 @@ class FileController extends LeeroyStudipController
         $this->render_nothing(array('status' => 'success'));
     }
 
-    function handin_file_add_action($handin_id)
+    public function handin_file_add_action($handin_id)
     {
         $handin = new Leeroy\Handin($handin_id);
         $task = new Leeroy\Tasks($handin->task_id);
@@ -154,7 +154,7 @@ class FileController extends LeeroyStudipController
         $this->render_json($output);
     }
 
-    function task_file_remove_action($file_id)
+    public function task_file_remove_action($file_id)
     {
         Leeroy\Perm::check('new_task', $this->seminar_id);
 
@@ -173,7 +173,7 @@ class FileController extends LeeroyStudipController
         $this->render_json(array('status' => 'success'));
     }
 
-    function task_file_add_action($task_id)
+    public function task_file_add_action($task_id)
     {
         Leeroy\Perm::check('new_task', $this->seminar_id);
 

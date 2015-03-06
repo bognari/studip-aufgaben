@@ -32,7 +32,7 @@ class DataFields
     private function filterDatafields($entries)
     {
         $new_entries = array();
-        if (isset($this->rule)) {
+        if ($this->rule !== null) {
             foreach ($entries as $key => $val) {
                 if ($this->rule['attributes'][$key] === '1') {
                     $new_entries[$key] = $val;

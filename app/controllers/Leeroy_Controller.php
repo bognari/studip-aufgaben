@@ -18,7 +18,7 @@ require_once 'app/controllers/studip_controller.php';
 
 class LeeroyStudipController extends StudipController
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
@@ -48,7 +48,7 @@ class LeeroyStudipController extends StudipController
      *
      * @return string
      */
-    function getPluginURL()
+    public function getPluginURL()
     {
         return $GLOBALS['Leeroy_path'];
     }
@@ -59,7 +59,7 @@ class LeeroyStudipController extends StudipController
      * @param type $to
      * @return type
      */
-    function url_for($to)
+    public function url_for($to)
     {
         $args = func_get_args();
 
@@ -82,7 +82,7 @@ class LeeroyStudipController extends StudipController
      *
      * @param array $data
      */
-    function render_json($data)
+    public function render_json($data)
     {
         $this->response->add_header('Content-Type', 'application/json');
         $this->render_text(json_encode($data));
@@ -94,7 +94,7 @@ class LeeroyStudipController extends StudipController
      *
      * @return string the content type
      */
-    function contentType()
+    public function contentType()
     {
         if (preg_match('/^([^,\;]*)/', @$_SERVER['CONTENT_TYPE'], $matches)) {
             return strtolower(trim($matches[1]));
@@ -121,7 +121,7 @@ class LeeroyStudipController extends StudipController
         return Request::option('cid');
     }
 
-    function save_files($type)
+    public function save_files($type)
     {
         $files = array();
         $i = 0;
@@ -134,7 +134,7 @@ class LeeroyStudipController extends StudipController
                     $fh = @fopen($file['tmp_name'], 'r');
 
                     if (!$fh) {
-                        throw AccessDeniedException(_('Datei kann nicht gelesen werden'));
+                        throw new InvalidArgumentException(_('Datei kann nicht gelesen werden'));
                     }
 
                     $blob = fgets($fh, 5);
@@ -142,7 +142,7 @@ class LeeroyStudipController extends StudipController
                     fclose($fh);
 
                     if (!(strpos($blob, 'PK') !== false)) {
-                        throw AccessDeniedException(_('Nur ZIP Datein sind gestattet'));
+                        throw new InvalidArgumentException(_('Nur ZIP Datein sind gestattet'));
                     }
                 }
 

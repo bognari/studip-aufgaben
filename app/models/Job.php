@@ -117,12 +117,6 @@ class Job extends \Leeroy_SimpleORMap
 
         $server_output = curl_exec($ch);
         if (curl_errno($ch)) {
-            var_export($data);
-
-            print_r($server_output);
-            echo 'cURL-Fehler: ' . curl_error($ch);
-            die();
-
             throw new \RuntimeException(sprintf(_('Error trying to launch job') . ' "%s"', $this->name));
         }
 

@@ -65,6 +65,7 @@ $data = json_decode($json);
 if (is_string($data->log)) {
     #echo "\n\nhat log:\n";
     $log = file_get_contents($_FILES[$data->log]['tmp_name']);
+    $log = preg_replace("/\/.*" . $jobBuild->job->name . ".*\//U", "", $log);
 } else {
     #echo "\n\nhat KEIN log:\n";
     $log = null;

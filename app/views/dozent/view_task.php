@@ -149,7 +149,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <div class="button-group">
         <?= Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for('dozent/edit_task/' . $task['id'])) ?>
         <?= Studip\LinkButton::createDelete(_('Löschen'), 'javascript:STUDIP.Leeroy.createQuestion("' .
-            _('Sind Sie sicher, dass Sie die komplette Aufgabe l?schen m?chten?') . '",
+            _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?') . '",
             "' . $controller->url_for('dozent/delete_task/' . $task['id']) . '");') ?>
     </div>
 </div>
