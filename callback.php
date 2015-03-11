@@ -15,18 +15,21 @@ require_once 'vendor/trails/trails.php';
 chdir('plugins_packages/TU BS IPS/Leeroy/');
 
 if (version_compare($GLOBALS['SOFTWARE_VERSION'], '2.4', '<=')) {
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/StudipArrayObject.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleCollection.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMapCollection.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMap.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_StudipDocument.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/CourseMember.php';
+    $main_version = substr($GLOBALS['SOFTWARE_VERSION'], 0, 3);
+    require_once 'compat/' . $main_version . '/StudipArrayObject.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleCollection.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMapCollection.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMap.php';
+    require_once 'compat/' . $main_version . '/Leeroy_StudipDocument.php';
+    require_once 'compat/' . $main_version . '/CourseMember.php';
+    require_once 'compat/' . $main_version . '/Leeroy_CourseMember.php';
 } else {
     // for version starting from 2.5 use the same stub
     require_once 'compat/2.5/Leeroy_SimpleCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMapCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMap.php';
     require_once 'compat/2.5/Leeroy_StudipDocument.php';
+    require_once 'compat/2.5/Leeroy_CourseMember.php';
 }
 
 require_once 'app/models/Jenkins.php';
@@ -81,6 +84,12 @@ if (!\Leeroy\JobBuild::exists($data->token)) {
 
 $jobBuild = new \Leeroy\JobBuild($data->token);
 
+if ($jobBuild->job->id !== $data->id) {
+    throw new AccessDeniedException(sprintf(
+            _('Sie haben keine Berechtigung für diese Aktion!'))
+    );
+}
+
 switch ($jobBuild->job->trigger) {
     case 'upload':
     case 'end':
@@ -109,10 +118,10 @@ if ($jobBuild->job->isSuccessfull($data->buildnumber)) {
         #print_r($result);
         $save->test = $result;
     }
-    if (in_array('extern', $data->tasks, true)) {
+    if (in_array('moss', $data->tasks, true)) {
         #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         #echo "content:\n";
-        $content = file_get_contents($_FILES[$data->extern]['tmp_name']);
+        $content = file_get_contents($_FILES[$data->moss]['tmp_name']);
         #print_r($content);
         $match = array();
         #preg_match_all("/(.*)(http\:\/\/moss\.stanford\.edu\/results\/\d+)/", $input_lines, $output_array);

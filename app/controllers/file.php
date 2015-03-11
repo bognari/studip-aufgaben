@@ -45,7 +45,7 @@ class FileController extends LeeroyStudipController
         $file = new Leeroy\HandinFiles($file_id);
 
         if (($file->handin->task->startdate > time() || $file->handin->task->enddate < time())
-            && !$GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)
+            && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)
         ) {
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
@@ -76,7 +76,7 @@ class FileController extends LeeroyStudipController
         $handin = new Leeroy\Handin($handin_id);
         $task = new Leeroy\Tasks($handin->task_id);
 
-        if (($task->startdate > time() || $task->enddate < time()) && !$GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {
+        if (($task->startdate > time() || $task->enddate < time()) && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
@@ -87,7 +87,7 @@ class FileController extends LeeroyStudipController
         // user adds file(s) to its solution of the task
         if ($handin->user_id === $GLOBALS['user']->id && $GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)) {
             $type = 'answer';
-        } elseif ($GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {    // dozent adds feedback for the user
+        } elseif ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {    // dozent adds feedback for the user
             $type = 'feedback';
         } else { // not author/tutor nor dozent, so access is denied
             throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe'));

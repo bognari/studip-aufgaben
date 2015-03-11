@@ -14,13 +14,14 @@
 
 // load legacy code for older Stud.IP-Versions
 if (version_compare($GLOBALS['SOFTWARE_VERSION'], '2.4', '<=')) {
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/StudipArrayObject.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleCollection.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMapCollection.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_SimpleORMap.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_StudipDocument.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/CourseMember.php';
-    require_once 'compat/' . $GLOBALS['SOFTWARE_VERSION'] . '/Leeroy_CourseMember.php';
+    $main_version = substr($GLOBALS['SOFTWARE_VERSION'], 0, 3);
+    require_once 'compat/' . $main_version . '/StudipArrayObject.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleCollection.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMapCollection.php';
+    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMap.php';
+    require_once 'compat/' . $main_version . '/Leeroy_StudipDocument.php';
+    require_once 'compat/' . $main_version . '/CourseMember.php';
+    require_once 'compat/' . $main_version . '/Leeroy_CourseMember.php';
 } else {
     // for version starting from 2.5 use the same stub
     require_once 'compat/2.5/Leeroy_SimpleCollection.php';

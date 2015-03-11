@@ -167,6 +167,13 @@ class HandinFiles extends \Leeroy_SimpleORMap
                         if (strpos($flag, 'l') !== false && $handin->hasLog()) {
                             file_put_contents($path . '/log.txt', $handin->log);
                         }
+
+                        if ($handin->answer !== null && is_string($handin->answer) && strlen($handin->answer) > 0) {
+
+                            $content = $handin->answer;
+
+                            file_put_contents($path . '/answer.txt', $content);
+                        }
                     }
                 }
             }
@@ -174,7 +181,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
 
 
         $file_name = $tempfile . '/abgaben.zip';
-        $bla = HandinFiles::zipFile($tempfile, $file_name);
         if (HandinFiles::zipFile($tempfile, $file_name) === false) {
             #print_r($file_name);
             #die();

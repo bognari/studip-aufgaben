@@ -63,7 +63,7 @@
                 'user_id' => $GLOBALS['user']->id,
                 'chdate' => 1,
                 'mkdate' => 1,
-                'task_id' => $this->task->getId()
+                'task_id' => $task->getId()
             ));
         }
         ?>

@@ -111,6 +111,10 @@ class Job extends \Leeroy_SimpleORMap
 
         $ch = curl_init($url);
 
+        #print_r($data);
+
+        #die();
+
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
