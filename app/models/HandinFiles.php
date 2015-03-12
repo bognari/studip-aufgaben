@@ -220,7 +220,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
             }
         }
 
-
         return $zip->close();
     }
 }

@@ -27,6 +27,7 @@ class AddTables extends Migration
               `use_ssl` tinyint(1) NOT NULL DEFAULT '0',
               `aux` mediumtext,
               `use_jenkins` tinyint(1) NOT NULL DEFAULT '0',
+              `group_sync_regex` varchar(45) DEFAULT NULL,
               PRIMARY KEY (`seminar_id`)
             )
         ");
@@ -96,9 +97,10 @@ class AddTables extends Migration
         DBManager::get()->exec("
             CREATE TABLE IF NOT EXISTS `leeroy_handin_files` (
               `dokument_id` varchar(32) NOT NULL,
+              `id` int(11) NOT NULL AUTO_INCREMENT,
               `handin_id` int(11) NOT NULL,
               `type` enum('answer','feedback') NOT NULL DEFAULT 'answer',
-              PRIMARY KEY (`dokument_id`),
+              PRIMARY KEY (`id`),
               KEY `handin_files_idx` (`handin_id`),
               CONSTRAINT `task_handin_filex_fk` FOREIGN KEY (`handin_id`) REFERENCES `leeroy_handin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
             )
@@ -126,7 +128,7 @@ class AddTables extends Migration
               PRIMARY KEY (`token`),
               KEY `job_build_idx` (`job_id`),
               KEY `build_handin_file` (`handin_file_id`),
-              CONSTRAINT `build_handin_file` FOREIGN KEY (`handin_file_id`) REFERENCES `leeroy_handin_files` (`dokument_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `build_handin_file` FOREIGN KEY (`handin_file_id`) REFERENCES `leeroy_handin_files` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
               CONSTRAINT `job_build_fk` FOREIGN KEY (`job_id`) REFERENCES `leeroy_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
             )
         ");

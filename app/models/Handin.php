@@ -143,4 +143,114 @@ class Handin extends \Leeroy_SimpleORMap
 
         return array();
     }
+
+    public function store($sync = true)
+    {
+
+        if ($sync === true) {
+            #print_r($this);
+            #echo "<br><br>";
+            $handins = $this->getSyncHandins();
+            #print_r($handins);
+            #die();
+
+
+            foreach ($handins as $handin) {
+
+                #print_r($handin);
+                #die();
+
+                $handin->hint = $this->hint;
+                $handin->answer = $this->answer;
+                $handin->feedback = $this->feedback;
+                $handin->analytic = $this->analytic;
+                $handin->test = $this->test;
+                $handin->link = $this->link;
+                $handin->lastJob = $this->lastJob;
+                $handin->log = $this->log;
+
+                foreach ($handin->files as $file) {
+                    $file->delete();
+                }
+
+                foreach ($this->files as $file) {
+                    $data = array(
+                        'dokument_id' => $file->dokument_id,
+                        'handin_id' => $handin->id,
+                        'type' => $file->type
+                    );
+
+                    #print_r($data);
+                    #echo "<br><br>";
+                    #print_r($this);
+
+                    #die();
+
+                    $handin_file = HandinFiles::create($data);
+                }
+
+                $handin->store(false);
+            }
+        }
+        parent::store();
+    }
+
+    public function getSyncHandins()
+    {
+        $handins = array();
+
+        foreach ($this->getGroups() as $id => $name) {
+            if (is_string($this->task->jenkins->group_sync_regex) && preg_match("/^" . $this->task->jenkins->group_sync_regex . "$/", $name, $output_array) === 1) {
+                $query = "SELECT user_id
+                  FROM statusgruppen
+                  JOIN statusgruppe_user USING (statusgruppe_id)
+                  WHERE statusgruppe_id = ?";
+                $statement = \DBManager::get()->prepare($query);
+                $statement->execute(array($id));
+
+                $users = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+                foreach ($users as $user) {
+                    if ($user !== $this->user_id) {
+                        array_push($handins, $this->task->handins->findOneBy('user_id', $user));
+                    }
+                }
+            }
+        }
+
+        return $handins;
+    }
+
+    public function addFile($file, $type, $url)
+    {
+        $data = array(
+            'dokument_id' => $file->id,
+            'handin_id' => $this->id,
+            'type' => $type
+        );
+
+        $handin_file = HandinFiles::create($data);
+
+        if ($handin_file->type === 'answer') {
+
+            $this->analytic = null;
+            $this->test = null;
+            $this->link = null;
+            $this->lastJob = null;
+            $this->log = null;
+            $this->store(false);
+
+            foreach ($this->task->jobs as $job) { # trigger
+                if ($job->trigger === 'upload') {
+                    $job->execute(get_upload_file_path($file->getId()), $url, $handin_file->id);
+                }
+            }
+        }
+
+        $handin = new Handin($this->id);
+        $handin->store();
+
+
+        return $handin_file;
+    }
 }

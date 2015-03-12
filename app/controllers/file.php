@@ -42,30 +42,38 @@ class FileController extends LeeroyStudipController
 
     public function handin_file_remove_action($file_id)
     {
-        $file = new Leeroy\HandinFiles($file_id);
 
-        if (($file->handin->task->startdate > time() || $file->handin->task->enddate < time())
-            && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)
-        ) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
-        }
+        $files = Leeroy\HandinFiles::findBySQL('dokument_id = ?', array($file_id));
 
-        // only delete file, if it belongs to the current user
-        if ($file->document->user_id === $GLOBALS['user']->id) {
+        #print_r($files);
 
-            if ($file->type === 'answer') {
-                $file->handin->analytic = null;
-                $file->handin->test = null;
-                $file->handin->link = null;
-                $file->handin->lastJob = null;
-                $file->handin->log = null;
-                $file->handin->store();
+        #die();
+        foreach ($files as $file) {
+            if (($file->handin->task->startdate > time() || $file->handin->task->enddate < time())
+                && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)
+            ) {
+                throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
             }
 
-            delete_document($file->document->getId());
-            $file->delete();
-        } else {
-            throw new AccessDeniedException(_('Diese Datei gehört nicht Ihnen!'));
+            // only delete file, if it belongs to the current user
+            #TODO besseren zugriffs check einführen
+            if ($file->type === 'answer' || $file->document->user_id === $GLOBALS['user']->id) {
+
+                if ($file->type === 'answer') {
+                    $file->handin->analytic = null;
+                    $file->handin->test = null;
+                    $file->handin->link = null;
+                    $file->handin->lastJob = null;
+                    $file->handin->log = null;
+                    $file->handin->store();
+                }
+
+                $file->deleteBySQL('dokument_id = ?', array($file_id));
+
+                delete_document($file->document->getId());
+            } else {
+                throw new AccessDeniedException(_('Sie dürfen diese Datei nicht löschen!'));
+            }
         }
 
         $this->render_nothing(array('status' => 'success'));
@@ -116,33 +124,11 @@ class FileController extends LeeroyStudipController
                     throw new AccessDeniedException(_('Nur eine Abgabe ist erlaubt'));
                 }
 
-                $data = array(
-                    'handin_id' => $handin_id,
-                    'dokument_id' => $file->id,
-                    'type' => $type
-                );
-
-                $handin_file = Leeroy\HandinFiles::create($data);
-
-                if ($handin_file->type === 'answer') {
-
-                    $handin->analytic = null;
-                    $handin->test = null;
-                    $handin->link = null;
-                    $handin->lastJob = null;
-                    $handin->log = null;
-                    $handin->store();
-
-                    foreach ($task->jobs as $job) { # trigger
-                        if ($job->trigger === 'upload') {
-                            $job->execute(get_upload_file_path($file->getId()), $this->getPluginURL(), $handin_file->id);
-                        }
-                    }
-                }
+                $handin_file = $handin->addFile($file, $type, $this->getPluginURL());
 
                 $output[] = array(
-                    'url' => GetDownloadLink($file->getId(), $file['filename']),
-                    'id' => $handin_file->getId(),
+                    'url' => GetDownloadLink($file->dokument_id, $file['filename']),
+                    'id' => $handin_file->dokument_id,
                     'name' => $file->name,
                     'date' => strftime($this->timeformat, time()),
                     'size' => $file->filesize,
@@ -204,8 +190,8 @@ class FileController extends LeeroyStudipController
                 $task_file = Leeroy\TaskFiles::create($data);
 
                 $output[] = array(
-                    'url' => GetDownloadLink($file->getId(), $file['filename']),
-                    'id' => $task_file->getId(),
+                    'url' => GetDownloadLink($file->dokument_id, $file['filename']),
+                    'id' => $task_file->dokument_id,
                     'name' => $file->name,
                     'date' => strftime($this->timeformat, time()),
                     'size' => $file->filesize,

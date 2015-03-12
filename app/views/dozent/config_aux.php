@@ -38,14 +38,15 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Zusatzdaten'))) ?>
 
-<h2><?= _('Zusatzdaten bearbeiten') ?></h2>
+
+    <form action="<?= $controller->url_for('dozent/config_aux_save/' . $seminar_id) ?>" method="post">
 
 <? if (count($headers) === 0) : ?>
     <?= MessageBox::info(_('Es sind keine Zusatzdaten für diese Veranstaltung vorhanden.')); ?>
 <? else : ?>
+    <h2><?= _('Zusatzdaten bearbeiten') ?></h2>
 
-    <form action="<?= $controller->url_for('dozent/config_aux_save/' . $seminar_id) ?>" method="post">
-        <div class="task">
+    <div class="task">
 
             <? foreach ($headers as $id => $name) : ?>
                 <label for="<?= $id ?>"><span class="label"><?= $name . ':' ?></span></label>
@@ -65,6 +66,20 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
             <br style="clear: both">
         </div>
 
+<? endif ?>
+
+        <h2><?= _('Gruppen - Syncronisation') ?></h2>
+
+        <div class="task">
+
+                <label for="sync"><span class="label"><?= _('Synchronisationsgruppen RegEx') ?></span></label>
+                <input type="text" name="sync" id="sync" required
+                       value="<?= $sync === '' ? htmlReady('') : htmlReady($sync) ?>" size="40">
+
+            <br style="clear: both">
+        </div>
+
+
         <div class="buttons">
             <div class="button-group">
                 <?= Studip\Button::createAccept(_('Speichern')) ?>
@@ -72,5 +87,3 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
             </div>
         </div>
     </form>
-
-<? endif ?>

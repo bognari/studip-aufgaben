@@ -119,6 +119,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 <? $this->render_partial('index/_breadcrumb', array('path' => array(
     'overview', array('dozent/view_task/' . $task->getId(), $task['title']), get_fullname($handin->user_id)))) ?>
 
+<h1><?= htmlReady(get_fullname($handin->user_id)) ?></h1>
+
 <?= $this->render_partial('index/_task_details') ?>
 
 <? if ($task->enddate <= time()) : ?>

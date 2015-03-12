@@ -35,7 +35,7 @@ class JobBuild extends \Leeroy_SimpleORMap
         $this->belongs_to['handin_file'] = array(
             'class_name' => 'Leeroy\HandinFiles',
             'foreign_key' => 'handin_file_id',
-            'assoc_foreign_key' => 'dokument_id'
+            'assoc_foreign_key' => 'id'
         );
 
         # ein job muss seine builds nicht kennen

@@ -14,23 +14,14 @@ require_once 'vendor/trails/trails.php';
 
 chdir('plugins_packages/TU BS IPS/Leeroy/');
 
-if (version_compare($GLOBALS['SOFTWARE_VERSION'], '2.4', '<=')) {
-    $main_version = substr($GLOBALS['SOFTWARE_VERSION'], 0, 3);
-    require_once 'compat/' . $main_version . '/StudipArrayObject.php';
-    require_once 'compat/' . $main_version . '/Leeroy_SimpleCollection.php';
-    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMapCollection.php';
-    require_once 'compat/' . $main_version . '/Leeroy_SimpleORMap.php';
-    require_once 'compat/' . $main_version . '/Leeroy_StudipDocument.php';
-    require_once 'compat/' . $main_version . '/CourseMember.php';
-    require_once 'compat/' . $main_version . '/Leeroy_CourseMember.php';
-} else {
+
     // for version starting from 2.5 use the same stub
     require_once 'compat/2.5/Leeroy_SimpleCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMapCollection.php';
     require_once 'compat/2.5/Leeroy_SimpleORMap.php';
     require_once 'compat/2.5/Leeroy_StudipDocument.php';
     require_once 'compat/2.5/Leeroy_CourseMember.php';
-}
+
 
 require_once 'app/models/Jenkins.php';
 require_once 'app/models/Tasks.php';
@@ -90,13 +81,23 @@ if ($jobBuild->job->id !== $data->id) {
     );
 }
 
+#print_r($jobBuild);
+
+#echo "\n\n\n\n\n\n";
+
 switch ($jobBuild->job->trigger) {
     case 'upload':
     case 'end':
         $save = $jobBuild->handin_file->handin;
+    #print_r($save);
+    #print_r("END");
+    #echo "\n\n\n\n\n\n";
         break;
     case 'end_all':
         $save = $jobBuild->job->task;
+        #print_r($save);
+        #print_r("END ALL");
+        #echo "\n\n\n\n\n\n";
         break;
     default:
         $jobBuild->delete();

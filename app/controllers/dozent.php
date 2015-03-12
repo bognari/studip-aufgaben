@@ -101,6 +101,7 @@ class DozentController extends LeeroyStudipController
         $this->jenkins = Leeroy\Jenkins::find($this->seminar_id);
         $this->headers = Leeroy\DataFields::getDataFields($this->seminar_id)->getHeaders();
         $this->regex = json_decode($this->jenkins->aux);
+        $this->sync = $this->jenkins->group_sync_regex;
     }
 
     public function config_aux_save_action()
@@ -115,7 +116,8 @@ class DozentController extends LeeroyStudipController
         $data = array(
             'seminar_id' => $this->seminar_id,
             'force_data' => Request::get('force_data'),
-            'aux' => json_encode($regex)
+            'aux' => json_encode($regex),
+            'group_sync_regex' => Request::get('sync')
         );
 
         if (Jenkins::exists($this->seminar_id)) {
@@ -332,6 +334,8 @@ class DozentController extends LeeroyStudipController
 
     public function view_task_action($id)
     {
+        SimpleORMap::expireTableScheme();
+
         $this->task = new Leeroy\Tasks($id);
 
         if ($this->task->seminar_id !== $this->seminar_id) {
@@ -368,6 +372,10 @@ class DozentController extends LeeroyStudipController
                     array_push($this->group[$gruppen_id], $user);
                 }
             }
+        }
+
+        if (count($this->group_names) > 0) {
+            natsort($this->group_names);
         }
     }
 

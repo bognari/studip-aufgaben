@@ -15,8 +15,8 @@
  * @category    Stud.IP
  */
 ?>
-<? foreach ($group as $group_id => $group_users) : ?>
-    <h2><?= $group_names[$group_id] ?>:</h2>
+<? foreach ($group_names as $group_id => $group_name)  : ?>
+    <h2><?= $group_name ?>:</h2>
     <table class="default zebra">
         <thead>
         <tr>
@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        <? foreach ($group_users as $user) : ?>
+        <? foreach ($group[$group_id] as $user) : ?>
             <?
             $handin = $task->handins->findOneBy('user_id', $user->user_id)
             ?>

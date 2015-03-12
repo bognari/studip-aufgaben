@@ -26,7 +26,7 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
         );
         $infobox_entrys[$i++] = array(
             'icon' => 'icons/16/black/info.png',
-            'text' => sprintf(_('%sZusatzdaten Konfiguration%s'), '<a href="' . $controller->url_for('dozent/config_aux') . '">', '</a>')
+            'text' => sprintf(_('%sZusatzdaten und Gruppen Konfiguration%s'), '<a href="' . $controller->url_for('dozent/config_aux') . '">', '</a>')
         );
     endif;
 
@@ -59,6 +59,10 @@ if (Leeroy\Perm::has('new_task', $seminar_id) || Leeroy\Perm::has('config', $sem
 
         $groups = Leeroy_CourseMember::getGroupsForCourse($seminar_id);
         $group_names = $groups['names'];
+
+        if (count($group_names) > 0) {
+            natsort($group_names);
+        }
 
         foreach ($group_names as $group_id => $group_name) {
             array_push($entry_dowload, array(
