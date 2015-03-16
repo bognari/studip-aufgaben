@@ -33,9 +33,4 @@
     <? elseif ($task->allow_files) : ?>
         <br><?= _('Dateiupload erlaubt') ?><br>
     <? endif ?>
-
-    <? /*
-    <? if ($task->send_mail) : ?>
-        <br><?= _('Es wird eine Mail an alle TeilnehmerInnen verschickt, sobald die Aufgabe sichtbar ist.') ?><br>
-    <? endif ?> */ ?>
 </div>

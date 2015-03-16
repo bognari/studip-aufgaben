@@ -113,7 +113,11 @@ $content_bewertung = array(
 );
 array_push($content, $content_bewertung);
 
-$entry_dowload = array();
+$entry_dowload = array(
+    array(
+        'icon' => 'icons/16/black/file-archive.png',
+        'text' => '<a href="' . $controller->url_for('dozent/download/gaul/false/' . $task->id) . '">' . _('Alle Gruppen') . '</a>'
+    ));
 
 foreach ($group_names as $group_id => $group_name) {
     array_push($entry_dowload, array(

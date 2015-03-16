@@ -256,13 +256,6 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
     <br style="clear: both">
 
-    <? /*
-    <label>
-        <input type="checkbox" name="send_mail" value="1" <?= $task['send_mail'] ? 'checked="checked"' : '' ?>>
-        <?= _('Mail an alle sobald sichtbar') ?>
-    </label>
-    */ ?>
-
     <div class="buttons">
         <div class="button-group">
             <div class="visibility">

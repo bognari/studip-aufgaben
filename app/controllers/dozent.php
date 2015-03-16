@@ -164,7 +164,6 @@ class DozentController extends LeeroyStudipController
             'allow_files' => Request::int('allow_files'),
             'startdate' => strtotime(Request::get('startdate')),
             'enddate' => strtotime(Request::get('enddate')),
-            'send_mail' => Request::int('send_mail'),
             'task_link' => Request::get('task_link'),
             'required' => Request::int('required'),
             'is_active' => Request::int('is_active')
@@ -200,45 +199,10 @@ class DozentController extends LeeroyStudipController
                     'task_id' => $task->id
                 );
 
-                #var_export(Request::get('job_id3'));
-
-                #echo "\n\n";
-
-                #var_export(explode(' ', $max_jobs));
-
-                #echo "\n\n";
-
-                #var_export($_POST);
-
-                #die();
-
-#                var_export($files);
-#                echo "\n\n";
-
-#                var_export($file);
-#                echo "\n\n";
-
-#                var_export($job_data);
-#                echo "\n\n";
-#                var_export($id);
-#                echo "\n\n";
-#                var_export($file);
-#                echo "\n\n";
-#                var_export($use_file);
-#                die();
-
                 if ($use_file === 'on' || $use_file === '1') { # wtf ?!
-#                    print_r("<br><br>use_file<br> ");
-#                    die();
                     if ($file !== null) {
                         $job_data['dokument_id'] = $file;
 
-                        #                       var_export($job_data);
-                        #                       echo "\n\n";
-                        #                       var_export($id);
-                        #                       echo "\n\n";
-                        #                       var_export($file);
-                        #                       die();
                     } elseif (array_key_exists($id, $config_files)) {
                         $job_data['dokument_id'] = $config_files[$id];
                         unset($config_files[$id]);
@@ -249,6 +213,7 @@ class DozentController extends LeeroyStudipController
 
 
                 if ($trigger === 'end' || $trigger === 'end_all') {
+
                     $trigger_data = array(
                         'job_id' => $job->id,
                         'time' => $task->enddate
@@ -334,8 +299,6 @@ class DozentController extends LeeroyStudipController
 
     public function view_task_action($id)
     {
-        SimpleORMap::expireTableScheme();
-
         $this->task = new Leeroy\Tasks($id);
 
         if ($this->task->seminar_id !== $this->seminar_id) {
@@ -408,7 +371,6 @@ class DozentController extends LeeroyStudipController
             usort($this->handins, array('Leeroy\Handin', 'cmp'));
         }
 
-        #var_dump($this->handings);
     }
 
     public function grading_save_action($task_id, $group_id)

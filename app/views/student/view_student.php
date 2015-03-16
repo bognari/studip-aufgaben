@@ -164,6 +164,6 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <br>
     <? $files = $handin->files->findBy('type', 'feedback') ?>
     <? if (count($files)) : ?>
-        <?= $this->render_partial('index/_file_list', compact('files')) ?>
+        <?= $this->render_partial('index/_file_list', array('files' => $files, 'edit' => false)) ?>
     <? endif ?>
 </div>

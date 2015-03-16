@@ -165,8 +165,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <? if ($task['allow_files']) : ?>
         <br>
         <? $files = $handin->files->findBy('type', 'answer') ?>
-        <? if (count($files)) : ?>
-            <?= $this->render_partial('index/_file_list', compact('files')) ?>
+        <? if (count($files) > 0) : ?>
+            <?= $this->render_partial('index/_file_list', array('files' => $files, 'edit' => false)) ?>
         <? endif ?>
     <? endif ?>
 

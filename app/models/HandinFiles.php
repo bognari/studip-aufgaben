@@ -60,11 +60,11 @@ class HandinFiles extends \Leeroy_SimpleORMap
         $groups = \Leeroy_CourseMember::getGroupsForCourse($seminar_id);
 
 
-        if ($group_id !== false && $groups['names'][$group_id] === null) {
+        if (($group_id !== false && $group_id !== 'false') && $groups['names'][$group_id] === null) {
             throw new \AccessDeniedException(_('Gruppe nicht gefunden!'));
         }
 
-        if ($group_id !== false) {
+        if ($group_id !== false && $group_id !== 'false') {
             $groups['names'] = array($group_id => $groups['names'][$group_id]);
             $groups['members'] = array($group_id => $groups['members'][$group_id]);
         }
