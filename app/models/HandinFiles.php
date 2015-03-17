@@ -43,6 +43,16 @@ class HandinFiles extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
+    /**
+     * Sammel alle Abgaben zu einer Aufgabe zusammen und gibt
+     * @param string $seminar_id
+     * @param string $flag a = Analyse Ergebnisse, u = Test Ergebnisse, l = Log, g = Gruppenordner, t = Aufgabenorder,
+     * @param bool|string $group_id
+     * @param null|string $task_id
+     * @return string Pfad zur Zip Datei
+     * @throws \AccessDeniedException
+     * @throws \ErrorException
+     */
     public static function collecting($seminar_id, $flag = 'atl', $group_id = false, $task_id = null)
     {
 
@@ -190,6 +200,12 @@ class HandinFiles extends \Leeroy_SimpleORMap
         return $file_name;
     }
 
+    /**
+     * Erstellt eine Zip Datei aus einem Ordner
+     * @param string $source der Ordner
+     * @param string $destination Ziel der Datei
+     * @return bool true = Zip erstellt
+     */
     function zipFile($source, $destination)
     {
         if (!extension_loaded('zip') || !file_exists($source)) {

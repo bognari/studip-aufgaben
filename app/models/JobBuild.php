@@ -15,6 +15,11 @@
 
 namespace Leeroy;
 
+/**
+ * Class JobBuild
+ * @package Leeroy
+ * Platzhalter für gestartete Analysen
+ */
 class JobBuild extends \Leeroy_SimpleORMap
 {
     /**

@@ -1,14 +1,12 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: stephan
- * Date: 10.02.15
- * Time: 12:58
- */
-
 namespace Leeroy;
 
+/**
+ * Class DataFields
+ * @package Leeroy
+ * Diese Klasse stellt die Abfragemöglichkeiten für die Zusatzdaten zur Verfügung
+ */
 class DataFields
 {
 
@@ -16,7 +14,11 @@ class DataFields
     private $rule;
     private $seminar_id;
 
-
+    /**
+     * Erzeugt ein Datafields Objekt, das Zusatzangaben und deren Konfiguration einer Veranstaltung beinhaltet
+     * @param tring $seminar_id
+     * @return DataFields
+     */
     public static function getDataFields($seminar_id)
     {
         return new DataFields($seminar_id);
@@ -121,16 +123,31 @@ class DataFields
         return array('aux' => $data, 'header' => $new_header);
     }
 
+    /**
+     * Gibt die Namen der Zusatzdaten als String Array zurück
+     * @return string[]
+     */
     public function getHeaders()
     {
         return $this->data['header'];
     }
 
+    /**
+     * Gibt die Zusatzdaten für einen Benutzer als Stringarray zurück
+     * @param string $user_id
+     * @return string[]
+     */
     public function getUserAux($user_id)
     {
         return $this->data['aux'][$user_id]['entry'];
     }
 
+    /**
+     * Testet ob die Zusatzangaben eines Benutzers sich an die Vorgaben halten
+     * @param string $user_id
+     * @param string[] $regex Array der regulären Ausdrücke
+     * @return bool
+     */
     public function isValid($user_id, $regex)
     {
         $ret = true;

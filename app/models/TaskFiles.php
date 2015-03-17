@@ -17,6 +17,11 @@
 
 namespace Leeroy;
 
+/**
+ * Class TaskFiles
+ * @package Leeroy
+ *
+ */
 class TaskFiles extends \Leeroy_SimpleORMap
 {
     /**

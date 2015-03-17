@@ -16,6 +16,11 @@
 
 namespace Leeroy;
 
+/**
+ * Class Tasks
+ * @package Leeroy
+ * Stellt eine Aufgabe dar
+ */
 class Tasks extends \Leeroy_SimpleORMap
 {
     /**
@@ -103,41 +108,65 @@ class Tasks extends \Leeroy_SimpleORMap
         return _('unbekannt');
     }
 
+    /**
+     * @return bool
+     */
     public function hasTaskLink()
     {
         return $this->task_link !== '' && $this->task_link !== null;
     }
 
+    /**
+     * @return bool
+     */
     public function hasLinkResult()
     {
         return is_string($this->link) && $this->link !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasAnalyticResult()
     {
         return is_string($this->analytic) && $this->analytic !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasTestResult()
     {
         return is_string($this->test) && $this->test !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasMaterial()
     {
         return count($this->files) > 0;
     }
 
+    /**
+     * @return bool
+     */
     public function hasJobs()
     {
         return count($this->jobs) > 0;
     }
 
+    /**
+     * @return bool
+     */
     public function isRequired()
     {
         return $this->required === '1';
     }
 
+    /**
+     * @return bool
+     */
     public function hashUploadTrigger()
     {
         foreach ($this->jobs as $job) {
@@ -148,6 +177,9 @@ class Tasks extends \Leeroy_SimpleORMap
         return false;
     }
 
+    /**
+     * @return int
+     */
     public function getAnalyticWarnings()
     {
         if ($this->hasAnalyticResult()) {
@@ -159,6 +191,9 @@ class Tasks extends \Leeroy_SimpleORMap
         return 0;
     }
 
+    /**
+     * @return int
+     */
     public function getTestErrors()
     {
         if ($this->hasTestResult()) {
@@ -170,16 +205,28 @@ class Tasks extends \Leeroy_SimpleORMap
         return 0;
     }
 
+    /**
+     * @return bool
+     */
     public function hasLog()
     {
         return is_string($this->log);
     }
 
+    /**
+     * Sortiertv zwei Aufgaben nach Enddatum
+     * @param Tasks $a
+     * @param Tasks $b
+     * @return int
+     */
     public static function cmp($a, $b)
     {
         return $a->enddate < $b->enddate ? -1 : 1;
     }
 
+    /**
+     * @return array
+     */
     public function getAnalyticResult()
     {
         $data = json_decode($this->analytic);
@@ -203,6 +250,9 @@ class Tasks extends \Leeroy_SimpleORMap
         return $files;
     }
 
+    /**
+     * @return array
+     */
     public function getTestResult()
     {
         if ($this->hasTestResult()) {

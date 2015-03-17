@@ -15,6 +15,11 @@
 
 namespace Leeroy;
 
+/**
+ * Class TimeTrigger
+ * @package Leeroy
+ * Verwaltet Zeit gesteuerte Job Ausführungen
+ */
 class TimeTrigger extends \Leeroy_SimpleORMap
 {
     /**
@@ -35,6 +40,12 @@ class TimeTrigger extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
+    /**
+     * Testet ob Jobs gestartet werden sollen und wenn ja, werden diese ausgeführt
+     * @param string $callback_url
+     * @throws \AccessDeniedException
+     * @throws \ErrorException
+     */
     public static function execute($callback_url)
     {
         $token = md5(uniqid('padme', true));
@@ -45,12 +56,7 @@ class TimeTrigger extends \Leeroy_SimpleORMap
 
         $tts = TimeTrigger::findBySQL('worker = ?', array($token));
 
-        #echo "<br><br>tts:<br>";
-        #print_r($tts);
-        #echo "<br><br><br>";
-
         foreach ($tts as $tt) {
-            #echo "<br>run!!!!<br>";
             switch ($tt->job->trigger) {
                 case 'end' : {
                     foreach ($tt->job->task->handins as $handin) {

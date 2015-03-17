@@ -15,6 +15,11 @@
 
 namespace Leeroy;
 
+/**
+ * Class Job
+ * @package Leeroy
+ * Ein Job Repräsentiert eine Analyse der ein Job aus dem Jenkins zugeteilt ist
+ */
 class Job extends \Leeroy_SimpleORMap
 {
     /**
@@ -43,6 +48,10 @@ class Job extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
+    /**
+     * Testet ob der Job im Jenkins existiert
+     * @return bool
+     */
     public function isValid()
     {
         if ($this->task->jenkins->use_jenkins !== '1') {
@@ -56,6 +65,12 @@ class Job extends \Leeroy_SimpleORMap
         return strpos($http_response_header[0], '200 OK') !== false;
     }
 
+    /**
+     * Führt den Job aus
+     * @param string $path_user Pfad zur unser.zip Datei
+     * @param string $callback_url URL für den Callback
+     * @param string|null $handin_file_id
+     */
     public function execute($path_user, $callback_url, $handin_file_id = null)
     {
         if (!$this->task->jenkins->use_jenkins === '1') {
@@ -78,10 +93,6 @@ class Job extends \Leeroy_SimpleORMap
          * --form file1=@/Users/stephan/test/config.zip
          * --form json='{"parameter": [{"name":"user.zip", "file":"file0"},{"name":"config.zip", "file":"file1"}]}'
          */
-
-        #$path_user = get_upload_file_path($handin_file->document->id);
-
-
 
         $jobBuildData = array(
             'token' => md5(uniqid('aylüh', true)),
@@ -108,12 +119,7 @@ class Job extends \Leeroy_SimpleORMap
         }
 
         $url = $this->task->jenkins->getApi() . '/job/' . $this->name . '/build';
-
         $ch = curl_init($url);
-
-        #print_r($data);
-
-        #die();
 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -127,6 +133,11 @@ class Job extends \Leeroy_SimpleORMap
         #print_r($server_output);
     }
 
+    /**
+     * Gibt gie Analysis Ergebnisse zurück
+     * @param string $buildnumber
+     * @return string
+     */
     public function getAnalyticResult($buildnumber)
     {
         # http://build.bognari.me/job/java_upload/9/analysisResult/api/json?pretty=true&depth=1
@@ -150,6 +161,11 @@ class Job extends \Leeroy_SimpleORMap
         return $c;
     }
 
+    /**
+     * Gibt die Test Ergebnisse zurück
+     * @param string $buildnumber
+     * @return string
+     */
     public function getTestResult($buildnumber)
     {
         # http://build.bognari.me/job/java_upload/9/testReport/api/json?pretty=true&depth=1
@@ -171,6 +187,11 @@ class Job extends \Leeroy_SimpleORMap
         return $c;
     }
 
+    /**
+     * Testet ob eine Ausführung erfolgreich war
+     * @param string $buildnumber
+     * @return bool
+     */
     public function isSuccessfull($buildnumber)
     {
         $c = @file_get_contents($this->task->jenkins->getApi() . '/job/' . $this->name . '/' . $buildnumber . '/api/json?depth=1');
@@ -184,6 +205,12 @@ class Job extends \Leeroy_SimpleORMap
         return $data->result !== 'FAILURE';
     }
 
+    /**
+     * Hilfsmethode zum Sortieren von Analysis Ergebnisse nach Zeilennummern
+     * @param Object $a
+     * @param Object $b
+     * @return int
+     */
     public static function analyticCmp($a, $b)
     {
         return ($a->primaryLineNumber < $b->primaryLineNumber) ? -1 : 1;

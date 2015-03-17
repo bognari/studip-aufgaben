@@ -16,9 +16,8 @@
 namespace Leeroy;
 
 /**
- * @property null|\SimpleORMapCollection|string jenkins_url
- * @property null|\SimpleORMapCollection|string jenkins_token
- * @property null|\SimpleORMapCollection|string jenkins_user
+ * Class Jenkins
+ * @package Leeroy
  */
 class Jenkins extends \Leeroy_SimpleORMap
 {
@@ -34,6 +33,10 @@ class Jenkins extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
+    /**
+     * Gibt eine URL mit Benutzer und Token zurück, an die nur noch der API Aufruf angehängt werden muss
+     * @return string
+     */
     public function getAPI()
     {
         if ($this->use_ssl) {
@@ -42,6 +45,10 @@ class Jenkins extends \Leeroy_SimpleORMap
         return 'http://' . $this->jenkins_user . ':' . $this->jenkins_token . '@' . $this->jenkins_url;
     }
 
+    /**
+     * Gibt eine URL zu Jenkins zurück
+     * @return string
+     */
     public function getURL()
     {
         if ($this->use_ssl) {
@@ -50,6 +57,10 @@ class Jenkins extends \Leeroy_SimpleORMap
         return 'http://' . $this->jenkins_url;
     }
 
+    /**
+     * Testet ob Jenkins erreichbar ist
+     * @return bool true = Jenkins ist erreichbar oder die Benutzung deaktiviert
+     */
     public function isConnected()
     {
         if ($this->use_jenkins !== '1') {

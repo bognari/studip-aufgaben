@@ -1,9 +1,17 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: stephan
- * Date: 13.02.15
- * Time: 02:03
+ * callback
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * @author      Stephan Mielke
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
+ * @category    Stud.IP
+ *
+ * Rückrufe von Jenkins werden in callback.php verarbeitet
  */
 
 chdir('../../../');
@@ -33,39 +41,22 @@ require_once 'app/models/Job.php';
 require_once 'app/models/JobBuild.php';
 require_once 'app/models/DataFields.php';
 
-#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-#echo "post\n";
-#print_r($_POST);
-#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-#echo "json\n";
+/**
+ * Die Callback Informationen entpacken
+ */
 $json = $_POST['json'];
-#echo $json;
 $json = str_replace("\\\"", "\"", $json);
-#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-#echo "json2\n";
-
-#echo $json;
-
-
-#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-#echo "data\n";
-
 $data = json_decode($json);
-#var_export($data);
 
-#echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-#echo "file\n";
-
+/**
+ * Log Datei entgegen nehmen
+ */
 if (is_string($data->log)) {
-    #echo "\n\nhat log:\n";
     $log = file_get_contents($_FILES[$data->log]['tmp_name']);
     $log = preg_replace("/\/.*" . $jobBuild->job->name . ".*\//U", "", $log);
 } else {
-    #echo "\n\nhat KEIN log:\n";
     $log = null;
 }
-
-#die();
 
 if (!\Leeroy\JobBuild::exists($data->token)) {
     throw new AccessDeniedException(sprintf(
@@ -81,64 +72,41 @@ if ($jobBuild->job->id !== $data->id) {
     );
 }
 
-#print_r($jobBuild);
-
-#echo "\n\n\n\n\n\n";
-
+/**
+ * Herrausfinden was für ein Call es war und Ziel der Ergebnisse holen
+ */
 switch ($jobBuild->job->trigger) {
     case 'upload':
     case 'end':
         $save = $jobBuild->handin_file->handin;
-    #print_r($save);
-    #print_r("END");
-    #echo "\n\n\n\n\n\n";
         break;
     case 'end_all':
         $save = $jobBuild->job->task;
-        #print_r($save);
-        #print_r("END ALL");
-        #echo "\n\n\n\n\n\n";
         break;
     default:
         $jobBuild->delete();
         throw new AccessDeniedException(sprintf(_('Kein Unterstützter Trigger!')));
 }
 
+/**
+ * Testet ob die Analyse erfolgreich war und wenn ja werden die Ergebnisse gespeichert, wenn nicht dann wird versucht das Log zu speichern
+ */
 if ($jobBuild->job->isSuccessfull($data->buildnumber)) {
     if (in_array('analytics', $data->tasks, true)) {
         $result = $jobBuild->job->getAnalyticResult($data->buildnumber);
-        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        #echo "analytics\n";
-        #print_r($result);
         $save->analytic = $result;
     }
     if (in_array('test', $data->tasks, true)) {
         $result = $jobBuild->job->getTestResult($data->buildnumber);
-        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        #echo "test\n";
-        #print_r($result);
         $save->test = $result;
     }
     if (in_array('moss', $data->tasks, true)) {
-        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        #echo "content:\n";
         $content = file_get_contents($_FILES[$data->moss]['tmp_name']);
-        #print_r($content);
         $match = array();
-        #preg_match_all("/(.*)(http\:\/\/moss\.stanford\.edu\/results\/\d+)/", $input_lines, $output_array);
         $regex = "/http\:\/\/moss\.stanford\.edu\/results\/\d+/";
         $m = preg_match_all($regex, $content, $match);
-        #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        #echo "match\n";
-        #var_dump($match);
-        #echo "\n\n\nm:\n";
-        #print_r($m);
-
-        #echo "\n\n\nregex:\n";
-        #print_r($regex);
 
         if (count($match) > 0 && count($match[0]) > 0 && is_string($match[0][0])) {
-
             $save->link = $match[0][0];
         }
     }
@@ -146,9 +114,6 @@ if ($jobBuild->job->isSuccessfull($data->buildnumber)) {
     $save->lastJob = null;
     $save->store();
 } else {
-    #echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    #echo "log\n";
-    #print_r($log);
     $save->lastJob = 'fail';
     $save->log = $log;
     $save->store();
@@ -158,6 +123,3 @@ $jobBuild->delete();
 
 
 page_close();
-
-
-

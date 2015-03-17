@@ -42,52 +42,88 @@ class Handin extends \Leeroy_SimpleORMap
         parent::__construct($id);
     }
 
+    /**
+     * Gibt die Gruppen des Studenten als Array zurück
+     * @return string[]
+     */
     public function getGroups()
     {
         return GetGroupsByCourseAndUser($this->task->seminar_id, $this->user_id);
     }
 
-    public function isInGroup($gruop)
+    /**
+     * Testet ob der Student sich in der Gruppe befindet
+     * @param string $group die ID der jeweiligen Gruppe
+     * @return bool
+     */
+    public function isInGroup($group)
     {
-        return array_key_exists($gruop, GetGroupsByCourseAndUser($this->task->seminar_id, $this->user_id));
+        return array_key_exists($group, GetGroupsByCourseAndUser($this->task->seminar_id, $this->user_id));
     }
 
+    /**
+     * Sortierbedinnung zum Sortieren von Abgaben nach dem Namen der Studenten
+     * @param Handin $a
+     * @param Handin $b
+     * @return int
+     */
     public static function cmp($a, $b)
     {
         return (get_fullname($a->user_id) < get_fullname($b->user_id)) ? -1 : 1;
     }
 
+    /**
+     * @return HandinFiles
+     */
     public function getFileAnswer()
     {
         $file_answer = $this->files->findOneBy('type', 'answer');
         return $file_answer;
     }
 
+    /**
+     * @return bool
+     */
     public function hasLinkResult()
     {
         return is_string($this->link) && $this->link !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasAnalyticResult()
     {
         return is_string($this->analytic) && $this->analytic !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasTestResult()
     {
         return is_string($this->test) && $this->test !== 'fail';
     }
 
+    /**
+     * @return bool
+     */
     public function hasLog()
     {
         return is_string($this->log);
     }
 
+    /**
+     * @return bool
+     */
     public function hasPoints()
     {
         return is_numeric($this->points);
     }
 
+    /**
+     * @return int
+     */
     public function getAnalyticWarnings()
     {
         if ($this->hasAnalyticResult()) {
@@ -99,6 +135,9 @@ class Handin extends \Leeroy_SimpleORMap
         return 0;
     }
 
+    /**
+     * @return int
+     */
     public function getTestErrors()
     {
         if ($this->hasTestResult()) {
@@ -110,6 +149,9 @@ class Handin extends \Leeroy_SimpleORMap
         return 0;
     }
 
+    /**
+     * @return array
+     */
     public function getAnalyticResult()
     {
         $files = array();
@@ -133,6 +175,9 @@ class Handin extends \Leeroy_SimpleORMap
         return $files;
     }
 
+    /**
+     * @return array
+     */
     public function getTestResult()
     {
         if ($this->hasTestResult()) {
@@ -144,21 +189,17 @@ class Handin extends \Leeroy_SimpleORMap
         return array();
     }
 
+    /**
+     * Überschreibt die store Methode aus dem ORM, um Abgaben von Studenten, die in der gleichen Abgabegruppe, außer die Bewertung sind zu synchronisieren
+     * @param bool $sync
+     */
     public function store($sync = true)
     {
 
         if ($sync === true) {
-            #print_r($this);
-            #echo "<br><br>";
             $handins = $this->getSyncHandins();
-            #print_r($handins);
-            #die();
-
 
             foreach ($handins as $handin) {
-
-                #print_r($handin);
-                #die();
 
                 $handin->hint = $this->hint;
                 $handin->answer = $this->answer;
@@ -179,13 +220,6 @@ class Handin extends \Leeroy_SimpleORMap
                         'handin_id' => $handin->id,
                         'type' => $file->type
                     );
-
-                    #print_r($data);
-                    #echo "<br><br>";
-                    #print_r($this);
-
-                    #die();
-
                     $handin_file = HandinFiles::create($data);
                 }
 
@@ -195,7 +229,11 @@ class Handin extends \Leeroy_SimpleORMap
         parent::store();
     }
 
-    public function getSyncHandins()
+    /**
+     * Gibt alle Abgaben als Array zurück, mit denen die Abgabe gesynct ist.
+     * @return Handin[]
+     */
+    private function getSyncHandins()
     {
         $handins = array();
 
@@ -221,6 +259,13 @@ class Handin extends \Leeroy_SimpleORMap
         return $handins;
     }
 
+    /**
+     * Fügt der Abgabe eine Datei hinzu und löst den upload Trigger aus
+     * @param string $file id der Datei
+     * @param string $type Typ der Datei (answer oder feedback)
+     * @param $url die URL der callback.php
+     * @return mixed
+     */
     public function addFile($file, $type, $url)
     {
         $data = array(
