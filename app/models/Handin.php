@@ -298,4 +298,21 @@ class Handin extends \Leeroy_SimpleORMap
 
         return $handin_file;
     }
+
+    /**
+     * @param string $user_id
+     * @return bool
+     */
+    function belongsTo($user_id)
+    {
+        $handins = $this->getSyncHandins();
+
+        foreach ($handins as $h) {
+            if ($h->user_id == $user_id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

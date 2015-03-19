@@ -48,15 +48,6 @@ $json = $_POST['json'];
 $json = str_replace("\\\"", "\"", $json);
 $data = json_decode($json);
 
-/**
- * Log Datei entgegen nehmen
- */
-if (is_string($data->log)) {
-    $log = file_get_contents($_FILES[$data->log]['tmp_name']);
-    $log = preg_replace("/\/.*" . $jobBuild->job->name . ".*\//U", "", $log);
-} else {
-    $log = null;
-}
 
 if (!\Leeroy\JobBuild::exists($data->token)) {
     throw new AccessDeniedException(sprintf(
@@ -71,6 +62,17 @@ if ($jobBuild->job->id !== $data->id) {
             _('Sie haben keine Berechtigung für diese Aktion!'))
     );
 }
+
+/**
+ * Log Datei entgegen nehmen
+ */
+if (is_string($data->log)) {
+    $log = file_get_contents($_FILES[$data->log]['tmp_name']);
+    $log = preg_replace("/\/.*" . $jobBuild->job->name . ".*\//U", "", $log);
+} else {
+    $log = null;
+}
+
 
 /**
  * Herrausfinden was für ein Call es war und Ziel der Ergebnisse holen

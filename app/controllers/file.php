@@ -13,6 +13,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
+use Leeroy\Perm;
+
 require_once 'Leeroy_Controller.php';
 
 require_once $this->trails_root . '/models/Jenkins.php';
@@ -56,8 +58,7 @@ class FileController extends LeeroyStudipController
             }
 
             // only delete file, if it belongs to the current user
-            #TODO besseren zugriffs check einführen
-            if ($file->type === 'answer' || $file->document->user_id === $GLOBALS['user']->id) {
+            if (($file->type === 'answer' && ($file->document->user_id === $GLOBALS['user']->id || $file->handin->belongsTo($GLOBALS['user']->id))) || ($file->type === 'feedback' && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id))) {
 
                 if ($file->type === 'answer') {
                     $file->handin->analytic = null;
