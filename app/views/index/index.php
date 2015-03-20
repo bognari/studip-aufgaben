@@ -117,7 +117,7 @@ array_push($infobox_content, array(
             'text' => 'Materialien vorhanden'
         ),
         array(
-            'icon' => 'icons/16/black/link-extern.png',
+            'icon' => 'icons/16/black/info-circle.png',
             'text' => 'Weitere Informationen verlinkt'
         ),
         array(
@@ -152,7 +152,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <? endif ?>
     <br><br><br><br><br><br><br>
 <? elseif (is_bool($aux) && !$aux) : ?>
-    <?= MessageBox::error(_('Bitte füllen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt')); ?>
+    <?= MessageBox::error(_('Bitte füllen Sie ihre Zusatzangaben zuerst aus, vorher sind keine Abgaben erlaubt. ') . sprintf('%s%s%s', '<a href="' . URLHelper::getLink("teilnehmer_aux.php") . '">', 'Zusatzangaben ändern', '</a>')); ?>
     <? #TODO Link ?>
 
     <table class="default zebra">
@@ -192,8 +192,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         </tbody>
     </table>
 <? elseif (!Leeroy\Perm::has('new_task', $seminar_id) && count(GetGroupsByCourseAndUser($seminar_id, $GLOBALS['user']->id)) === 0) : ?>
-    <?= MessageBox::error(_('Sie sind keiner Übungsgruppe zugeordnet, Bitte treten Sie zuerst einer Gruppe bei.')); ?>
-    <? #TODO Link ?>
+    <?= MessageBox::error(_('Sie sind keiner Übungsgruppe zugeordnet, Bitte treten Sie zuerst einer Gruppe bei. ') . sprintf('%s%s%s', '<a href="' . URLHelper::getLink("statusgruppen.php") . '">', 'Einer Gruppe beitreten', '</a>')); ?>
 <? else : ?>
     <? if (count($tasks) === 0) : ?>
         <? if (Leeroy\Perm::has('new_task', $seminar_id)) : ?>

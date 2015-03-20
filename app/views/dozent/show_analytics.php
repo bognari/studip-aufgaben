@@ -13,49 +13,52 @@
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
-$content = array(array(
+
+$this->render_partial('student/stow_analytics', compact('task', 'files', 'data'));
+
+/*$content = array(array(
     'kategorie' => _('Aktionen'),
     'eintrag' => array()));
 
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
-?>
+*/ ?><!--
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Analyseergebnisse für ' . $task->title))) ?>
+<? /*= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Analyseergebnisse für ' . $task->title))) */ ?>
 
     <br>
-    <h1> <?= _('Analyseergebnisse für') ?>  <?= htmlReady($task->title) ?> : </h1>
+    <h1> <? /*= _('Analyseergebnisse für') */ ?>  <? /*= htmlReady($task->title) */ ?> : </h1>
 
-<? if (count($files) > 0) : ?>
-    <? foreach ($files as $name => $file) : ?>
+<? /* if (count($files) > 0) : */ ?>
+    <? /* foreach ($files as $name => $file) : */ ?>
         <br>
         <br>
-        <h2> <?= _('Datei') . ':' ?>  <?= htmlReady($name) ?> : </h2>
+        <h2> <? /*= _('Datei') . ':' */ ?>  <? /*= htmlReady($name) */ ?> : </h2>
         <table class="default zebra">
             <thead>
             <tr>
-                <th style="min-width: 50px"><?= _('Zeile') ?></th>
-                <th style="width: 100%"><?= _('Fehler') ?></th>
+                <th style="min-width: 50px"><? /*= _('Zeile') */ ?></th>
+                <th style="width: 100%"><? /*= _('Fehler') */ ?></th>
             </tr>
             </thead>
-            <? foreach ($file as $warning) : ?>
+            <? /* foreach ($file as $warning) : */ ?>
                 <tr>
                     <td>
-                        <?= htmlReady($warning->primaryLineNumber) ?>
+                        <? /*= htmlReady($warning->primaryLineNumber) */ ?>
                     </td>
 
                     <td>
-                        <?= htmlReady($warning->message) ?>
+                        <? /*= htmlReady($warning->message) */ ?>
                     </td>
                 </tr>
-            <? endforeach ?>
+            <? /* endforeach */ ?>
             <tbody>
             </tbody>
         </table>
-    <? endforeach ?>
-<? elseif ($data->analytic === 'fail') : ?>
-    <?= MessageBox::error(_('Analyse fehlgeschlagen.')); ?>
-<? elseif ($data->analytic === null) : ?>
-    <?= MessageBox::error(_('Keine Analyse ausgeführt.')); ?>
-<? else : ?>
-    <?= MessageBox::info(_('Die Analyse konnte keine Fehler finden :)')); ?>
-<? endif ?>
+    <? /* endforeach */ ?>
+<? /* elseif ($data->analytic === 'fail') : */ ?>
+    <? /*= MessageBox::error(_('Analyse fehlgeschlagen.')); */ ?>
+<? /* elseif ($data->analytic === null) : */ ?>
+    <? /*= MessageBox::error(_('Keine Analyse ausgeführt.')); */ ?>
+<? /* else : */ ?>
+    <? /*= MessageBox::info(_('Die Analyse konnte keine Fehler finden :)')); */ ?>
+--><? /* endif */ ?>

@@ -24,6 +24,10 @@
             </a>
         </th>
 
+        <th style="width: 140px">
+            <?= _('Eigenschaften') ?>
+        </th>
+
         <th <?= $sort === 'startdate' ? 'class="sort' . $order . '"' : '' ?>>
             <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Start') ?>
@@ -52,14 +56,17 @@
                    title="<?= _('Diese Aufgabe anzeigen') ?>">
                     <?= htmlReady($task['title']) ?>
                 </a>
-                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => _('Pflichtaufgabe'), 'title' => _('Pflichtaufgabe'))) : '' ?>
-                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => _('Materialien'), 'title' => _('Materialien'))) : '' ?>
-                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/link-extern.png', array('alt' => _('externer Link'), 'title' => _('externer Link'))) : '' ?>
-                <?= $task->hasJobs() ? Assets::img('icons/16/blue/code.png', array('alt' => _('automatische Analysen'), 'title' => _('automatische Analysen'))) : '' ?>
 
-                <?= $task->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : '' ?>
-                <?= $task->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : '' ?>
-                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Link Ergebnisse'), 'title' => _('Link Ergebnisse'))) : '' ?>
+            </td>
+            <td>
+                <?= $task->isRequired() ? Assets::img('icons/16/blue/medal.png', array('alt' => _('Pflichtaufgabe'), 'title' => _('Pflichtaufgabe'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasMaterial() ? Assets::img('icons/16/blue/staple.png', array('alt' => _('Materialien'), 'title' => _('Materialien'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasTaskLink() ? Assets::img('icons/16/blue/info-circle.png', array('alt' => _('externer Link'), 'title' => _('externer Link'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasJobs() ? Assets::img('icons/16/blue/code.png', array('alt' => _('automatische Analysen'), 'title' => _('automatische Analysen'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+
+                <?= $task->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Link Ergebnisse'), 'title' => _('Link Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
 
             </td>
             <td>

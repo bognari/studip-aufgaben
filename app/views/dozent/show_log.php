@@ -14,23 +14,25 @@
  * @category    Stud.IP
  */
 
+$this->render_partial('student/stow_log', compact('task', 'data'));
+/*
 $content = array(array(
     'kategorie' => _('Aktionen'),
     'eintrag' => array()));
 
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
-?>
+*/ ?><!--
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Compilerfehler für ' . $task->title))) ?>
+<? /*= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Compilerfehler für ' . $task->title))) */ ?>
 
     <br>
-    <h1> <?= _('Compilerfehler für') ?>  <?= htmlReady($task->title) ?> : </h1>
+    <h1> <? /*= _('Compilerfehler für') */ ?>  <? /*= htmlReady($task->title) */ ?> : </h1>
 
-<? if (is_string($data->log)) : ?>
+<? /* if (is_string($data->log)) : */ ?>
     <div style="font-family:monospace">
-        <?= nl2br(str_replace(' ', '&nbsp;', str_replace('\t', '      ', htmlentities($data->log)))) ?>
+        <? /*= nl2br(str_replace(' ', '&nbsp;', str_replace('\t', '      ', htmlentities($data->log)))) */ ?>
     </div>
-<? else : ?>
-    <?= MessageBox::info(_('Keine Compilerfehler gefunden.')); ?>
-<? endif ?>
+<? /* else : */ ?>
+    <? /*= MessageBox::info(_('Keine Compilerfehler gefunden.')); */ ?>
+--><? /* endif */ ?>

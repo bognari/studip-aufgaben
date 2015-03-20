@@ -226,7 +226,10 @@ class Handin extends \Leeroy_SimpleORMap
                 $handin->store(false);
             }
         }
-        parent::store();
+
+        $ret = parent::store();
+
+        return $ret;
     }
 
     /**

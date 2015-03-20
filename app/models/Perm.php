@@ -87,5 +87,4 @@ class Perm
             throw new AccessDeniedException(sprintf(_('Sie haben keine Berechtigung für diese Aktion! Benötigte Berechtigung') . ': %s'), $perm);
         }
     }
-
 }

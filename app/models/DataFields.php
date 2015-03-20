@@ -16,7 +16,7 @@ class DataFields
 
     /**
      * Erzeugt ein Datafields Objekt, das Zusatzangaben und deren Konfiguration einer Veranstaltung beinhaltet
-     * @param tring $seminar_id
+     * @param string $seminar_id
      * @return DataFields
      */
     public static function getDataFields($seminar_id)

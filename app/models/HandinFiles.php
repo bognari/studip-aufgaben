@@ -44,7 +44,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
     }
 
     /**
-     * Sammel alle Abgaben zu einer Aufgabe zusammen und gibt
+     * Sammelt alle Abgaben zu einer Aufgabe zusammen und gibt
      * @param string $seminar_id
      * @param string $flag a = Analyse Ergebnisse, u = Test Ergebnisse, l = Log, g = Gruppenordner, t = Aufgabenorder,
      * @param bool|string $group_id
@@ -79,8 +79,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
             $groups['members'] = array($group_id => $groups['members'][$group_id]);
         }
 
-        #print_r($groups);
-
         if ($task_id === null) {
             $tasks = Tasks::findBySQL('seminar_id = ?', array($seminar_id));
         } else {
@@ -101,8 +99,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
             }
 
             # benutzer durch gehen
-            #print_r($groups["members"][$group_id]);
-
             foreach ($groups['members'][$group_id] as $user) {
 
                 # aufgaben durch gehen
@@ -135,9 +131,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
 
                             $zip->extractTo($path_src . '/');
                             $zip->close();
-                            #echo 'ok';
-                        } else {
-                            #echo 'failed';
                         }
 
                         if (strpos($flag, 'a') !== false && $handin->hasAnalyticResult()) {
@@ -192,8 +185,6 @@ class HandinFiles extends \Leeroy_SimpleORMap
 
         $file_name = $tempfile . '/abgaben.zip';
         if (HandinFiles::zipFile($tempfile, $file_name) === false) {
-            #print_r($file_name);
-            #die();
             throw new \ErrorException(_('Zip Datei konnte nicht erstellt werden'));
         }
 

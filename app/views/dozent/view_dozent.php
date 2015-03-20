@@ -61,8 +61,16 @@ if ($handin->lastJob === 'fail') {
     array_push($content, $content_fail);
 }
 
-if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResult() || $handin->hasTestResult()) {
+if ($handin->hasPoints() || $handin->hasLinkResult() || $handin->hasAnalyticResult() || $handin->hasTestResult() || $handin->hasLog() || $handin->lastJob === 'fail') {
     $entry_result = array();
+
+    if ($handin->lastJob === 'fail') {
+        array_push($entry_result, array(
+            'icon' => 'icons/16/red/exclaim-circle.png',
+            'text' => _('Analysefehler')
+        ));
+    }
+
     if ($handin->hasPoints()) {
         array_push($entry_result, array(
             'icon' => 'icons/16/black/doctoral_cap.png',

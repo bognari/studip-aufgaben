@@ -14,53 +14,55 @@
  * @category    Stud.IP
  */
 
-$content = array(array(
+$this->render_partial('student/stow_test', compact('suites', 'task', 'data'));
+
+/*$content = array(array(
     'kategorie' => _('Aktionen'),
     'eintrag' => array()));
 
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
-?>
+*/ ?><!--
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Testergebnisse für ' . $task->title))) ?>
+<? /*= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Testergebnisse für ' . $task->title))) */ ?>
 
     <br>
-    <h1> <?= _('Testergebnisse für') ?>  <?= htmlReady($task->title) ?> : </h1>
+    <h1> <? /*= _('Testergebnisse für') */ ?>  <? /*= htmlReady($task->title) */ ?> : </h1>
 
-<? if (count($suites) > 0) : ?>
-    <? foreach ($suites as $suite) : ?>
+<? /* if (count($suites) > 0) : */ ?>
+    <? /* foreach ($suites as $suite) : */ ?>
         <br>
         <table class="default zebra">
             <thead>
             <tr>
-                <th style="min-width: 50px"><?= _('Testname') ?></th>
-                <th style="min-width: 50px"><?= _('Status') ?></th>
-                <th style="width: 100%"><?= _('Grund des Scheiterns') ?></th>
+                <th style="min-width: 50px"><? /*= _('Testname') */ ?></th>
+                <th style="min-width: 50px"><? /*= _('Status') */ ?></th>
+                <th style="width: 100%"><? /*= _('Grund des Scheiterns') */ ?></th>
             </tr>
             </thead>
-            <? foreach ($suite->cases as $case) : ?>
+            <? /* foreach ($suite->cases as $case) : */ ?>
                 <tr>
                     <td>
-                        <?= htmlReady($case->name) ?>
+                        <? /*= htmlReady($case->name) */ ?>
                     </td>
 
                     <td>
-                        <?= htmlReady($case->status) ?>
+                        <? /*= htmlReady($case->status) */ ?>
                     </td>
                     <td>
-                        <?= htmlReady($case->errorDetails) ?>
+                        <? /*= htmlReady($case->errorDetails) */ ?>
                     </td>
                 </tr>
-            <? endforeach ?>
+            <? /* endforeach */ ?>
             <tbody>
             </tbody>
         </table>
-    <? endforeach ?>
-<? else : ?>
-    <? if ($data->test === 'fail') : ?>
-        <?= MessageBox::error(_('Testausführung fehlgeschlagen.')); ?>
-    <? endif ?>
-    <? if ($data->test === null) : ?>
-        <?= MessageBox::error(_('Keine Test ausgeführt.')); ?>
-    <? endif ?>
-<? endif ?>
+    <? /* endforeach */ ?>
+<? /* else : */ ?>
+    <? /* if ($data->test === 'fail') : */ ?>
+        <? /*= MessageBox::error(_('Testausführung fehlgeschlagen.')); */ ?>
+    <? /* endif */ ?>
+    <? /* if ($data->test === null) : */ ?>
+        <? /*= MessageBox::error(_('Keine Test ausgeführt.')); */ ?>
+    <? /* endif */ ?>
+--><? /* endif */ ?>
