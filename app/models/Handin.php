@@ -318,4 +318,35 @@ class Handin extends \Leeroy_SimpleORMap
 
         return false;
     }
+
+    /**
+     * @param string $seminar_id
+     * @param string $user_id
+     * @return int
+     */
+    public static function getTotalPoints($seminar_id, $user_id)
+    {
+
+        $tasks = Tasks::findBySQL('seminar_id = ? AND required = ?', array($seminar_id, true));
+
+        $gesamt_punkte = 0;
+
+        foreach ($tasks as $task) {
+            $handin = $task->handins->findOneBy('user_id', $user_id);
+
+            $punkte = 0;
+
+            if (is_object($handin)) {
+                $punkte = $handin->points;
+            }
+
+            if (!is_numeric($punkte)) {
+                $punkte = 0;
+            }
+
+            $gesamt_punkte += $punkte;
+        }
+
+        return $gesamt_punkte;
+    }
 }

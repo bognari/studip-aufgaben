@@ -39,6 +39,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
         <thead>
         <tr>
             <th style="min-width: 80px"><?= _('TeilnehmerIn') ?></th>
+            <th style="min-width: 80px"><?= _('Gesamtpunkte') ?></th>
             <th style="min-width: 80px; text-align: left"><?= _('Punkte') ?></th>
         </tr>
         </thead>
@@ -48,6 +49,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
                 <td>
                     <?= htmlReady(get_fullname($handin->user_id)) ?>
+                </td>
+
+                <td>
+                    <?= htmlReady(Leeroy\Handin::getTotalPoints($seminar_id, $handin->user_id)) ?>
                 </td>
 
                 <td style="text-align: left">

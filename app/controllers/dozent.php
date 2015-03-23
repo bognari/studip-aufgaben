@@ -399,9 +399,9 @@ class DozentController extends LeeroyStudipController
 
                 $ok = $ok && (intval($value, 10) . '') === $value;
 
-                if (is_numeric($value)) {
+                if ((intval($value, 10) . '') === $value) {
                     $handin->points = $value;
-                    $handin->store();
+                    $handin->store(false);
                 }
             }
         }

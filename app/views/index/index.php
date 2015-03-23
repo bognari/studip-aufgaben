@@ -88,7 +88,7 @@ else :
             'eintrag' => array(
                 array(
                     'icon' => 'icons/16/black/info.png',
-                    'text' => 'Bearbeiten Sie die angezeigten Aufgaben!'
+                    'text' => 'Gesamtpunkte: ' . htmlReady(Leeroy\Handin::getTotalPoints($seminar_id, $GLOBALS['user']->id))
                 )
             )
         );
