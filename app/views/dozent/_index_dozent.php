@@ -24,17 +24,17 @@
             </a>
         </th>
 
-        <th style="width: 140px">
+        <th style="min-width: 140px">
             <?= _('Eigenschaften') ?>
         </th>
 
-        <th <?= $sort === 'startdate' ? 'class="sort' . $order . '"' : '' ?>>
+        <th <?= $sort === 'startdate' ? 'class="sort' . $order . '"' : '' ?> style="min-width: 120px">
             <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Start') ?>
             </a>
         </th>
 
-        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
+        <th <?= $sort === 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="min-width: 120px">
             <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order === 'desc' ? '&asc=1' : '')) ?>">
                 <?= _('Ende') ?>
             </a>

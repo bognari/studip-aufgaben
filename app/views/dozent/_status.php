@@ -34,7 +34,17 @@
         <tbody>
         <? foreach ($group[$group_id] as $user) : ?>
             <?
-            $handin = $task->handins->findOneBy('user_id', $user->user_id)
+            $handin = $task->handins->findOneBy('user_id', $user->user_id);
+
+            if ($handin === null || $handin->task_id !== $task->getId()) {  // create missing entries on the fly
+                $handin = Leeroy\Handin::create(array(
+                    'user_id' => $user->user_id,
+                    'chdate' => 1,
+                    'mkdate' => 1,
+                    'task_id' => $task->getId()
+                ));
+            }
+
             ?>
             <tr>
                 <td>
