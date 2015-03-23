@@ -23,6 +23,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Punkteübersicht für ' . $group_name))) ?>
 
+<? if (is_string($is_success)) : ?>
+    <? if ($is_success == 'success') : ?>
+        <?= MessageBox::success(_('Alle Punkte wurden gespeichert.')); ?>
+    <? else : ?>
+        <?= MessageBox::error(_('Es konnten nicht alle Punkte gespeichert werden.')) ?>
+    <? endif ?>
+<? endif ?>
+
 <br>
 <h2> <?= _('Punkteübersicht für ') ?> <?= htmlReady($group_name) ?> <?= _('mit') ?> <?= htmlReady($task->title) ?>
     : </h2>

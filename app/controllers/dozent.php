@@ -342,7 +342,7 @@ class DozentController extends LeeroyStudipController
         }
     }
 
-    public function grading_action($group_id, $task_id)
+    public function grading_action($group_id, $task_id, $ok = null)
     {
         $this->group_id = $group_id;
 
@@ -371,6 +371,9 @@ class DozentController extends LeeroyStudipController
             usort($this->handins, array('Leeroy\Handin', 'cmp'));
         }
 
+        var_dump($ok);
+
+        $this->is_success = $ok;
     }
 
     public function grading_save_action($task_id, $group_id)
@@ -387,15 +390,29 @@ class DozentController extends LeeroyStudipController
             throw new AccessDeniedException(_('Die Gruppe wurde nicht gefunden!'));
         }
 
+        $ok = true;
+
         foreach ($_POST as $id => $value) {
             $handin = new Leeroy\Handin($id);
-            if (($handin->task->seminar_id === $this->seminar_id) && is_numeric($value)) {
-                $handin->points = $value;
-                $handin->store();
+
+            if (($handin->task->seminar_id === $this->seminar_id)) {
+
+                $ok = $ok && (intval($value, 10) . '') === $value;
+
+                if (is_numeric($value)) {
+                    $handin->points = $value;
+                    $handin->store();
+                }
             }
         }
 
-        $this->redirect('dozent/grading/' . $group_id . '/' . $task_id);
+        if ($ok) {
+            $ret = 'success';
+        } else {
+            $ret = 'not';
+        }
+
+        $this->redirect('dozent/grading/' . $group_id . '/' . $task_id . '/' . $ret);
     }
 
     public function show_analytics_action($task_id)
