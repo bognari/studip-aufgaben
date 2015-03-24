@@ -124,8 +124,7 @@ if (count($content) === 0) {
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<? $this->render_partial('index/_breadcrumb', array('path' => array(
-    'overview', array('dozent/view_task/' . $task->getId(), $task['title']), get_fullname($handin->user_id)))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title']), array('dozent/view_dozent/' . $handin->getId(), get_fullname($handin->user_id))))) ?>
 
 <h1><?= htmlReady(get_fullname($handin->user_id)) ?></h1>
 

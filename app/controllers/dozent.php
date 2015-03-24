@@ -423,6 +423,7 @@ class DozentController extends LeeroyStudipController
         $this->files = $task->getAnalyticResult();
         $this->task = $task;
         $this->data = $task;
+        $this->from = 'task';
     }
 
     public function show_test_action($task_id)
@@ -435,8 +436,7 @@ class DozentController extends LeeroyStudipController
         $this->suites = $task->getTestResult();
         $this->task = $task;
         $this->data = $task;
-
-
+        $this->from = 'task';
     }
 
     public function show_log_action($task_id)
@@ -450,6 +450,7 @@ class DozentController extends LeeroyStudipController
 
         $this->data = $task;
         $this->task = $task;
+        $this->from = 'task';
     }
 
     public function download_action($flag = 'gtaul', $group_id = false, $task_id = null)

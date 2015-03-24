@@ -51,7 +51,7 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <? endforeach ?>
 <? endif ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', $task['title']))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title']), array('dozent/edit_task/' . $task->getId(), _('Bearbeiten'))))) ?>
 
 <h2><?= _('Aufgabe bearbeiten') ?></h2>
 

@@ -21,7 +21,7 @@ $content = array(array(
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Punkteübersicht für ' . $group_name))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title']), array('dozent/grading/' . $group_id . '/' . $task->getId(), _('Bewertung' . ' ' . $group_name))))) ?>
 
 <? if (is_string($is_success)) : ?>
     <? if ($is_success == 'success') : ?>

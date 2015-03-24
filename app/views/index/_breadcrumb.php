@@ -13,7 +13,7 @@
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
-/*
+
 $breadcrumb = array();
 
 foreach ($path as $step) :
@@ -45,8 +45,5 @@ foreach ($path as $step) :
         endswitch;
     endif;
 endforeach; ?>
-
-<span><?= _('Sie befinden sich hier:') ?></span>
-<span><?= implode(' &gt; ', $breadcrumb) ?></span>
-
-*/
+<span style="float: left"><?= _('Sie befinden sich hier:') . '&nbsp;' ?></span>
+<span style="font-weight: bold"><?= implode(' &gt; ', $breadcrumb) ?></span>

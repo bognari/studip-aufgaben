@@ -143,7 +143,7 @@ if (count($content) === 0) {
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', $task['title']))) ?>
+<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title'])))) ?>
 
 <?= $this->render_partial('index/_task_details') ?>
 

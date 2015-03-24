@@ -22,7 +22,15 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
 
 ?>
 
-<?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'Testergebnisse für ' . $task->title))) ?>
+<? if ($from === 'task') : ?>
+    <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title']), array('dozent/show_test/' . $data->getId(), _('Testergebnisse'))))) ?>
+<? else : ?>
+    <? if (Leeroy\Perm::has('new_task', $this->seminar_id)) : ?>
+        <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('dozent/view_task/' . $task->getId(), $task['title']), array('dozent/view_dozent/' . $data->getId(), get_fullname($data->user_id)), array('index/show_test/' . $data->getId(), _('Testergebnisse'))))) ?>
+    <? else : ?>
+        <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', array('student/view_student/' . $task->getId(), $task['title']), array('index/show_test/' . $data->getId(), _('Testergebnisse'))))) ?>
+    <? endif ?>
+<? endif ?>
 
     <br>
     <h1> <?= _('Testergebnisse für') ?>  <?= htmlReady($task->title) ?> : </h1>

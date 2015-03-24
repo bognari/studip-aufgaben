@@ -14,6 +14,8 @@
  * @category    Stud.IP
  */
 
+use Leeroy\Perm;
+
 require_once 'Leeroy_Controller.php';
 
 require_once $this->trails_root . '/models/Jenkins.php';
@@ -120,6 +122,12 @@ class IndexController extends LeeroyStudipController
             }
         }
 
+        if (Leeroy\Perm::has('new_task', $this->seminar_id)) {
+            $this->roll = 'dozent';
+        } else {
+            $this->roll = 'student';
+        }
+
         $this->data = $handin;
         $this->files = $handin->getAnalyticResult();
         $this->task = $handin->task;
@@ -143,6 +151,12 @@ class IndexController extends LeeroyStudipController
             }
         }*/
 
+        if (Leeroy\Perm::has('new_task', $this->seminar_id)) {
+            $this->roll = 'dozent';
+        } else {
+            $this->roll = 'student';
+        }
+
         $this->data = $handin;
         $this->suites = $handin->getTestResult();
         $this->task = $handin->task;
@@ -162,6 +176,12 @@ class IndexController extends LeeroyStudipController
 
         if (!($handin->user_id === $GLOBALS['user']->id || Leeroy\Perm::has('new_task', $this->seminar_id))) {
             throw new AccessDeniedException(_('Kein Zugriff!'));
+        }
+
+        if (Leeroy\Perm::has('new_task', $this->seminar_id)) {
+            $this->roll = 'dozent';
+        } else {
+            $this->roll = 'student';
         }
 
         $this->data = $handin;
