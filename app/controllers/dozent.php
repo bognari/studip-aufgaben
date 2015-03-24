@@ -371,8 +371,6 @@ class DozentController extends LeeroyStudipController
             usort($this->handins, array('Leeroy\Handin', 'cmp'));
         }
 
-        var_dump($ok);
-
         $this->is_success = $ok;
     }
 

@@ -200,7 +200,6 @@ class Handin extends \Leeroy_SimpleORMap
             $handins = $this->getSyncHandins();
 
             foreach ($handins as $handin) {
-
                 $handin->hint = $this->hint;
                 $handin->answer = $this->answer;
                 $handin->feedback = $this->feedback;
@@ -253,7 +252,10 @@ class Handin extends \Leeroy_SimpleORMap
 
                 foreach ($users as $user) {
                     if ($user !== $this->user_id) {
-                        array_push($handins, $this->task->handins->findOneBy('user_id', $user));
+                        $h = $this->task->handins->findOneBy('user_id', $user);
+                        if ($h !== null) {
+                            array_push($handins, $h);
+                        }
                     }
                 }
             }
@@ -266,7 +268,7 @@ class Handin extends \Leeroy_SimpleORMap
      * Fügt der Abgabe eine Datei hinzu und löst den upload Trigger aus
      * @param string $file id der Datei
      * @param string $type Typ der Datei (answer oder feedback)
-     * @param $url die URL der callback.php
+     * @param string $url die URL der callback.php
      * @return mixed
      */
     public function addFile($file, $type, $url)
