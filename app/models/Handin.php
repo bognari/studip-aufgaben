@@ -305,10 +305,11 @@ class Handin extends \Leeroy_SimpleORMap
     }
 
     /**
+     * Gibt an ob zwei Abgaben zusammen gehören
      * @param string $user_id
      * @return bool
      */
-    function belongsTo($user_id)
+    public function belongsTo($user_id)
     {
         $handins = $this->getSyncHandins();
 
@@ -322,6 +323,7 @@ class Handin extends \Leeroy_SimpleORMap
     }
 
     /**
+     * Gibt die Gesamtpunktzahl aller Abgaben für aktivierte Pflichtaufgaben zurück,
      * @param string $seminar_id
      * @param string $user_id
      * @return int
@@ -329,7 +331,7 @@ class Handin extends \Leeroy_SimpleORMap
     public static function getTotalPoints($seminar_id, $user_id)
     {
 
-        $tasks = Tasks::findBySQL('seminar_id = ? AND required = ?', array($seminar_id, true));
+        $tasks = Tasks::findBySQL('seminar_id = ? AND required = ? AND is_active = ?', array($seminar_id, true, true));
 
         $gesamt_punkte = 0;
 

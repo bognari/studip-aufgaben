@@ -68,7 +68,7 @@ class TimeTrigger extends \Leeroy_SimpleORMap
                     break;
                 }
                 case 'end_all' : {
-                    $zip_file = HandinFiles::collecting($tt->job->task->seminar_id, '', false, $tt->job->task->id);
+                    $zip_file = HandinFiles::collecting($tt->job->task->seminar_id, '', false, $tt->job->task->id, true);
                     $tt->job->execute($zip_file, $callback_url);
                     unset($zip_file);
                     break;

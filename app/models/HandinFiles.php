@@ -53,7 +53,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
      * @throws \AccessDeniedException
      * @throws \ErrorException
      */
-    public static function collecting($seminar_id, $flag = 'atl', $group_id = false, $task_id = null)
+    public static function collecting($seminar_id, $flag = 'atl', $group_id = false, $task_id = null, $noTwins = false)
     {
 
         $tempfile = tempnam(sys_get_temp_dir(), 'leeroy');
@@ -88,6 +88,9 @@ class HandinFiles extends \Leeroy_SimpleORMap
         if (count($tasks) === 0) {
             throw new \AccessDeniedException(_('Aufgabe nicht gefunden!'));
         }
+
+        # der hashwert jeder abgabe wird in dem array gespeichert, damit duplikate erkannt werden können
+        $dirHashes = array();
 
         # gruppen ordner erstellen
         foreach ($groups['names'] as $group_id => $group_name) {
@@ -131,6 +134,15 @@ class HandinFiles extends \Leeroy_SimpleORMap
 
                             $zip->extractTo($path_src . '/');
                             $zip->close();
+                        }
+
+                        if ($noTwins) {
+                            $hash = HandinFiles::MD5_DIR($path_src);
+                            if (array_key_exists($hash, $dirHashes)) { # wurde schon mal eingefügt
+                                array_map('unlink', glob($path_src . '/*'));
+                            } else {
+                                $dirHashes[$hash] = true;
+                            }
                         }
 
                         if (strpos($flag, 'a') !== false && $handin->hasAnalyticResult()) {
@@ -228,5 +240,33 @@ class HandinFiles extends \Leeroy_SimpleORMap
         }
 
         return $zip->close();
+    }
+
+    /**
+     * Erzeugt einen MD5 Hash eines Ordners mit seinem gesamten Inhalt, die Metadaten der Dateien werden hierbei ignoriert,
+     * sodass nur der Inhalt der Dateien entscheident ist
+     * @param string $dir
+     * @return string|bool
+     */
+    private static function MD5_DIR($dir)
+    {
+        if (!is_dir($dir)) {
+            return false;
+        }
+
+        $filemd5s = array();
+        $d = dir($dir);
+
+        while (false !== ($entry = $d->read())) {
+            if ($entry != '.' && $entry != '..') {
+                if (is_dir($dir . '/' . $entry)) {
+                    $filemd5s[] = HandinFiles::MD5_DIR($dir . '/' . $entry);
+                } else {
+                    $filemd5s[] = md5_file($dir . '/' . $entry);
+                }
+            }
+        }
+        $d->close();
+        return md5(implode('', $filemd5s));
     }
 }

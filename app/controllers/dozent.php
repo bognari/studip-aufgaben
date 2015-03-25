@@ -490,7 +490,7 @@ class DozentController extends LeeroyStudipController
 
         usort($users, array('Leeroy_CourseMember', 'cmp'));
 
-        $tasks = Leeroy\Tasks::findBySQL('seminar_id = ? AND required = ?', array($this->seminar_id, true));
+        $tasks = Leeroy\Tasks::findBySQL('seminar_id = ? AND required = ? AND is_active = ?', array($this->seminar_id, true, true));
         usort($tasks, array('Leeroy\Tasks', 'cmp'));
 
         $aux = Leeroy\DataFields::getDataFields($this->seminar_id);
