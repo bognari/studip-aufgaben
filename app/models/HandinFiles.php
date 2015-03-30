@@ -49,6 +49,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
      * @param string $flag a = Analyse Ergebnisse, u = Test Ergebnisse, l = Log, g = Gruppenordner, t = Aufgabenorder,
      * @param bool|string $group_id
      * @param null|string $task_id
+     * @param bool $noTwins
      * @return string Pfad zur Zip Datei
      * @throws \AccessDeniedException
      * @throws \ErrorException

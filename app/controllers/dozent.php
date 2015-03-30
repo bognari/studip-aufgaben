@@ -395,10 +395,15 @@ class DozentController extends LeeroyStudipController
 
             if (($handin->task->seminar_id === $this->seminar_id)) {
 
-                $ok = $ok && (intval($value, 10) . '') === $value;
+                $ok = $ok && ((intval($value, 10) . '') === $value || strlen($value) === 0);
 
-                if ((intval($value, 10) . '') === $value) {
+                if ((intval($value, 10) . '') === $value || strlen($value) == 0) {
                     $handin->points = $value;
+
+                    if (strlen($value) == 0) {
+                        $handin->points = null;
+                    }
+
                     $handin->store(false);
                 }
             }
