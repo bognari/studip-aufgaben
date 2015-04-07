@@ -140,7 +140,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
                         if ($noTwins) {
                             $hash = HandinFiles::MD5_DIR($path_src);
                             if (array_key_exists($hash, $dirHashes)) { # wurde schon mal eingefügt
-                                array_map('unlink', glob($path_src . '/*'));
+                                array_map(array('Leeroy\HandinFiles', 'recursiveDelete'), glob($path_src . '/*'));
                             } else {
                                 $dirHashes[$hash] = true;
                             }
@@ -202,6 +202,24 @@ class HandinFiles extends \Leeroy_SimpleORMap
         }
 
         return $file_name;
+    }
+
+    /**
+     * @param $str
+     * @return bool
+     */
+    private static function recursiveDelete($str)
+    {
+        if (is_file($str)) {
+            return @unlink($str);
+        } elseif (is_dir($str)) {
+            $scan = glob(rtrim($str, '/') . '/*');
+            foreach ($scan as $index => $path) {
+                HandinFiles::recursiveDelete($path);
+            }
+            return @rmdir($str);
+        }
+        return false;
     }
 
     /**
