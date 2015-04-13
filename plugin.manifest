@@ -1,9 +1,9 @@
 pluginname=Leeroy
 pluginclassname=Leeroy
 origin=TU BS IPS
-version=0.11
+version=1.0
 updateURL=http://plugin.bognari.me/update.xml
-studipMinVersion=2.3.x
+studipMinVersion=2.5.x
 category=Aufgaben
 displayname=Leeroy
 complexity=2

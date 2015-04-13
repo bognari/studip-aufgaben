@@ -14,8 +14,6 @@
  * @category    Stud.IP
  */
 
-use Leeroy\Perm;
-
 require_once 'Leeroy_Controller.php';
 
 require_once $this->trails_root . '/models/Jenkins.php';
@@ -29,11 +27,6 @@ require_once $this->trails_root . '/models/JobBuild.php';
 require_once $this->trails_root . '/models/TimeTrigger.php';
 require_once $this->trails_root . '/models/DataFields.php';
 
-/**
- * @property Leeroy\Tasks task
- * @property  seminar_id
- * @property string sort
- */
 class IndexController extends LeeroyStudipController
 {
     public function before_filter(&$action, &$args)
