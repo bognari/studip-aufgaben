@@ -165,6 +165,8 @@ class IndexController extends LeeroyStudipController
     public function analytics_reload_action($handin_id)
     {
         $this->handin_id = $handin_id;
+        $handin = new Leeroy\Handin($handin_id);
+        $this->task = $handin->task;
     }
 
     public function show_log_action($handin_id)

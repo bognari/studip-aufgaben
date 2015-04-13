@@ -131,7 +131,7 @@ class HandinFiles extends \Leeroy_SimpleORMap
                         }
 
                         $zip = new \ZipArchive;
-                        if ($zip->open($zip_file) === TRUE) {
+                        if ($zip->open($zip_file) === true) {
 
                             $zip->extractTo($path_src . '/');
                             $zip->close();
