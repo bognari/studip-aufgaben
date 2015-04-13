@@ -122,11 +122,11 @@ array_push($infobox_content, array(
         ),
         array(
             'icon' => 'icons/16/black/code.png',
-            'text' => 'Aufgabe wird mittels Jenkins Kontrolliert'
+            'text' => 'Aufgabe wird mittels automatisch kontrolliert'
         ),
         array(
             'icon' => 'icons/16/black/stat.png',
-            'text' => 'Sourcecode Analyse vorhanden'
+            'text' => 'Sourcecode-Analyse vorhanden'
         ),
         array(
             'icon' => 'icons/16/black/unit-test.png',
