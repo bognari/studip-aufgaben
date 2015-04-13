@@ -166,7 +166,9 @@ class DozentController extends LeeroyStudipController
             'enddate' => strtotime(Request::get('enddate')),
             'task_link' => Request::get('task_link'),
             'required' => Request::int('required'),
-            'is_active' => Request::int('is_active')
+            'is_active' => Request::int('is_active'),
+            'upper_bound_points' => Request::int('upper_bound_points'),
+            'lower_bound_points' => Request::int('lower_bound_points')
         );
 
         $task->setData($data);
@@ -395,9 +397,9 @@ class DozentController extends LeeroyStudipController
 
             if (($handin->task->seminar_id === $this->seminar_id)) {
 
-                $ok = $ok && ((intval($value, 10) . '') === $value || strlen($value) === 0);
+                $ok = $ok && (((intval($value, 10) . '') === $value && intval($value, 10) <= $handin->task->upper_bound_points && intval($value, 10) >= $handin->task->lower_bound_points) || strlen($value) === 0);
 
-                if ((intval($value, 10) . '') === $value || strlen($value) == 0) {
+                if (((intval($value, 10) . '') === $value && intval($value, 10) <= $handin->task->upper_bound_points && intval($value, 10) >= $handin->task->lower_bound_points) || strlen($value) === 0) {
                     $handin->points = $value;
 
                     if (strlen($value) == 0) {

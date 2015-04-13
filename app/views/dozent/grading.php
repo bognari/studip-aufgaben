@@ -31,6 +31,10 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $content);
     <? endif ?>
 <? endif ?>
 
+<? if (!$task->isRequired()) : ?>
+    <?= MessageBox::info(_('Es ist KEINE Pflichtaufgabe')); ?>
+<? endif ?>
+
 <br>
 <h2> <?= _('Punkteübersicht für ') ?> <?= htmlReady($group_name) ?> <?= _('mit') ?> <?= htmlReady($task->title) ?>
     : </h2>

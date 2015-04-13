@@ -81,16 +81,21 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <h3><span class="label"><?= _('Allgemeine Einstellungen') ?></span></h3>
 
         <div>
-            <label for="title"><span class="label"><?= _('Titel') ?></span></label>
+            <label for="title"><span class="label"><?= _('Titel') . ': ' ?></span></label>
             <input type="text" name="title" id="title" placeholder="Name der Aufgabe" required
                    value="<?= htmlReady($task['title']) ?>" size="80"><br>
-            <label for="task_link"><span class="label"><?= _('Externer Link') ?></span></label>
+            <label for="task_link"><span class="label"><?= _('Externer Link') . ': ' ?></span></label>
             <input type="text" name="task_link" id="task_link" placeholder="Link zu weiteren Angaben zur Aufgabe"
                    value="<?= htmlReady($task['task_link']) ?>" size="80"><br>
-            <label>
-                <span class="label"><?= _('Pflichtaufgabe: ') ?> <input type="checkbox" name="required"
-                                                                        value="1" <?= $task['required'] ? 'checked="checked"' : '' ?>></span>
-            </label>
+
+            <label for="task_points"><span class="label"><?= _('Punktebegrenzung') . ': ' ?></span></label>
+            <input type="text" name="lower_bound_points" id="task_points" placeholder="Untere Grenze"
+                   value="<?= htmlReady($task['lower_bound_points']) ?>" size="20">
+            <input type="text" name="upper_bound_points" id="task_points" placeholder="Obere Grenze"
+                   value="<?= htmlReady($task['upper_bound_points']) ?>" size="20"><br>
+
+            <label><span class="label"><?= _('Pflichtaufgabe') . ': ' ?> <input type="checkbox" name="required"
+                                                                                value="1" <?= $task['required'] ? 'checked="checked"' : '' ?>></span></label>
             <br>
             <label for="content"><span class="label"><?= _('Beschreibung') ?></span></label>
             <textarea name="content" id="content"><?= htmlReady($task['content']) ?></textarea>
