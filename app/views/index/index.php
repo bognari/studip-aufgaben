@@ -122,7 +122,7 @@ array_push($infobox_content, array(
         ),
         array(
             'icon' => 'icons/16/black/code.png',
-            'text' => 'Aufgabe wird mittels automatisch kontrolliert'
+            'text' => 'Aufgabe wird automatisch kontrolliert'
         ),
         array(
             'icon' => 'icons/16/black/stat.png',
@@ -130,7 +130,7 @@ array_push($infobox_content, array(
         ),
         array(
             'icon' => 'icons/16/black/unit-test.png',
-            'text' => 'Test Analyse vorhanden'
+            'text' => 'Test-Analyse vorhanden'
         ),
         array(
             'icon' => 'icons/16/black/log.png',

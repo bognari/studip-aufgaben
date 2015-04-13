@@ -66,7 +66,7 @@
 
                 <?= $task->hasAnalyticResult() ? Assets::img('icons/16/blue/stat.png', array('alt' => _('Analyse Ergebnisse'), 'title' => _('Analyse Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
                 <?= $task->hasTestResult() ? Assets::img('icons/16/blue/unit-test.png', array('alt' => _('Test Ergebnisse'), 'title' => _('Test Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
-                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Link Ergebnisse'), 'title' => _('Link Ergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
+                <?= $task->hasLinkResult() ? Assets::img('icons/16/blue/log.png', array('alt' => _('Linkergebnisse'), 'title' => _('Linkergebnisse'))) : Assets::img('blank.gif', array('height' => 16, 'width' => 16)) ?>
 
             </td>
             <td>
