@@ -25,7 +25,7 @@ class LeeroyStudipController extends StudipController
         $this->plugin = $this->dispatcher->plugin;
 
         // default timeformat for all dates
-        $this->timeformat = '%d.%m.%Y, %R';
+        $this->timeformat = '%d.%m.%Y, %H:%M:%S';
 
         $this->flash = Trails_Flash::instance();
 
